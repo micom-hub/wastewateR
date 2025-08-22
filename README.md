@@ -2,7 +2,7 @@
 
 ### Installation
 
-`devtools::install_github("julesjulesjules/wastewateR")`
+`devtools::install_github("micom-hub/wastewateR")`
 
 ### Usage
 
