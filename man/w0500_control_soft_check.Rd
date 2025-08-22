@@ -35,7 +35,9 @@ If the dataframe looks like:\tabular{ll}{
 This check looks at the indicated control rows and marks them if the number
 of positive droplets is greater than or equal to the numeric droplet limit.
 The mark occurs in a column called 'control_pos_drop_soft', which will contain a
-value of 1 if the 'Positives' column of the indicated Sample-Target pairs is= the droplet limit, and otherwise will contain zeros. Any rows that were notconsidered in this check will have 'NA' filled in this column.
+value of 1 if the 'Positives' column of the indicated Sample-Target pairs is
+greater than or equal to the droplet limit, and otherwise will contain zeros. Any rows that were not
+considered in this check will have 'NA' filled in this column.
 
 This function returns a dataframe with a new column.
 }
