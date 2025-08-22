@@ -1,227 +1,227 @@
 
 #' Check Sample Naming Structure - SEWER
 #'
-#' This function was specifically crafted to accommodate the sample naming 
-#' convention of the SEWER program in Michigan. If you'd like a sample naming 
-#' function created for your laboratory/program, please reach out to the owner 
+#' This function was specifically crafted to accommodate the sample naming
+#' convention of the SEWER program in Michigan. If you'd like a sample naming
+#' function created for your laboratory/program, please reach out to the owner
 #' of this repository.
-#' 
-#' This function takes in a data frame. It also takes in a character string for 
-#' the submitter id, a vector of acceptable site abbreviations, and a vector of 
-#' control strings. It does not edit the input -- input and output are identical 
+#'
+#' This function takes in a data frame. It also takes in a vector of character strings for
+#' acceptable submitter ids, a vector of acceptable site abbreviations, and a vector of
+#' control strings. It does not edit the input -- input and output are identical
 #' in this case.
-#' 
-#' The character string for submitter id and the vector of acceptable site 
-#' abbreviations should align with the following sample naming structure: 
+#'
+#' The character string for submitter id and the vector of acceptable site
+#' abbreviations should align with the following sample naming structure:
 #'  - there should be 11 characters in the sample name
 #'  - submitter identifier, two characters
-#'  - city/site identifier, two character 
-#'  - date of sample collection in YYMMDD format 
+#'  - city/site identifier, two character
+#'  - date of sample collection in YYMMDD format
 #'  - Sample end indicator: I or S, for influent or solid, or A, for first sample collected in a given day
 #'
-#' We're working exclusively with the `Sample` column. 
+#' We're working exclusively with the `Sample` column.
 #'
-#' In the `Sample` column, all leading and lagging spaces are removed from 
-#' each sample name. A new column for the number of characters in each sample 
-#' name is made, and a new column identifying each row as either "NOT A CONTROL" 
-#' or "Control" is made. 
+#' In the `Sample` column, all leading and lagging spaces are removed from
+#' each sample name. A new column for the number of characters in each sample
+#' name is made, and a new column identifying each row as either "NOT A CONTROL"
+#' or "Control" is made.
 #'
-#' Controls: 
+#' Controls:
 #' - Sample name contains the character string "NTC", "NEG", "POS", "EC", "COV", "EXT", "BCOV"
 #' - Sample name has first two characters of "NV" or "RV"
 #' - Sample name has first three characters of "RSV"
 #'
 #' Everything else is labelled "NOT A CONTROL".
-#' 
-#' The system will account for "_2", "_3", or "_4" at the end of a sample 
-#' name to identify if the same sample is tested multiple times 
-#' on the same plate, or on different plates. These will run through and 
-#' will not trigger an "over 11 characters" stop. 
 #'
-#' STOP ALERT: All NOT A CONTROL samples that are NOT 11 characters in 
-#' length are pulled and if there are one or more instances of this, 
-#' the offending sample names will be printed to the console with "Sample 
+#' The system will account for "_2", "_3", or "_4" at the end of a sample
+#' name to identify if the same sample is tested multiple times
+#' on the same plate, or on different plates. These will run through and
+#' will not trigger an "over 11 characters" stop.
+#'
+#' STOP ALERT: All NOT A CONTROL samples that are NOT 11 characters in
+#' length are pulled and if there are one or more instances of this,
+#' the offending sample names will be printed to the console with "Sample
 #' Names are Not 11 Characters". The code will STOP RUNNING if this occurs.
 #'
-#' Each sample name is then broken down into five new columns, corresponding 
-#' to the first two characters, the next two characters, the six characters after that, 
-#' those six characters transformed into an R date data type, and the last character. 
-#' 
+#' Each sample name is then broken down into five new columns, corresponding
+#' to the first two characters, the next two characters, the six characters after that,
+#' those six characters transformed into an R date data type, and the last character.
+#'
 #' Individual checks are then run on each of these columns:
-#'  
-#' 1. That the first two characters of non-control sample names are the 
-#' submitter identifier 
+#'
+#' 1. That the first two characters of non-control sample names are an option provided
+#'  in the vector of acceptable submitter identifier s
 #' 2. That the next two characters of non-control rows are an option provided
 #'  in the vector of acceptable site abbreviations
-#' 3. That the next six characters of all non-control rows are numbers, and a 
+#' 3. That the next six characters of all non-control rows are numbers, and a
 #' date not in the future
 #' 4. That the last character of non-control wells is either an I, S, or an A
 #'
 #' STOP ALERT: If any of those four checks do not pass, the offending sample
-#'  names will be printed out to the console along with a relevant check 
+#'  names will be printed out to the console along with a relevant check
 #'  message. The code will STOP RUNNING if this occurs.
 #'
 #' In addition, the system checks that the sample dates of non-control sample
-#'  rows are not older than 6 months ago. This check only notifies if any of them are, 
-#'  it is not a stop check. 
+#'  rows are not older than 6 months ago. This check only notifies if any of them are,
+#'  it is not a stop check.
 #'
-#' This is an example of a function that could be replaced with another function 
-#' that applied the sample naming rules that different individuals/organizations use. 
+#' This is an example of a function that could be replaced with another function
+#' that applied the sample naming rules that different individuals/organizations use.
 #'
 #' @param df_in A dataframe of laboratory data
-#' @param submitter_id A character string identifying the submitter laboratory
+#' @param submitter_id A vector of character strings identifying the submitter laboratory code(s)
 #' @param site_abbreviations A vector of character strings identifying the potential site ids
 #' @param control_strs A vector of character strings contained in control sample names
 #' @return A dataframe that is identical to the input dataframe
 #' @export
 
 w0150_sample_naming_structure <- function(df_in, submitter_id, site_abbreviations, control_strs){
-    
+
     ################################################################################
     # Check #1.5: Look at sample naming structure, as well as date information
-    
+
     message("CHECK #1.5: Sample Naming Structure")
     message("") # just for visual clarity
-    
+
     # there should be 11 characters in the sample name
     # submitter identifier | city/site identifier | YYMMDD | I or S or A
-    
-    new_file_in <- df_in %>% mutate(Sample = trimws(Sample), 
-                                    sample_characters = nchar(Sample), 
+
+    new_file_in <- df_in %>% mutate(Sample = trimws(Sample),
+                                    sample_characters = nchar(Sample),
                                     control_check = "NOT A CONTROL")
-  
+
     for (each_cont in control_strs){
-      
-      new_file_in <- new_file_in %>% mutate(control_check = case_when(grepl(each_cont, Sample) ~ "Control", 
+
+      new_file_in <- new_file_in %>% mutate(control_check = case_when(grepl(each_cont, Sample) ~ "Control",
                                                                       T ~ control_check))
-      
+
     }
-    
+
     check_length_count <- filter(new_file_in, sample_characters != 11 & control_check != "Control")
-    
-    # if the sample has "_2" or similar at the end of the name, we don't want it to 
+
+    # if the sample has "_2" or similar at the end of the name, we don't want it to
     # trigger this error.
-    
-    check_length_count <- check_length_count %>% mutate(second_check = case_when(grepl("_2", Sample) ~ nchar(gsub("_2", "", Sample)), 
-                                                                                 grepl("_3", Sample) ~ nchar(gsub("_3", "", Sample)), 
-                                                                                 grepl("_4", Sample) ~ nchar(gsub("_4", "", Sample)), 
+
+    check_length_count <- check_length_count %>% mutate(second_check = case_when(grepl("_2", Sample) ~ nchar(gsub("_2", "", Sample)),
+                                                                                 grepl("_3", Sample) ~ nchar(gsub("_3", "", Sample)),
+                                                                                 grepl("_4", Sample) ~ nchar(gsub("_4", "", Sample)),
                                                                                  T ~ 999))
-    
+
     check_length_count <- filter(check_length_count, second_check != 11)
-    
+
     if (nrow(check_length_count >= 1)){
-      
+
       for (i in unique(check_length_count$Sample)){
         message(i)
       }
-      
+
       stop_message <- "Sample Names are Not 11 Characters"
       stop(stop_message)
-      
+
     } else {
-      
+
       message("Sample Names are all 11 characters (or have expected '_#' format).")
-    
+
     }
-    
-    new_file_in <- new_file_in %>% mutate(first_two = substr(Sample, 1, 2), 
-                                          next_two = substr(Sample, 3, 4), 
-                                          next_six = substr(Sample, 5, 10), 
+
+    new_file_in <- new_file_in %>% mutate(first_two = substr(Sample, 1, 2),
+                                          next_two = substr(Sample, 3, 4),
+                                          next_six = substr(Sample, 5, 10),
                                           next_six_date = as.POSIXct(next_six, format = "%y%m%d"),
                                           last_one = substr(Sample, 11, 11))
-    
-    message("") # just for visual clarity
-    
-    # check that first two characters of non-control rows are the submitter id
-    if (any(filter(new_file_in, control_check == "NOT A CONTROL")$first_two != submitter_id)){
 
-      for (i in unique(filter(new_file_in, control_check == "NOT A CONTROL" & first_two != submitter_id)$Sample)){
+    message("") # just for visual clarity
+
+    # check that first two characters of non-control rows are the submitter id
+    if (any(!filter(new_file_in, control_check == "NOT A CONTROL")$first_two %in% submitter_id)){
+
+      for (i in unique(filter(new_file_in, control_check == "NOT A CONTROL" & !first_two %in% submitter_id)$Sample)){
         message(i)
       }
-      
-      stop_message <- paste0("First two characters of sample name are not ", submitter_id)
-      
+
+      stop_message <- "First two characters of sample name are not a known submitter id."
+
       stop(stop_message)
     } else {
-      message(paste0("First two characters of non-control sample rows are ", submitter_id))
+      message("First two characters of non-control sample rows are a known submitter id.")
     }
-    
+
     message("") # just for visual clarity
-    
+
     # check that next two characters of non-control rows are a site abbreviation
     if (any(!filter(new_file_in, control_check == "NOT A CONTROL")$next_two %in% site_abbreviations)){
-      
+
       for (i in unique(filter(new_file_in, control_check == "NOT A CONTROL" & !next_two %in% site_abbreviations)$Sample)){
         message(i)
       }
-      
+
       stop_message <- "Next two characters of sample name are not a known site abbreviation."
-      
+
       stop(stop_message)
     } else {
       message("Next two characters of non-control sample rows are all known site abbreviations.")
     }
-    
+
     message("") # just for visual clarity
-    
+
     # check that next six characters of all non-control rows are numbers, and a date not in the future
     if (any(is.na(filter(new_file_in, control_check == "NOT A CONTROL")$next_six_date))){
-      
+
       for (i in unique(filter(new_file_in, control_check == "NOT A CONTROL" & is.na(next_six_date))$Sample)){
         message(i)
       }
-      
+
       stop_message <- "Unable to convert next six characters of non-control sample rows to date type."
-      
+
       stop(stop_message)
     } else {
       message("Next six characters of all non-control sample rows were able to be converted to Date types.")
     }
-    
+
     message("") # just for visual clarity
-    
+
     if (any(filter(new_file_in, control_check == "NOT A CONTROL")$next_six_date > Sys.Date())){
-      
+
       for (i in unique(filter(new_file_in, next_six_date > Sys.Date)$Sample)){
         message(i)
       }
-      
+
       stop_message <- "Sample dates of non-control sample rows are in the future."
-      
+
       stop(stop_message)
     } else {
       message("Sample dates of non-control sample rows are not future dated.")
     }
-    
+
     message("") # just for visual clarity
-    
+
     if (any(filter(new_file_in, control_check == "NOT A CONTROL")$next_six_date < (Sys.Date() %m-% months(6)))){
 
       for (i in unique(filter(new_file_in, next_six_date < (Sys.Date() %m-% months(6)))$Sample)){
         message(i)
       }
-      
+
       alert_message <- "Sample dates of non-control sample rows are older than 6 months."
       message(alert_message)
     } else {
       message("Sample dates of non-control sample rows are not older than 6 months ago.")
     }
-    
+
     message("") # just for visual clarity
-    
+
     # check that the last character of non-control wells is either an I or an S or an A
     if (any(filter(new_file_in, control_check == "NOT A CONTROL")$last_one != "S" & filter(new_file_in, control_check == "NOT A CONTROL")$last_one != "I"& filter(new_file_in, control_check == "NOT A CONTROL")$last_one != "A")){
 
       for (i in unique(filter(new_file_in, control_check == "NOT A CONTROL" & !last_one %in% c("I", "S", "A"))$Sample)){
         message(i)
       }
-      
+
       stop_message <- "Last character of non-control sample name is not 'I', 'S', or 'A'."
       stop(stop_message)
     } else {
       message("Last characters of all non-control sample names is either 'I', 'S', or 'A'.")
     }
-    
+
     message("") # just for visual clarity
     message("Through Check #1.5")
 
