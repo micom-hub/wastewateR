@@ -14,7 +14,7 @@ w0150_sample_naming_structure(
 \arguments{
 \item{df_in}{A dataframe of laboratory data}
 
-\item{submitter_id}{A character string identifying the submitter laboratory}
+\item{submitter_id}{A vector of character strings identifying the submitter laboratory code(s)}
 
 \item{site_abbreviations}{A vector of character strings identifying the potential site ids}
 
@@ -30,8 +30,8 @@ function created for your laboratory/program, please reach out to the owner
 of this repository.
 }
 \details{
-This function takes in a data frame. It also takes in a character string for
-the submitter id, a vector of acceptable site abbreviations, and a vector of
+This function takes in a data frame. It also takes in a vector of character strings for
+acceptable submitter ids, a vector of acceptable site abbreviations, and a vector of
 control strings. It does not edit the input -- input and output are identical
 in this case.
 
@@ -77,8 +77,8 @@ those six characters transformed into an R date data type, and the last characte
 
 Individual checks are then run on each of these columns:
 \enumerate{
-\item That the first two characters of non-control sample names are the
-submitter identifier
+\item That the first two characters of non-control sample names are an option provided
+in the vector of acceptable submitter identifier s
 \item That the next two characters of non-control rows are an option provided
 in the vector of acceptable site abbreviations
 \item That the next six characters of all non-control rows are numbers, and a
