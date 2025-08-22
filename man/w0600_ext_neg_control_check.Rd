@@ -6,7 +6,8 @@
 \usage{
 w0600_ext_neg_control_check(
   new_file_in,
-  control_well_count = 3,
+  ext_well_count = 3,
+  neg_well_count = 3,
   positive_droplet = 3,
   wells_over = 1
 )
@@ -14,16 +15,13 @@ w0600_ext_neg_control_check(
 \arguments{
 \item{new_file_in}{A dataframe of laboratory data}
 
-\item{control_well_count}{A numeric indicator for how many control wells are expected (for example, if you'd
-expect there to be 3 EXT Sample wells and 3 NEG control wells, you would enter 3);
-default value is 3}
+\item{ext_well_count}{A numeric indicator for how many EXT control wells are expected (for example, if you'd expect there to be 3 EXT Sample wells, you would enter 3); default value is 3}
+
+\item{neg_well_count}{A numeric indicator for how many NEG control wells are expected (for example, if you'd expect there to be 3 NEG Sample wells, you would enter 3); default value is 3}
 
 \item{positive_droplet}{A numeric positives droplet limit. Default value set to 3}
 
-\item{wells_over}{A numeric indicator for the acceptable number of wells that you'd
-allow to be over the positive droplet limit (for example, if you had run a control
-in quaduplicate, you might still accept the plate data results if 2 of the 4 controls
-were over the positive droplet limit, so you'd enter 2); default value is 1}
+\item{wells_over}{A numeric indicator for the acceptable number of wells that you'd allow to be over the positive droplet limit (for example, if you had run a control in quaduplicate, you might still accept the plate data results if 2 of the 4 controls were over the positive droplet limit, so you'd enter 2); default value is 1}
 }
 \value{
 A dataframe just like the input data frame, with one new column (ext_neg_control_check6) added
@@ -33,9 +31,8 @@ This function is looking for extraction control (EXT) and negative control (NEG)
 'Sample' rows. It takes in:
 \itemize{
 \item a laboratory data frame
-\item a numeric indicator for how many control wells are expected (for example, if you'd
-expect there to be 3 EXT Sample wells and 3 NEG control wells, you would enter 3);
-default value is 3
+\item a numeric indicator for how many EXT control wells are expected
+\item a numeric indicator for how many NEG control wells are expected
 \item a numeric positive droplet limit; default value is 3
 \item and an acceptable number of wells that you'd allow to be over the positive
 droplet limit (for example, if you had run a control in quaduplicate, you might
