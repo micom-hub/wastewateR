@@ -9,9 +9,9 @@ w0700_pos_droplet_sum(new_file_in, sum_pos_drop = 4, controls_to_drop)
 \arguments{
 \item{new_file_in}{A dataframe of laboratory data}
 
-\item{controls_to_drop}{a dataframe of Sample-Target pairs to EXCLUDE from this check}
+\item{sum_pos_drop}{a numeric indicator for the sum of positive droplets check}
 
-\item{sum_pos_dropa}{numeric indicator for the sum of positive droplets check}
+\item{controls_to_drop}{a dataframe of Sample-Target pairs to EXCLUDE from this check}
 }
 \value{
 A dataframe just like the input data frame, with one new column (sample_wells_positives) added
