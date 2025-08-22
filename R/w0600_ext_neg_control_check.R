@@ -63,7 +63,7 @@ w0600_ext_neg_control_check <- function(new_file_in, ext_well_count = 3, neg_wel
 
     controls <- filter(new_file_in, grepl(each_control_type, Sample))
 
-    controls_g <- controls %>% group_by(Sample) %>% summarize(count = length(Well))
+    controls_g <- controls %>% group_by(Sample, Target) %>% summarize(count = length(Well))
 
     if (any(controls_g$count != control_well_count)){
       controls2 <- controls %>% select(Well, Sample, Target)
