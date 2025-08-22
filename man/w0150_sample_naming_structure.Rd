@@ -35,7 +35,7 @@ acceptable submitter ids, a vector of acceptable site abbreviations, and a vecto
 control strings. It does not edit the input -- input and output are identical
 in this case.
 
-The character string for submitter id and the vector of acceptable site
+The vector of character strings for submitter ids and the vector of acceptable site
 abbreviations should align with the following sample naming structure:
 \itemize{
 \item there should be 11 characters in the sample name
@@ -45,9 +45,9 @@ abbreviations should align with the following sample naming structure:
 \item Sample end indicator: I or S, for influent or solid, or A, for first sample collected in a given day
 }
 
-We're working exclusively with the \code{Sample} column.
+We're working exclusively with the 'Sample' column.
 
-In the \code{Sample} column, all leading and lagging spaces are removed from
+In the 'Sample' column, all leading and lagging spaces are removed from
 each sample name. A new column for the number of characters in each sample
 name is made, and a new column identifying each row as either "NOT A CONTROL"
 or "Control" is made.

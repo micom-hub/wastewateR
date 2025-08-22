@@ -9,7 +9,7 @@ w0400_pos_control_hard_stop(new_file_in, samples_targets, pos_drop_lim = 3)
 \arguments{
 \item{new_file_in}{A dataframe of laboratory data}
 
-\item{samples_targets}{A dataframe of Sample-Target pairs to apply this check to}
+\item{samples_targets}{A dataframe of Sample-Target pairs to apply this check to, should be positive controls sample & positive control targets}
 
 \item{pos_drop_lim}{A numeric positives droplet limit. Default value set to 3}
 }
