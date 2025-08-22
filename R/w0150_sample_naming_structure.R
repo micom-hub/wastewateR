@@ -11,7 +11,7 @@
 #' control strings. It does not edit the input -- input and output are identical
 #' in this case.
 #'
-#' The character string for submitter id and the vector of acceptable site
+#' The vector of character strings for submitter ids and the vector of acceptable site
 #' abbreviations should align with the following sample naming structure:
 #'  - there should be 11 characters in the sample name
 #'  - submitter identifier, two characters
@@ -19,9 +19,9 @@
 #'  - date of sample collection in YYMMDD format
 #'  - Sample end indicator: I or S, for influent or solid, or A, for first sample collected in a given day
 #'
-#' We're working exclusively with the `Sample` column.
+#' We're working exclusively with the 'Sample' column.
 #'
-#' In the `Sample` column, all leading and lagging spaces are removed from
+#' In the 'Sample' column, all leading and lagging spaces are removed from
 #' each sample name. A new column for the number of characters in each sample
 #' name is made, and a new column identifying each row as either "NOT A CONTROL"
 #' or "Control" is made.
