@@ -24,13 +24,14 @@ The default value for this vector is 'c(2, 3, 5, 6)'.
 \details{
 This function can currently accommodate this process for rules:
 \itemize{
-\item 2.0 Accepted Droplet Count Check
-\item 3.0 NTC Control Check
-\item 5.0 Control Warning - Positives Droplets
-\item 6.0 Extraction & Negative Control Check
-\item 7.0 Sample Positive Droplet Sum Check
-\item 8.0 Recovery Control Check
-\item 9.0 Target Positives Droplet High Limit
+\item 2.0 Accepted Droplet Count Check (2)
+\item 3.0 NTC Control Check (3)
+\item 5.0 Control Warning - Positives Droplets (5)
+\item 6.0 Extraction & Negative Control Check (6)
+\item 7.0 Sample Positive Droplet Sum Check (7)
+\item 7.5 Sample Negative Droplet Sum Check (7.5)
+\item 8.0 Recovery Control Check (8)
+\item 9.0 Target Positives Droplet High Limit (9)
 }
 
 For all of these rules, this function removes any rows with a value of 1 in
