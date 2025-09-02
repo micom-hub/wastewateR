@@ -9,9 +9,9 @@
 #' @param control_strings A vector of character strings for w0125_expected_controls_present (A vector of character strings that indicate control wells) and w0150_sample_naming_structure (A vector of character strings contained in control sample names)
 #' @param pos_rows A Sample-Target dataframe of character strings for w0450_pos_control_breakdown_check
 #' @param con_rows A Sample-Target dataframe of character strings for w0500_control_soft_check
-#' @param lab_id A character string for w0150_sample_naming_structure (A character string identifying the submitter laboratory)
+#' @param lab_id A character string vector for w0150_sample_naming_structure (A character string identifying the submitter laboratory)
 #' @param site_id_set A vector of character strings for w0150_sample_naming_structure (A vector of character strings identifying the potential site ids)
-#' @return A dataframe containing merged Sample-Target data points
+#' @return A dataframe containing unmerged Sample-Target data points
 #' @export
 
 qaqc_processing_sc2_n1 <- function(file_in,
@@ -54,8 +54,6 @@ qaqc_processing_sc2_n1 <- function(file_in,
   file_in <- w0900_positives_comparison_rule(file_in, c("POS"), c("N1"), c("POS", "NEG", "EXT", "NTC"), 3)
 
   file_in <- w1000_remove_rows_as_chosen(file_in)
-
-  file_in <- w1100_merged_data_for_use(file_in, "average")
 
   return(file_in)
 
