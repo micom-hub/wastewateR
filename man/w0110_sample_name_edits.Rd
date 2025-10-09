@@ -14,15 +14,16 @@ A data frame with possibly edited sample names
 }
 \description{
 This function takes in a data frame and cleans up sample names for consistency.
-The function does assume the sample name is in a column called Sample.
+The function does assume the sample names are in a column called Sample,
+and that the target names are in a column called Target.
 It does not create any new columns, it only edits the contents of existing columns.
 A single dataframe is returned.
 }
 \details{
 \enumerate{
 \item Removes all spaces from the sample names / character string
-in the column Sample, leading, lagging, and interior
-\item Changes all letter characters in the sample names in the column
-Sample to capitalized / uppercase letters.
+in the column Sample and Target, leading, lagging, and interior
+\item Changes all letter characters in the sample names in the columns
+Sample and Target to capitalized / uppercase letters.
 }
 }
