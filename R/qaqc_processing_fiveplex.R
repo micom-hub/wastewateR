@@ -1,5 +1,4 @@
-
-#' Wrapper Function - QAQC for SARS-CoV-2 N1 Testing
+#' Wrapper Function - QAQC for a Fiveplex
 #'
 #' This function is meant to run a standard QAQC set-up using the functions available
 #' in this package. For increased flexibility, manual construction of the functions
@@ -14,25 +13,25 @@
 #' @return A dataframe containing unmerged Sample-Target data points
 #' @export
 
-qaqc_processing_sc2_n1 <- function(file_in,
-                control_strings = c("NEG", "POS", "NTC", "BCOV", "EXT"),
-                pos_rows = data.frame(Samples = c("POS", "BCOV"),
-                                       Targets = c("N1", "BCOV")),
-                con_rows = data.frame(Samples = c("BCOV"),
-                                       Targets = c("PMMOV")),
-                lab_id,
-                site_id_set){
+qaqc_processing_fiveplex <- function(file_in,
+                                   control_strings = c("NEG", "POS", "NTC", "EXT"),
+                                   pos_rows = data.frame(Samples = c("POS", "POS", "POS", "POS", "POS"),
+                                                         Targets = c("FluA", "FluB", "RSV", "SC2", "H5")),
+                                   con_rows = data.frame(Samples = c("BCOV"),
+                                                         Targets = c("PMMOV")),
+                                   lab_id,
+                                   site_id_set){
 
   file_in <- w0110_sample_name_edits(file_in)
 
   file_in <- w0125_expected_controls_present(file_in,
-                                            control_strings,
-                                            c(12, 6, 12, 6, 12))
+                                             control_strings,
+                                             c(12, 12, 12, 0))
 
   file_in <- w0150_sample_naming_structure(file_in,
-                                         lab_id,
-                                         site_id_set,
-                                         control_strings)
+                                           lab_id,
+                                           site_id_set,
+                                           control_strings)
 
   file_in <- w0200_accepted_droplet_count(file_in)
 
