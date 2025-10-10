@@ -1,20 +1,12 @@
 
-#' Edit Sample Names
+#' Basic Description: Edit Sample and Target names to remove spaces and change letter-type characters to uppercase.
 #'
-#' This function takes in a data frame and cleans up sample names for consistency.
-#' The function does assume the sample names are in a column called Sample,
-#' and that the target names are in a column called Target.
-#' It does not create any new columns, it only edits the contents of existing columns.
-#' A single dataframe is returned.
+#' This function takes in a data frame and cleans up sample and target names for consistency. The function does assume the sample names are in a column called `Sample`, and that the target names are in a column called `Target`. It does not create any new columns, it only edits the contents of existing columns. A single dataframe is returned.
+#' 1.  Removes all spaces from strings in `Sample` and `Target` (leading, lagging, and interior)
+#' 2.  Changes all letter characters in `Sample` and `Target` to capitalized / uppercase letters.
 #'
-#' 1. Removes all spaces from the sample names / character string
-#' in the column Sample and Target, leading, lagging, and interior
-#'
-#' 2. Changes all letter characters in the sample names in the columns
-#' Sample and Target to capitalized / uppercase letters.
-#'
-#' @param df_in Data frame of laboratory data
-#' @return A data frame with possibly edited sample names
+#' @param df_in Data frame of laboratory data, needs to have a column called "Sample" and a column called "Target"
+#' @return A data frame with (possibly) edited sample names
 #' @export
 
 w0110_sample_name_edits <- function(df_in){

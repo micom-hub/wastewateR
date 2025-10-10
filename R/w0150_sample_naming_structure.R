@@ -27,11 +27,9 @@
 #' or "Control" is made.
 #'
 #' Controls:
-#' - Sample name contains the character string "NTC", "NEG", "POS", "EC", "COV", "EXT", "BCOV"
-#' - Sample name has first two characters of "NV" or "RV"
-#' - Sample name has first three characters of "RSV"
+#' - Sample name contains any of the character strings indicated
 #'
-#' Everything else is labelled "NOT A CONTROL".
+#' Everything else is labelled "NOT A CONTROL". The system then only considers sample names that are labelled "NOT A CONTROL" for the checks outlined here.
 #'
 #' The system will account for "_2", "_3", or "_4" at the end of a sample
 #' name to identify if the same sample is tested multiple times
@@ -68,7 +66,7 @@
 #' This is an example of a function that could be replaced with another function
 #' that applied the sample naming rules that different individuals/organizations use.
 #'
-#' @param df_in A dataframe of laboratory data
+#' @param df_in A dataframe of laboratory data, must contain a column called 'Sample'
 #' @param submitter_id A vector of character strings identifying the submitter laboratory code(s)
 #' @param site_abbreviations A vector of character strings identifying the potential site ids
 #' @param control_strs A vector of character strings contained in control sample names
