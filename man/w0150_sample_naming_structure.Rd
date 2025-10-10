@@ -12,7 +12,7 @@ w0150_sample_naming_structure(
 )
 }
 \arguments{
-\item{df_in}{A dataframe of laboratory data}
+\item{df_in}{A dataframe of laboratory data, must contain a column called 'Sample'}
 
 \item{submitter_id}{A vector of character strings identifying the submitter laboratory code(s)}
 
@@ -54,12 +54,10 @@ or "Control" is made.
 
 Controls:
 \itemize{
-\item Sample name contains the character string "NTC", "NEG", "POS", "EC", "COV", "EXT", "BCOV"
-\item Sample name has first two characters of "NV" or "RV"
-\item Sample name has first three characters of "RSV"
+\item Sample name contains any of the character strings indicated
 }
 
-Everything else is labelled "NOT A CONTROL".
+Everything else is labelled "NOT A CONTROL". The system then only considers sample names that are labelled "NOT A CONTROL" for the checks outlined here.
 
 The system will account for "_2", "_3", or "_4" at the end of a sample
 name to identify if the same sample is tested multiple times

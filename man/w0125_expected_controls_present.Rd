@@ -2,7 +2,7 @@
 % Please edit documentation in R/w0125_expected_controls_present.R
 \name{w0125_expected_controls_present}
 \alias{w0125_expected_controls_present}
-\title{Check for Expected Control Rows}
+\title{Check for the presence of expected control labelling in Sample column}
 \usage{
 w0125_expected_controls_present(
   df_in,
@@ -11,7 +11,7 @@ w0125_expected_controls_present(
 )
 }
 \arguments{
-\item{df_in}{A dataframe of laboratory data}
+\item{df_in}{A dataframe of laboratory data, must contain a column called Sample}
 
 \item{exp_cntrl_v}{A vector of character strings that indicate control wells. Default vector is "NEG", "POS", "NTC", "BCOV", "EXT"}
 
