@@ -26,6 +26,13 @@ The default set value for this is 3. In addition, the function accepts either a
 stop limit, or just a warning.
 }
 \details{
+This function is checking the sum of:
+\itemize{
+\item accepted_droplet_limit2
+\item ntc_control_check3
+\item ext_neg_control_check6
+}
+
 STOP ALERT: If "yes" is entered as the last input into this function, and
 the sum of wells that failed checks 2, 3, and 6 is greater than the set
 numeric limit, the code will STOP RUNNING.

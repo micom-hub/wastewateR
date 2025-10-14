@@ -25,7 +25,7 @@ A dataframe just like the input data frame, with one new column (sample_wells_ne
 }
 \description{
 This function is meant to be used to check non-control wells for low negative
-droplet counts. It can be used as just a check function, or as a chack that will
+droplet counts. It can be used as just a check function, or as a check that will
 stop code from running.
 }
 \details{
@@ -50,7 +50,7 @@ the string "POS" AND the 'Target' column contains the string "N1", and any
 instances where the 'Sample' column contains the string "BCOV" AND the 'Target'
 column contains "BCOV", etc. Those rows are REMOVED from consideration, and only
 Sample/Target combinations that remain within the dataframe of laboratory data
-will be considered further. The goal is for the system to only consider sample
+will be considered further. The intended purpose is for the system to only consider sample
 rows, NOT controls.
 
 For each unique Sample/Target pair left for consideration, the sum of the

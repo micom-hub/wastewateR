@@ -9,6 +9,14 @@
 #' "yes" or "no" character string, indicating whether the limit should be a hard
 #' stop limit, or just a warning.
 #'
+#' This function is checking the sum of:
+#'
+#' * accepted_droplet_limit2
+#'
+#' * ntc_control_check3
+#
+#' * ext_neg_control_check6
+#'
 #' STOP ALERT: If "yes" is entered as the last input into this function, and
 #' the sum of wells that failed checks 2, 3, and 6 is greater than the set
 #' numeric limit, the code will STOP RUNNING.
