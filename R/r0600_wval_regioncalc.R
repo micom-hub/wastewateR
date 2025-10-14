@@ -1,6 +1,6 @@
 
 
-r0600_wval_regioncalc
+r0600_wval_regioncalc <- function(){
 
 step5_wvalregioncalc_median <- function(wastewater_data_in, site_to_region_crosswalk){
 
@@ -102,5 +102,7 @@ step5_wvalregioncalc_wtavg <- function(wastewater_data_in, site_to_region_crossw
                                                                                        T ~ weighted_avg_wval_calc))
 
   return(regional_weighted)
+
+}
 
 }
