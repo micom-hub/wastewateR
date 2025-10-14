@@ -45,7 +45,7 @@ w1000_remove_rows_as_chosen <- function(data_file_in, rules_out_v = c(2, 3, 5, 6
 
   if (5 %in% rules_out_v){
 
-    data_file_in <- filter(data_file_in, control_pos_drop_soft != 1 | is.na(control_pos_drop_soft))
+    data_file_in <- filter(data_file_in, control_pos_drop_soft5 != 1 | is.na(control_pos_drop_soft5))
 
   }
 
@@ -57,26 +57,26 @@ w1000_remove_rows_as_chosen <- function(data_file_in, rules_out_v = c(2, 3, 5, 6
 
   if (7 %in% rules_out_v){
 
-    data_file_in <- filter(data_file_in, sample_wells_positives != 1 | is.na(sample_wells_positives))
+    data_file_in <- filter(data_file_in, sample_wells_positives7 != 1 | is.na(sample_wells_positives7))
 
   }
 
   if (7.5 %in% rules_out_v){
 
-    data_file_in <- filter(data_file_in, sample_wells_negatives != 1 | is.na(sample_wells_negatives))
+    data_file_in <- filter(data_file_in, sample_wells_negatives75 != 1 | is.na(sample_wells_negatives75))
 
   }
 
   if (8 %in% rules_out_v){
 
-    data_file_in <- filter(data_file_in, bcov_flag != 1)
+    data_file_in <- filter(data_file_in, recovery_flag8 != 1)
 
   }
 
 
   if (9 %in% rules_out_v){
 
-    data_file_in <- filter(data_file_in, sample_pos_limit_flag != 1)
+    data_file_in <- filter(data_file_in, sample_pos_limit_flag9 != 1)
 
   }
 

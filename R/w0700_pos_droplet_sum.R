@@ -34,14 +34,14 @@
 #' pairs that are low would be printed to the console.
 #'
 #' The output of this function is a dataframe with a new column added,
-#' called sample_wells_positives. This column set to 0 if the sum of 'Positives'
+#' called sample_wells_positives7. This column set to 0 if the sum of 'Positives'
 #' is greater than or equal to the set limit, set to 1 if the sum of 'Positives'
 #' is less than the set limit, and 'NA' if the row was excluded from consideration.
 #'
 #' @param new_file_in A dataframe of laboratory data
 #' @param sum_pos_drop a numeric indicator for the sum of positive droplets check
 #' @param controls_to_drop a dataframe of Sample-Target pairs to EXCLUDE from this check
-#' @return A dataframe just like the input data frame, with one new column (sample_wells_positives) added
+#' @return A dataframe just like the input data frame, with one new column (sample_wells_positives7) added
 #' @export
 
 w0700_pos_droplet_sum <- function(new_file_in, sum_pos_drop = 4, controls_to_drop){
@@ -88,10 +88,10 @@ w0700_pos_droplet_sum <- function(new_file_in, sum_pos_drop = 4, controls_to_dro
 
 
   # need to edit new_file_in to have a new marker column
-  new_file_in$sample_wells_positives <- NA_real_
+  new_file_in$sample_wells_positives7 <- NA_real_
 
   SAM_wells2 <- SAM_wells2 %>% group_by(Sample, Target) %>%
-    mutate(sample_wells_positives = case_when(sum(Positives, na.rm = TRUE) >= sum_pos_drop ~ 0,
+    mutate(sample_wells_positives7 = case_when(sum(Positives, na.rm = TRUE) >= sum_pos_drop ~ 0,
                                               T ~ 1))
 
   new_file_in <- rbind(new_file_in, SAM_wells2)

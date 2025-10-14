@@ -21,7 +21,7 @@ w0800_recover_control_check(
 \item{limit_percent}{A limit percent in decimal form. The default limit percent is 0.3 (30\%)}
 }
 \value{
-A dataframe just like the input data frame, with one new column (bcov_flag) added
+A dataframe just like the input data frame, with one new column (recovery_flag8) added
 }
 \description{
 This function is used as a recovery control check, indicating if there are any
@@ -56,7 +56,7 @@ is calculated for all Sample-Target pairs (run in duplicate, triplicate, etc.).
 If any of those averages is less than the threshold, the rows are marked.
 The sample names are printed to the console in this case.
 
-This function returns a dataframe with a new column called bcov_flag that
+This function returns a dataframe with a new column called recovery_flag8 that
 has a value of 1 if the relevant row was below the set limit and otherwise
 has a value of 0. If the row wasn't involved in the check, it will have a value of 'NA'.
 }

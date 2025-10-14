@@ -14,7 +14,7 @@ w0700_pos_droplet_sum(new_file_in, sum_pos_drop = 4, controls_to_drop)
 \item{controls_to_drop}{a dataframe of Sample-Target pairs to EXCLUDE from this check}
 }
 \value{
-A dataframe just like the input data frame, with one new column (sample_wells_positives) added
+A dataframe just like the input data frame, with one new column (sample_wells_positives7) added
 }
 \description{
 This function is meant to be used to check non-control wells for low positive
@@ -51,7 +51,7 @@ numeric indicator for the sum of positive droplets check, then the Sample-Target
 pairs that are low would be printed to the console.
 
 The output of this function is a dataframe with a new column added,
-called sample_wells_positives. This column set to 0 if the sum of 'Positives'
+called sample_wells_positives7. This column set to 0 if the sum of 'Positives'
 is greater than or equal to the set limit, set to 1 if the sum of 'Positives'
 is less than the set limit, and 'NA' if the row was excluded from consideration.
 }

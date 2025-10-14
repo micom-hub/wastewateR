@@ -21,7 +21,7 @@ w0750_neg_droplet_samples(
 \item{stop_choice}{a character string, either 'yes' or 'no' to indicate whether you'd like to treat this as a STOP check. Default value is 'yes'.}
 }
 \value{
-A dataframe just like the input data frame, with one new column (sample_wells_negatives) added
+A dataframe just like the input data frame, with one new column (sample_wells_negatives75) added
 }
 \description{
 This function is meant to be used to check non-control wells for low negative
@@ -65,7 +65,7 @@ of the samples have fewer than the numeric indicator for the sum of negative
 droplets check, the code will STOP RUNNING.
 
 If "no" is entered instead, the output of this function will be a dataframe
-with a new column added, called 'sample_wells_negatives'. This column set to 0
+with a new column added, called 'sample_wells_negatives75'. This column set to 0
 if the sum of 'Negatives' is greater than or equal to the set limit, set to 1
 if the sum of 'Negatives' is less than the set limit, and 'NA' if the row was
 excluded from consideration.

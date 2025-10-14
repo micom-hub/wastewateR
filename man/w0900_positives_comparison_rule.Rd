@@ -24,7 +24,7 @@ w0900_positives_comparison_rule(
 \item{thresh_size}{a numeric threshold limit (default value = 3)}
 }
 \value{
-A dataframe just like the input data frame, with one new column (sample_pos_limit_flag) added
+A dataframe just like the input data frame, with one new column (sample_pos_limit_flag9) added
 }
 \description{
 This function is optional. It takes as input:
@@ -63,7 +63,7 @@ column value that is greater than this value are marked.
 This is just a warning/notification function. The 'Sample', 'Target', and 'Positives'
 value for each row that violates the threshold will be printed to the console.
 A dataframe is returned from this function, and it will contain a new variable
-called 'sample_pos_limit_flag' that will have a value of 1 if the row violated
+called 'sample_pos_limit_flag9' that will have a value of 1 if the row violated
 the threshold and a value of 0 if it did not violate the threshold OR if it
 was not considered as part of the check.
 }

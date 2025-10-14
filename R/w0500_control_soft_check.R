@@ -8,7 +8,7 @@
 #' droplet limit. The default positives droplet limit is 3.
 #'
 #' Sample-Target pairs example:
-#'
+#'f
 #' If the dataframe looks like:
 #'
 #' | Sample | Target |
@@ -17,7 +17,7 @@
 #'
 #' This check looks at the indicated control rows and marks them if the number
 #' of positive droplets is greater than or equal to the numeric droplet limit.
-#' The mark occurs in a column called 'control_pos_drop_soft', which will contain a
+#' The mark occurs in a column called 'control_pos_drop_soft5', which will contain a
 #' value of 1 if the 'Positives' column of the indicated Sample-Target pairs is
 #' greater than or equal to the droplet limit, and otherwise will contain zeros. Any rows that were not
 #' considered in this check will have 'NA' filled in this column.
@@ -27,7 +27,7 @@
 #' @param new_file_in A dataframe of laboratory data
 #' @param samples_targets A dataframe of Sample-Target pairs to apply this check to
 #' @param pos_drop_limit A numeric positives droplet limit. Default value set to 3
-#' @return A dataframe just like the input data frame, with one new column (control_pos_drop_soft) added
+#' @return A dataframe just like the input data frame, with one new column (control_pos_drop_soft5) added
 #' @export
 
 w0500_control_soft_check <- function(new_file_in, samples_targets, pos_drop_limit = 3){
@@ -59,7 +59,7 @@ w0500_control_soft_check <- function(new_file_in, samples_targets, pos_drop_limi
       message(paste0(samples_targets[i, 1], " - ", samples_targets[i, 2]))
     }
 
-    new_file_in$control_pos_drop_soft <- NA_real_
+    new_file_in$control_pos_drop_soft5 <- NA_real_
 
   } else {
 
@@ -86,9 +86,9 @@ w0500_control_soft_check <- function(new_file_in, samples_targets, pos_drop_limi
 
     }
 
-    new_file_in$control_pos_drop_soft <- NA_real_
+    new_file_in$control_pos_drop_soft5 <- NA_real_
 
-    POS_well <- POS_wells %>% mutate(control_pos_drop_soft = case_when(Positives >= pos_drop_limit ~ 1,
+    POS_well <- POS_wells %>% mutate(control_pos_drop_soft5 = case_when(Positives >= pos_drop_limit ~ 1,
                                                                        T ~ 0))
 
     new_file_in <- rbind(new_file_in, POS_well)

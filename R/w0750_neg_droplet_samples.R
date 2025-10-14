@@ -41,7 +41,7 @@
 #' droplets check, the code will STOP RUNNING.
 #'
 #' If "no" is entered instead, the output of this function will be a dataframe
-#' with a new column added, called 'sample_wells_negatives'. This column set to 0
+#' with a new column added, called 'sample_wells_negatives75'. This column set to 0
 #' if the sum of 'Negatives' is greater than or equal to the set limit, set to 1
 #' if the sum of 'Negatives' is less than the set limit, and 'NA' if the row was
 #' excluded from consideration.
@@ -50,7 +50,7 @@
 #' @param sum_neg_drop a numeric indicator for the sum of negative droplets check
 #' @param controls_to_drop a dataframe of Sample-Target pairs to EXCLUDE from this check
 #' @param stop_choice a character string, either 'yes' or 'no' to indicate whether you'd like to treat this as a STOP check. Default value is 'yes'.
-#' @return A dataframe just like the input data frame, with one new column (sample_wells_negatives) added
+#' @return A dataframe just like the input data frame, with one new column (sample_wells_negatives75) added
 #' @export
 
 w0750_neg_droplet_samples <- function(new_file_in, sum_neg_drop = 4, controls_to_drop, stop_choice = "yes"){
@@ -113,10 +113,10 @@ w0750_neg_droplet_samples <- function(new_file_in, sum_neg_drop = 4, controls_to
 
 
     # need to edit new_file_in to have a new marker column
-    new_file_in$sample_wells_negatives <- NA_real_
+    new_file_in$sample_wells_negatives75 <- NA_real_
 
     SAM_wells2 <- SAM_wells2 %>% group_by(Sample, Target) %>%
-      mutate(sample_wells_negatives = case_when(sum(Negatives, na.rm = TRUE) >= sum_neg_drop ~ 0,
+      mutate(sample_wells_negatives75 = case_when(sum(Negatives, na.rm = TRUE) >= sum_neg_drop ~ 0,
                                                 T ~ 1))
 
     new_file_in <- rbind(new_file_in, SAM_wells2)
