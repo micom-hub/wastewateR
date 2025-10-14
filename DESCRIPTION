@@ -2,7 +2,7 @@ Package: wastewateR
 Title: Package for Processing and Analyzing Wastewater-based Epidemiological Data
 Version: 0.0.0.9000
 Authors@R: 
-    person("jules", "", , "juliegil@umich.edu", role = c("aut", "cre"),
+    person("jules", "", , "wastewateR-help@umich.edu", role = c("aut", "cre"),
            comment = c())
 Description: This package contains a mixture of functions for use in processing and analyzing wastewater-based epidemiological data. Both main/wrapper functions and minor functions have been included, in order to optimize the flexibility of this package and accommodate multiple laboratory methods. This package is growing and evolving consistently, so please reach out if there are more features you'd like to see.
 Encoding: UTF-8
