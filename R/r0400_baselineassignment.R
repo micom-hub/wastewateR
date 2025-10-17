@@ -1,26 +1,65 @@
-
+#' Determining Baseline Values
+#'
+#' This function takes in a dataframe of wastewater sample data by site and a character
+#' string of either "cdc_v1" or "all_data" to determine the method of determining
+#' the "baseline" values for every site over time for the dataframe.
+#'
+#' If `method_choice` is set as "cdc_v1" then the baseline is set according to the original CDC baseline
+#' rules for SARS-CoV-2:
+#'
+#' * For each combination of site, data submitter, PCR target, lab methods, and
+#' normalization method, a baseline is established. The “baseline” is the 10th percentile
+#' of the log-transformed and normalized concentration data within a specific time frame.
+#'
+#' * SARS-CoV-2: For site and method combinations (as listed above) with over six
+#' months of data, baselines are re-calculated every six calendar months (January 1st and July 1st)
+#' using the past 12 months of data. For sites and method combinations with less than six months of data, baselines
+#' are computed weekly until reaching six months, after which they remain unchanged
+#' until the next January 1st or July 1st, at which time baselines are re-calculated.
+#'
+#' If `method_choice` is set as "all_data" then the baseline is set as the 10th
+#' percentile of all `log_values` for each site. The standard deviation of all `log_values` is calculated,
+#' and the baseline minimum date and maximum date are set as the min and max available date
+#' for all data per site. Any rorws where the baseline is `NA` are removed, and any
+#' rows where the standard deviation is zero are removed. The final dataframe is returned.
+#'
+#'
+#' @param wastewater_data_in A dataframe of wastewater site, metadata, and measurement values
+#' @param method_choice A character string of either "cdc_v1" or "all_data" to determine method of baseline assignment
+#' @return A data frame
+#' @export
 
 r0400_baselineassignment <- function(wastewater_data_in, method_choice){
 
-  #wastewater_data_in <- out_put_2
-  #method_choice <- "cdc"
 
-  if (method_choice == "cdc"){
+  if (method_choice == "cdc_v1"){
 
-    wastewater_data_in2 <- wastewater_data_in %>% group_by(id) %>% mutate(oldest_date = min(date))
-    wastewater_data_in2 <- wastewater_data_in2 %>% mutate(days_since_first = as.numeric(difftime(date, oldest_date, units = "days")))
+    wastewater_data_in2 <- wastewater_data_in %>%
+      group_by(id) %>%
+      mutate(oldest_date = min(date))
 
-    wastewater_data_in2 <- wastewater_data_in2 %>% group_by(id) %>% mutate(six_months_data_yn = case_when(days_since_first/365.25 > 0.5 ~ "yes",
+    wastewater_data_in2 <- wastewater_data_in2 %>%
+      mutate(days_since_first = as.numeric(difftime(date, oldest_date, units = "days")))
+
+    wastewater_data_in2 <- wastewater_data_in2 %>%
+      group_by(id) %>%
+      mutate(six_months_data_yn = case_when(days_since_first/365.25 > 0.5 ~ "yes",
                                                                                                           T ~ "no"))
 
     # account for situation where dates have length between them, but there aren't enough samples in that range to justify moving to
     # the six months methodology
-    wastewater_data_in2 <- wastewater_data_in2 %>% group_by(id) %>% arrange(date) %>% mutate(sample_counter = seq_along(n1gcper100ml))
+    wastewater_data_in2 <- wastewater_data_in2 %>%
+      group_by(id) %>%
+      arrange(date) %>%
+      mutate(sample_counter = seq_along(gcper100ml))
 
-    wastewater_data_in2 <- wastewater_data_in2 %>% mutate(six_months_data_yn = case_when(sample_counter < 24 ~ "no",
+    wastewater_data_in2 <- wastewater_data_in2 %>%
+      mutate(six_months_data_yn = case_when(sample_counter < 24 ~ "no",
                                                                                          T ~ six_months_data_yn))
 
-    wastewater_data_in2 <- wastewater_data_in2 %>% group_by(id) %>% mutate(multiple_durations = length(unique(six_months_data_yn)))
+    wastewater_data_in2 <- wastewater_data_in2 %>%
+      group_by(id) %>%
+      mutate(multiple_durations = length(unique(six_months_data_yn)))
 
     if (any(wastewater_data_in2$six_months_data_yn == "yes")){
 
