@@ -26,8 +26,7 @@ qaqc_processing_sc2_n1 <- function(file_in,
   file_in <- w0110_sample_name_edits(file_in)
 
   file_in <- w0125_expected_controls_present(file_in,
-                                            control_strings,
-                                            c(12, 6, 12, 6, 12))
+                                            control_strings)
 
   file_in <- w0150_sample_naming_structure(file_in,
                                          lab_id,
