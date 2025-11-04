@@ -47,8 +47,8 @@ The dataframe of laboratory data is assumed to have at least one column called S
 containing the Sample name for each row.
 
 Default settings:
-volume_used_for_extraction_mL = 0.2,
-final_extraction_volume_uL = 80,
+volume_used_for_extraction_mL = 0.8,
+final_extraction_volume_uL = 50,
 positives_limit = 3,
 adjust_frevu = 0.6,
 div_frevu = 1,
@@ -56,6 +56,8 @@ further_adjust = 1
 
 Default settings for adjust frevu, div_frevu, and further adjust are for RNA kits currently used
 for c.auris pilot project kits, would be:
+volume_used_for_extraction_mL = 0.2,
+final_extraction_volume_uL = 80,
 adjust_frevu = 3,
 div_frevu = 5,
 further_adjust = 10.32
