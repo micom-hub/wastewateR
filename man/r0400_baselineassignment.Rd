@@ -4,19 +4,21 @@
 \alias{r0400_baselineassignment}
 \title{Determining Baseline Values}
 \usage{
-r0400_baselineassignment(wastewater_data_in, method_choice)
+r0400_baselineassignment(wastewater_data_in, method_choice, week_required = 6)
 }
 \arguments{
 \item{wastewater_data_in}{A dataframe of wastewater site, metadata, and measurement values}
 
-\item{method_choice}{A character string of either "cdc_v1" or "all_data" to determine method of baseline assignment}
+\item{method_choice}{A character string of "cdc_v1", "cdc_v2", or "all_data" to determine method of baseline assignment}
+
+\item{week_required}{A numeric value required if using "cdc_v1" or "cdc_v2" that sets the minimum number of weeks of data a site must have in order to calculate baselines. If a site has fewer weeks of data than this number, they are removed from consideration.}
 }
 \value{
 A data frame
 }
 \description{
 This function takes in a dataframe of wastewater sample data by site and a character
-string of either "cdc_v1" or "all_data" to determine the method of determining
+string of "cdc_v1", "cdc_v2", or "all_data" to determine the method of determining
 the "baseline" values for every site over time for the dataframe.
 }
 \details{
@@ -33,7 +35,16 @@ are computed weekly until reaching six months, after which they remain unchanged
 until the next January 1st or July 1st, at which time baselines are re-calculated.
 }
 
-If \code{method_choice} is set as "cdc_v2" then
+If \code{method_choice} is set as "cdc_v2" then the baseline is set according to the original
+baseline rules, using the 18 month look-back period originally used for Influenza A and RSV.
+\itemize{
+\item For sites and method combinations with less than twelve months of data, baselines
+\item For site and method combinations (as listed above) with over twelve months of data, baselines are re-
+}
+
+For "cdc_v1" and "cdc_v2", \code{week_required} must be considered. In the original
+CDC wval calculations, this value was set to 6 for COVID data, and 10 for influenza A
+and RSV.
 
 If \code{method_choice} is set as "all_data" then the baseline is set as the 10th
 percentile of all \code{log_values} for each site. The standard deviation of all \code{log_values} is calculated,

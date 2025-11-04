@@ -1,7 +1,7 @@
 #' Determining Baseline Values
 #'
 #' This function takes in a dataframe of wastewater sample data by site and a character
-#' string of either "cdc_v1" or "all_data" to determine the method of determining
+#' string of "cdc_v1", "cdc_v2", or "all_data" to determine the method of determining
 #' the "baseline" values for every site over time for the dataframe.
 #'
 #' If `method_choice` is set as "cdc_v1" then the baseline is set according to the original CDC baseline
@@ -17,8 +17,19 @@
 #' are computed weekly until reaching six months, after which they remain unchanged
 #' until the next January 1st or July 1st, at which time baselines are re-calculated.
 #'
-#' If `method_choice` is set as "cdc_v2" then
+#' If `method_choice` is set as "cdc_v2" then the baseline is set according to the original
+#' baseline rules, using the 18 month look-back period originally used for Influenza A and RSV.
 #'
+#' * For sites and method combinations with less than twelve months of data, baselines
+# are computed weekly until reaching twelve months, after which they remain unchanged
+# until the next August 1st, at which time baselines are re-calculated.
+#'
+#' * For site and method combinations (as listed above) with over twelve months of data, baselines are re-
+#  calculated every August 1st using all available data in the previous 18 months.
+#'
+#' For "cdc_v1" and "cdc_v2", `week_required` must be considered. In the original
+#' CDC wval calculations, this value was set to 6 for COVID data, and 10 for influenza A
+#' and RSV.
 #'
 #' If `method_choice` is set as "all_data" then the baseline is set as the 10th
 #' percentile of all `log_values` for each site. The standard deviation of all `log_values` is calculated,
@@ -28,11 +39,12 @@
 #'
 #'
 #' @param wastewater_data_in A dataframe of wastewater site, metadata, and measurement values
-#' @param method_choice A character string of either "cdc_v1" or "all_data" to determine method of baseline assignment
+#' @param method_choice A character string of "cdc_v1", "cdc_v2", or "all_data" to determine method of baseline assignment
+#' @param week_required A numeric value required if using "cdc_v1" or "cdc_v2" that sets the minimum number of weeks of data a site must have in order to calculate baselines. If a site has fewer weeks of data than this number, they are removed from consideration.
 #' @return A data frame
 #' @export
 
-r0400_baselineassignment <- function(wastewater_data_in, method_choice){
+r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_required = 6){
 
 
   if (method_choice == "cdc_v1"){
@@ -159,14 +171,14 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice){
       # small set site names
       start_site_names <- unique(baseline_few$sitename)
 
-      baseline_few <- filter(baseline_few, total_weeks > 6)
+      baseline_few <- filter(baseline_few, total_weeks > week_required)
 
       # site names after we remove everything with 6 or fewer weeks of data
       end_site_names <- unique(baseline_few$sitename)
 
       # messaging
       lost_sites <- setdiff(start_site_names, end_site_names)
-      message("These sites were removed as they have six or fewer weeks of data:")
+      message(paste0("These sites were removed as they have ", week_required, " or fewer weeks of data:"))
       if (length(lost_sites) > 0){
         message(lost_sites)
       } else {
@@ -185,7 +197,7 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice){
 
           combinations <- combinations %>% mutate(week_number = row_number())
 
-          combinations <- filter(combinations, week_number >= 6)
+          combinations <- filter(combinations, week_number >= week_required)
 
           saved_baselines <- data.frame()
 
@@ -321,14 +333,14 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice){
       # small set site names
       start_site_names <- unique(baseline_few$id)
 
-      baseline_few <- filter(baseline_few, total_weeks > 6)
+      baseline_few <- filter(baseline_few, total_weeks > week_required)
 
-      # site names after we remove everything with 6 or fewer weeks of data
+      # site names after we remove everything with x or fewer weeks of data
       end_site_names <- unique(baseline_few$id)
 
       # messaging
       lost_sites <- setdiff(start_site_names, end_site_names)
-      message("These sites were removed as they have six or fewer weeks of data:")
+      message(paste0("These sites were removed as they have ", week_required, " or fewer weeks of data:"))
       if (length(lost_sites) > 0){
         message(lost_sites)
       } else {
@@ -348,7 +360,7 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice){
 
           combinations <- combinations %>% mutate(week_number = row_number())
 
-          combinations <- filter(combinations, week_number >= 6)
+          combinations <- filter(combinations, week_number >= week_required)
 
           saved_baselines <- data.frame()
 

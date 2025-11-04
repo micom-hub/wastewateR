@@ -1,13 +1,10 @@
 #' Calculation of gene copies per 100mL
 #'
-#' This function takes in a dataframe of laboratory data, either merged or unmerged,
-#' as well as a dataframe of the weight/volume data taken in previous laboratory steps.
+#' This function takes in a dataframe of laboratory data, either merged or unmerged, as well as a dataframe of the weight/volume data taken in previous laboratory steps.
 #'
-#' The dataframe of the weight/volume data is assumed to consist of three columns in the following
-#' order: "Sample", "initial_volume_analyzed_mL", "final_concentrate_volume_mL"
+#' The dataframe of laboratory data is assumed to have columns of 'Sample', 'Positives', 'CP_uL'
 #'
-#' The dataframe of laboratory data is assumed to have at least one column called Sample,
-#' containing the Sample name for each row.
+#' The dataframe of the weight/volume data is assumed to consist of three columns in the following order: "Sample", "initial_volume_analyzed_mL", "final_concentrate_volume_mL"
 #'
 #' Default settings:
 #' volume_used_for_extraction_mL = 0.8,
@@ -27,7 +24,7 @@
 #'
 #' For more visual data on the mathematical calculations, please visit: https://micom-hub.org/wastewateR_documentation/
 #'
-#' @param lab_df_in Dataframe of laboratory data, must contain a columns: 'Sample', 'Positives', 'CP_uL'
+#' @param lab_df_in Dataframe of laboratory data, must contain columns: 'Sample', 'Positives', 'CP_uL'
 #' @param all_weigh_info Dataframe of weight/volumn data, must consist of "Sample", "initial_volume_analyzed_mL", "final_concentrate_volume_mL" columns
 #' @param volume_used_for_extraction_mL Numeric value of the volume used for extraction in mL
 #' @param final_extraction_volume_uL Numeric value of the final extraction volume in uL
