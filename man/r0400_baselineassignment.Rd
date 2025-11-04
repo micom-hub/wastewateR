@@ -33,6 +33,8 @@ are computed weekly until reaching six months, after which they remain unchanged
 until the next January 1st or July 1st, at which time baselines are re-calculated.
 }
 
+If \code{method_choice} is set as "cdc_v2" then
+
 If \code{method_choice} is set as "all_data" then the baseline is set as the 10th
 percentile of all \code{log_values} for each site. The standard deviation of all \code{log_values} is calculated,
 and the baseline minimum date and maximum date are set as the min and max available date

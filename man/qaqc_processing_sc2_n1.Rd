@@ -7,6 +7,7 @@
 qaqc_processing_sc2_n1(
   file_in,
   control_strings = c("NEG", "POS", "NTC", "BCOV", "EXT"),
+  expected_count = c(9, 3, 9, 3, 9),
   pos_rows = data.frame(Samples = c("POS", "BCOV"), Targets = c("N1", "BCOV")),
   con_rows = data.frame(Samples = c("BCOV"), Targets = c("PMMOV")),
   lab_id,
@@ -15,6 +16,8 @@ qaqc_processing_sc2_n1(
 }
 \arguments{
 \item{control_strings}{A vector of character strings for w0125_expected_controls_present (A vector of character strings that indicate control wells) and w0150_sample_naming_structure (A vector of character strings contained in control sample names)}
+
+\item{expected_count}{A numeric vector of the expected number of wells for each control type. Default vector is 12, 6, 12, 6, 12.}
 
 \item{pos_rows}{A Sample-Target dataframe of character strings for w0450_pos_control_breakdown_check}
 
@@ -33,4 +36,22 @@ A dataframe containing unmerged Sample-Target data points
 This function is meant to run a standard QAQC set-up using the functions available
 in this package. For increased flexibility, manual construction of the functions
 would be necessary
+}
+\details{
+The default settings of expected count are for the assumption of pmmov & bcov testing
+within the sars-cov-2 n1 testing (so, two plates) with expected controls of:\tabular{lll}{
+   Sample \tab Target \tab Count Wells \cr
+   BCOV \tab PMMOV \tab 3 \cr
+   BCOV \tab BCOV \tab 3 \cr
+   EXT \tab PMMOV \tab 3 \cr
+   EXT \tab BCOV \tab 3 \cr
+   NEG \tab PMMOV \tab 3 \cr
+   NEG \tab BCOV \tab 3 \cr
+   NTC \tab BCOV \tab 3 \cr
+   NTC \tab BCOV \tab 3 \cr
+   NEG \tab N1 \tab 3 \cr
+   EXT \tab N1 \tab 3 \cr
+   NTC \tab N1 \tab 3 \cr
+   POS \tab N1 \tab 3 \cr
+}
 }
