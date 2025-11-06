@@ -8,9 +8,33 @@
 #' - id
 #' (generated as output from r0100 to r0400)
 #'
+#' Calculates the individaul wVal level for all sites included in the input dataframe, using the
+#' formula exp((log_value - baseline)/stdev)
+#'
+#' A dataframe is created:
+#' - id: Site identifier or name
+#' - year: year of the sample period
+#' - week: week of the sample period
+#' - avg_min: minimum sample date within the week sample period
+#' - avg_max: maximum sample date within the week sample period
+#' - average_wval_calc: average wval of all samples in the sample period week for the given id
+#' - count_samples: number of samples included in the calculation for the sample period week
+#'
+#' Using the average_wval_calc, a "level" is assigned to each site's week of data
+#'
+#' | Function Input | Minimal | Low | Moderate | High | Very High |
+#' | --- | --- | --- | --- | --- | --- |
+#' | SC2_v1 | Up to 1.5 | > 1.5 and <= 3 | > 3 and <= 4.5 | > 4.5 and <= 8 | > 8 |
+#' | FLU_v1 | Up to 1.6 | > 1.6 and <= 4.5 | > 4.5 and <= 12.2 | > 12.2 and <= 20.1 | > 20.1 |
+#' | RSV_v1 | Up to 4 | > 4 and <= 8 | > 8 and <= 12 | > 12 and <= 20 | > 20 |
+#'
+#' Finally, any instances where the average_wval_calc is not a finite value are replaced
+#' with `NA`.
+#'
+#'
 #' @param wastewater_data_in A dataframe of wastewater data; must at least have columns of "log_value", "baseline", "stdev", "date", "id"; most likely is output of r0100 to r0400
 #' @param org A character string, either "SC2_v1", "FLU_v1", "RSV_v1" indicating what pathogen the wastewater data represents, and the CDC methodology version of level determination the user would like to use
-#' @return A data frame
+#' @return A data frame of weekly wval levels per site
 #' @export
 
 r0500_wval_sitecalc <- function(wastewater_data_in, org){
