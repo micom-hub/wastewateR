@@ -39,7 +39,10 @@ If \code{method_choice} is set as "cdc_v2" then the baseline is set according to
 baseline rules, using the 18 month look-back period originally used for Influenza A and RSV.
 \itemize{
 \item For sites and method combinations with less than twelve months of data, baselines
+are computed weekly until reaching twelve months, after which they remain unchanged
+until the next August 1st, at which time baselines are re-calculated.
 \item For site and method combinations (as listed above) with over twelve months of data, baselines are re-
+calculated every August 1st using all available data in the previous 18 months.
 }
 
 For "cdc_v1" and "cdc_v2", \code{week_required} must be considered. In the original
