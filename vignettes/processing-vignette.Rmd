@@ -1,0 +1,103 @@
+---
+title: "processing-vignette"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{processing-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(tidyverse)
+library(wastewateR)
+```
+
+
+This vignette shows an example of how to string together the processing stand-alone and wrapper functions to process a single output file from a wastewater laboratory run. In instances where it makes sense to dive deeper into how the functions work, that detail will be included. However, other vignettes may cover specific scenarios in more detail. 
+
+## First - Know Your Data
+
+This processing system assumes that the raw wastewater data pulled off the laboratory machines is un-merged, as in, the values for all replicates for each sample is included in the output.
+
+Depending on the output format from the machine and software in a particular lab, the output columns may not align with the expectations of the functions included here. There is one function `software_renaming()` that can assist with this. Regardless, the wrapper processing functions expect an input with the following columns: 
+
+- “Well”, “Sample”, “Target”, “Concentration”, “CopiesPer20uLWell”, “AcceptedDroplets”, “Positives”, and “Negatives”
+
+The data file off the machine in the lab may have columns including: 
+
+- "Well", "Sample.description.1", "Target", "Conc.copies.µL.", "Copies.20µLWell", "Accepted.Droplets", "Positives", and "Negatives"
+
+
+```{r}
+#| eval: false
+#| echo: true
+
+
+# read in raw data file off the machine
+raw_data_file <- read.csv("{data_file_name.csv}")
+# it is recommended to store the raw data file for record keeping
+
+# take a quick look at the file
+head(raw_data_file)
+
+# if there is a column called "Sample.description.1" in the raw data file
+# want to use the software_renaming() function
+if (any("Sample.description.1" %in% colnames(raw_data_file))){
+  
+  # this new dataframe, format for use, will have only the 8 columns the 
+  # processing functions are expecting
+  format_for_use <- software_renaming(raw_data_file, style = "qx_manager")
+  
+}
+
+```
+
+
+| Raw Data File | Transformed To | Definition | 
+| --- | --- | --- | 
+| Well | Well | The well the sample was in, such as A01 | 
+| Sample.description.1 | Sample | Identifying sample name, all replicates should have the same sample name | 
+| Target | Target | The target the well is being tested for | 
+| Conc.copies.µL. | Concentration | Concentration value in copies per uL | 
+| Copies.20µLWell | CopiesPer20uLWell | Copies per 20uL value in well | 
+| Accepted.Droplets | AcceptedDroplets | Count of accepted droplets, sum of Positives and Negatives | 
+| Positives | Positives | Count of positive droplets detected | 
+| Negatives | Negatives | Count of negative droplets detected | 
+
+
+```{r}
+#| eval: false
+#| echo: true
+
+post_processing <- qaqc_processing_sc2_n1(file_in = format_for_use, 
+                                          lab_id = "{id}", 
+                                          site_id_set = c("{id}", "{id}"))
+
+```
+
+
+
+
+```{r}
+#| eval: false
+#| echo: true
+
+concentration_data <- read.csv("{data_file_name.csv}")
+
+measurement_values <- calculate_gc_per_100ml(lab_df_in = post_processing, 
+                                             all_weigh_info = concentration_data)
+
+
+
+```
+
+
+
+

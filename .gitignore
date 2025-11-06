@@ -1,3 +1,6 @@
 .Rproj.user
 .Rbuildignore
 *.Rproj
+inst/doc
+/doc/
+/Meta/
