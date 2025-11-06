@@ -27,6 +27,9 @@
 #' | SC2_v1 | Up to 1.5 | > 1.5 and <= 3 | > 3 and <= 4.5 | > 4.5 and <= 8 | > 8 |
 #' | FLU_v1 | Up to 1.6 | > 1.6 and <= 4.5 | > 4.5 and <= 12.2 | > 12.2 and <= 20.1 | > 20.1 |
 #' | RSV_v1 | Up to 4 | > 4 and <= 8 | > 8 and <= 12 | > 12 and <= 20 | > 20 |
+#' | SC2_v2 | Up to 2 | > 2 and <= 3.4 | > 3.4 and <= 5.3 | > 5.3 and <= 7.8 | > 7.8 |
+#' | FLU_v2 | Up to 2.7 | > 2.7 and <= 6.2 | > 6.2 and <= 11.2 | > 11.2 and <= 17.6 | > 17.6 |
+#' | RSV_v2 | Up to 2.5 | > 2.5 and <= 5.2 | > 5.2 and <= 8 | > 8 and <= 11 | > 11 |
 #'
 #' Finally, any instances where the average_wval_calc is not a finite value are replaced
 #' with `NA`.
@@ -99,6 +102,29 @@ r0500_wval_sitecalc <- function(wastewater_data_in, org){
                                                                                  average_wval_calc <= 12 ~ "3 - Moderate",
                                                                                  average_wval_calc <= 20 ~ "4 - High",
                                                                                  average_wval_calc > 20 ~ "5 - Very High"))
+
+  } else if (org == "SC2_v2"){
+
+    wastewater_data_in2 <- wastewater_data_in2 %>% mutate(wval_level = case_when(average_wval_calc <= 2 ~ "1 - Minimal",
+                                                                                 average_wval_calc <= 3.4 ~ "2 - Low",
+                                                                                 average_wval_calc <= 5.3 ~ "3 - Moderate",
+                                                                                 average_wval_calc <= 7.8 ~ "4 - High",
+                                                                                 average_wval_calc > 7.8 ~ "5 - Very High"))
+  } else if (org == "FLU_v2"){
+
+    wastewater_data_in2 <- wastewater_data_in2 %>% mutate(wval_level = case_when(average_wval_calc <= 2.7 ~ "1 - Minimal",
+                                                                                 average_wval_calc <= 6.2 ~ "2 - Low",
+                                                                                 average_wval_calc <= 11.2 ~ "3 - Moderate",
+                                                                                 average_wval_calc <= 17.6 ~ "4 - High",
+                                                                                 average_wval_calc > 17.6 ~ "5 - Very High"))
+
+  } else if (org == "RSV_v2"){
+
+    wastewater_data_in2 <- wastewater_data_in2 %>% mutate(wval_level = case_when(average_wval_calc <= 2.5 ~ "1 - Minimal",
+                                                                                 average_wval_calc <= 5.2 ~ "2 - Low",
+                                                                                 average_wval_calc <= 8 ~ "3 - Moderate",
+                                                                                 average_wval_calc <= 11 ~ "4 - High",
+                                                                                 average_wval_calc > 11 ~ "5 - Very High"))
 
   }
 

@@ -45,6 +45,9 @@ Using the average_wval_calc, a "level" is assigned to each site's week of data\t
    SC2_v1 \tab Up to 1.5 \tab > 1.5 and <= 3 \tab > 3 and <= 4.5 \tab > 4.5 and <= 8 \tab > 8 \cr
    FLU_v1 \tab Up to 1.6 \tab > 1.6 and <= 4.5 \tab > 4.5 and <= 12.2 \tab > 12.2 and <= 20.1 \tab > 20.1 \cr
    RSV_v1 \tab Up to 4 \tab > 4 and <= 8 \tab > 8 and <= 12 \tab > 12 and <= 20 \tab > 20 \cr
+   SC2_v2 \tab Up to 2 \tab > 2 and <= 3.4 \tab > 3.4 and <= 5.3 \tab > 5.3 and <= 7.8 \tab > 7.8 \cr
+   FLU_v2 \tab Up to 2.7 \tab > 2.7 and <= 6.2 \tab > 6.2 and <= 11.2 \tab > 11.2 and <= 17.6 \tab > 17.6 \cr
+   RSV_v2 \tab Up to 2.5 \tab > 2.5 and <= 5.2 \tab > 5.2 and <= 8 \tab > 8 and <= 11 \tab > 11 \cr
 }
 
 
