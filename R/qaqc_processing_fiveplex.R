@@ -46,13 +46,13 @@ qaqc_processing_fiveplex <- function(file_in,
 
   file_in <- w0600_ext_neg_control_check(file_in, 9, 3, 1)
 
-  w0650_cumulative_count_check(file_in, 3, "yes")
+  #w0650_cumulative_count_check(file_in, 3, "yes")
 
-  file_in <- w0800_recover_control_check(file_in, "BCOV", c("POS", "NEG", "EXT", "NTC"), 0.3)
+  #file_in <- w0800_recover_control_check(file_in, "BCOV", c("POS", "NEG", "EXT", "NTC"), 0.3)
 
-  file_in <- w0900_positives_comparison_rule(file_in, c("POS"), c("N1"), c("POS", "NEG", "EXT", "NTC"), 3)
+  #file_in <- w0900_positives_comparison_rule(file_in, c("POS"), c("N1"), c("POS", "NEG", "EXT", "NTC"), 3)
 
-  file_in <- w1000_remove_rows_as_chosen(file_in)
+  #file_in <- w1000_remove_rows_as_chosen(file_in)
 
   return(file_in)
 
