@@ -65,7 +65,7 @@ qaqc_processing_sc2_n1 <- function(file_in,
 
   file_in <- w0500_control_soft_check(file_in, con_rows)
 
-  file_in <- w0600_ext_neg_control_check(file_in, 9, 3, 1)
+  file_in <- w0600_ext_neg_control_check(file_in, 9, 3, 3, 1)
 
   w0650_cumulative_count_check(file_in, 3, "yes")
 

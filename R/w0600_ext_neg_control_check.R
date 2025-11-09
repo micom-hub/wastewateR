@@ -50,6 +50,7 @@ w0600_ext_neg_control_check <- function(new_file_in, ext_well_count = 3, neg_wel
 
   message("CHECK #6: Extraction Control & Negative Control Well Check")
 
+
   x <- 0
 
   for (each_control_type in c("EXT", "NEG")){
@@ -67,6 +68,7 @@ w0600_ext_neg_control_check <- function(new_file_in, ext_well_count = 3, neg_wel
 
     if (any(controls_g$count != control_well_count)){
       controls2 <- controls %>% select(Well, Sample, Target)
+      message("") #aesthetics
       message("Well | Sample | Target")
       for (i in seq(1, nrow(controls2))){
 
@@ -108,6 +110,7 @@ w0600_ext_neg_control_check <- function(new_file_in, ext_well_count = 3, neg_wel
         example_set <- filter(controls, Sample %in% bad_ones$Sample) %>% select(Sample, Target, Positives)
         example_set <- filter(example_set, Target %in% bad_ones$Target)
 
+        message("") #aesthetics
         message("Sample | Target | Positives")
 
         for (i in seq(1, nrow(example_set))){
@@ -131,6 +134,7 @@ w0600_ext_neg_control_check <- function(new_file_in, ext_well_count = 3, neg_wel
         example_set <- filter(controls, Sample %in% bad_ones$Sample) %>% select(Sample, Target, Positives)
         example_set <- filter(example_set, Target %in% bad_ones$Target)
 
+        message("") #aesthetics
         message("Sample | Target | Positives")
 
         for (i in seq(1, nrow(example_set))){
