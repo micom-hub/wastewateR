@@ -8,7 +8,7 @@
 #' droplet limit. The default positives droplet limit is 3.
 #'
 #' Sample-Target pairs example:
-#'f
+#'
 #' If the dataframe looks like:
 #'
 #' | Sample | Target |
@@ -45,7 +45,7 @@ w0500_control_soft_check <- function(new_file_in, samples_targets, pos_drop_limi
     pos_rows <- filter(new_file_in, grepl(sample1, Sample) & grepl(target1, Target))
 
     # take those rows out of our main file
-    new_file_in <- anti_join(new_file_in, pos_rows)
+    new_file_in <- suppressMessages(anti_join(new_file_in, pos_rows))
 
     POS_wells <- rbind(POS_wells, pos_rows)
 

@@ -59,7 +59,7 @@ w0800_recover_control_check <- function(new_file_in, recovery_control, control_i
 
   }
 
-  bcov_targets <- anti_join(bcov_targets, bcov_targets2)
+  bcov_targets <- suppressMessages(anti_join(bcov_targets, bcov_targets2))
 
 
   if (nrow(bcov_targets) > 0){

@@ -25,7 +25,7 @@ Sample-Target pairs to apply this check to. It also takes in a numeric positives
 droplet limit. The default positives droplet limit is 3.
 
 Sample-Target pairs example:
-f
+
 If the dataframe looks like:\tabular{ll}{
    Sample \tab Target \cr
    BCOV \tab PMMOV \cr

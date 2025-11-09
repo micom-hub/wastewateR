@@ -68,7 +68,7 @@ w0900_positives_comparison_rule <- function(new_file_in, pos_samp_str, target_st
 
     }
 
-    n1_samples <- anti_join(n1_samples, n1_samples2)
+    n1_samples <- suppressMessages(anti_join(n1_samples, n1_samples2))
 
     n1_samples <- n1_samples %>% mutate(positives_more_than_limit = case_when(Positives > (thresh_size * POS_limit) ~ 1,
                                                                               T ~ 0))

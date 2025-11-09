@@ -96,7 +96,9 @@ w0700_pos_droplet_sum <- function(new_file_in, sum_pos_drop = 4, controls_to_dro
 
   new_file_in <- rbind(new_file_in, SAM_wells2)
 
+  message("") # for aesthetics
   message("Through CHECK #7.")
+  message("") # for aesthetics
 
   return(new_file_in)
 
