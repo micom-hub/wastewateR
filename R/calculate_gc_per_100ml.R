@@ -60,7 +60,13 @@ calculate_gc_per_100ml <- function(lab_df_in, all_weigh_info,
   count_diff <- length(original_samples) - length(after_samples)
   message(paste0("There are ", count_diff, " sample names that were in the laboratory data set that were not in the weight info dataset."))
   message("The samples that have been lost due to merging inconsistencies are: ")
-  message(setdiff(original_samples, after_samples))
+
+  # for every sample that is in original samples but is NOT in the sample list
+  # after merging
+  for (each_sample in setdiff(original_samples, after_samples)){
+    message(each_sample)
+  }
+
 
   # confirm numeric
   working_calc_set <- working_calc_set %>% mutate(initial_volume_analyzed_mL = as.numeric(initial_volume_analyzed_mL),
