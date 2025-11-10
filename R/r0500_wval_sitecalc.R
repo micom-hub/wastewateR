@@ -79,7 +79,7 @@ r0500_wval_sitecalc <- function(wastewater_data_in, org){
 
 
   # these values are assigning wval "level" based on the average_wval_calc value
-  # these are the original cdc v1 methodology cutoffs
+  # these are the cdc methodology cutoffs
   if (org == "SC2_v1"){
 
     wastewater_data_in2 <- wastewater_data_in2 %>% mutate(wval_level = case_when(average_wval_calc <= 1.5 ~ "1 - Minimal",
