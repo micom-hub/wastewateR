@@ -8,7 +8,7 @@
 #' - id
 #' (generated as output from r0100 to r0400)
 #'
-#' Calculates the individaul wVal level for all sites included in the input dataframe, using the
+#' Calculates the individual wVal level for all sites included in the input dataframe, using the
 #' formula exp((log_value - baseline)/stdev)
 #'
 #' A dataframe is created:

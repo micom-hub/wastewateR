@@ -1,26 +1,42 @@
-#' Calculating wVal for individual site(s)
+#' Calculating wVal for a User Defined Region
 #'
-#' Function that takes in wastewater dataframe with columns of:
-#' - log_value
-#' - baseline
-#' - stdev
-#' - date
-#' - id
-#' (generated as output from r0100 to r0400)
+#' Function that takes in wastewater dataframe with columns of: "id", "year",
+#' "week", "average_wval_calc", also must have "Geography" if site_to_regional_crosswalk
+#' is not used. (generated as output from r0100 to r0500)
 #'
-#' Calculates the individaul wVal level for all sites included in the input dataframe, using the
-#' formula exp((log_value - baseline)/stdev)
+#' Function also takes in site_to_region_crosswalk, method, and org.
 #'
-#' A dataframe is created:
+#' If site_to_regional_crosswalk is provided, it must be a dataframe with columns of:
+#'
 #' - id: Site identifier or name
-#' - year: year of the sample period
-#' - week: week of the sample period
-#' - avg_min: minimum sample date within the week sample period
-#' - avg_max: maximum sample date within the week sample period
-#' - average_wval_calc: average wval of all samples in the sample period week for the given id
-#' - count_samples: number of samples included in the calculation for the sample period week
 #'
-#' Using the average_wval_calc, a "level" is assigned to each site's week of data
+#' - Geography: Region(s) the user is attempting to roll-up multiple sites to.
+#'
+#' - weight: Weight to apply to the `id` within the region wval calculation. Only relevant if using "mean" as `method`. If the user wants standard mean calculation applied, all `weight` should be 1.
+#'
+#' If site_to_regional_crosswalk is provided, it is merged onto the wastewater dataframe
+#' by the `id` variable. Only instances where the `id` is in both dataframes will continue
+#' through the remainder of the calculations.
+#'
+#' The resulting dataframe is grouped by `Geography`, `week`, and `year` into:
+#'
+#' - Geography: Region identifier or name
+#'
+#' - year: year of the sample period
+#'
+#' - week: week of the sample period
+#'
+#' - avg_min: minimum sample date within the week sample period
+#'
+#' - avg_max: maximum sample date within the week sample period
+#'
+#' - region_wval_calc: if `method` is 'median', then it's the median value of `average_wval_calc` with any `NA`s left out of consideration. if `method` is 'mean' then it's the weighted average value of `average_wval_calc` with any `NA`s left out of consideration
+#'
+#' - contributing_site_count: number of sites (`id`s) included in the calculation for the sample period week
+#'
+#'
+#'
+#' Using the region_wval_calc, a `wval_level` is assigned to each `Geography`'s week of data
 #'
 #' | Function Input | Minimal | Low | Moderate | High | Very High |
 #' | --- | --- | --- | --- | --- | --- |
@@ -31,7 +47,7 @@
 #' | FLU_v2 | Up to 2.7 | > 2.7 and <= 6.2 | > 6.2 and <= 11.2 | > 11.2 and <= 17.6 | > 17.6 |
 #' | RSV_v2 | Up to 2.5 | > 2.5 and <= 5.2 | > 5.2 and <= 8 | > 8 and <= 11 | > 11 |
 #'
-#' Finally, any instances where the average_wval_calc is not a finite value are replaced
+#' Finally, any instances where the `region_wval_calc` is not a finite value are replaced
 #' with `NA`.
 #'
 #'
@@ -39,7 +55,7 @@
 #' @param site_to_region_crosswalk Defaults to NA. If provided, should be a dataframe of "id", "Geography", "weight"
 #' @param method Character string, either "median" or "mean", defaults to 'median'
 #' @param org A character string, either "SC2_v1", "FLU_v1", "RSV_v1", "SC2_v2", "FLU_v2", "RSV_v2" indicating what pathogen the wastewater data represents, and the CDC methodology version of level determination the user would like to use
-#' @return A data frame of weekly wval levels per site
+#' @return A data frame of weekly wval levels per geography
 #' @export
 
 r0600_wval_regioncalc <- function(wastewater_data_in, site_to_region_crosswalk = NA, method = "median", org){
@@ -54,7 +70,7 @@ r0600_wval_regioncalc <- function(wastewater_data_in, site_to_region_crosswalk =
   if (!is.na(site_to_region_crosswalk)){
 
     colnames(site_to_region_crosswalk) <- c("id", "Geography", "weight")
-    wastewater_data_in <- merge(wastewater_data_in, site_to_region_crosswalk, by = c("id"), all.x = TRUE)
+    wastewater_data_in <- merge(wastewater_data_in, site_to_region_crosswalk, by = c("id"))
 
   } else {
 

@@ -9,7 +9,7 @@ r0500_wval_sitecalc(wastewater_data_in, org)
 \arguments{
 \item{wastewater_data_in}{A dataframe of wastewater data; must at least have columns of "log_value", "baseline", "stdev", "date", "id"; most likely is output of r0100 to r0400}
 
-\item{org}{A character string, either "SC2_v1", "FLU_v1", "RSV_v1" indicating what pathogen the wastewater data represents, and the CDC methodology version of level determination the user would like to use}
+\item{org}{A character string, either "SC2_v1", "FLU_v1", "RSV_v1", "SC2_v2", "FLU_v2", "RSV_v2" indicating what pathogen the wastewater data represents, and the CDC methodology version of level determination the user would like to use}
 }
 \value{
 A data frame of weekly wval levels per site
@@ -26,7 +26,7 @@ Function that takes in wastewater dataframe with columns of:
 }
 }
 \details{
-Calculates the individaul wVal level for all sites included in the input dataframe, using the
+Calculates the individual wVal level for all sites included in the input dataframe, using the
 formula exp((log_value - baseline)/stdev)
 
 A dataframe is created:
