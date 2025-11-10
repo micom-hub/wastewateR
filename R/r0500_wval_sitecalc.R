@@ -36,7 +36,7 @@
 #'
 #'
 #' @param wastewater_data_in A dataframe of wastewater data; must at least have columns of "log_value", "baseline", "stdev", "date", "id"; most likely is output of r0100 to r0400
-#' @param org A character string, either "SC2_v1", "FLU_v1", "RSV_v1" indicating what pathogen the wastewater data represents, and the CDC methodology version of level determination the user would like to use
+#' @param org A character string, either "SC2_v1", "FLU_v1", "RSV_v1", "SC2_v2", "FLU_v2", "RSV_v2" indicating what pathogen the wastewater data represents, and the CDC methodology version of level determination the user would like to use
 #' @return A data frame of weekly wval levels per site
 #' @export
 

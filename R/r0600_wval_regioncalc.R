@@ -1,4 +1,46 @@
-
+#' Calculating wVal for individual site(s)
+#'
+#' Function that takes in wastewater dataframe with columns of:
+#' - log_value
+#' - baseline
+#' - stdev
+#' - date
+#' - id
+#' (generated as output from r0100 to r0400)
+#'
+#' Calculates the individaul wVal level for all sites included in the input dataframe, using the
+#' formula exp((log_value - baseline)/stdev)
+#'
+#' A dataframe is created:
+#' - id: Site identifier or name
+#' - year: year of the sample period
+#' - week: week of the sample period
+#' - avg_min: minimum sample date within the week sample period
+#' - avg_max: maximum sample date within the week sample period
+#' - average_wval_calc: average wval of all samples in the sample period week for the given id
+#' - count_samples: number of samples included in the calculation for the sample period week
+#'
+#' Using the average_wval_calc, a "level" is assigned to each site's week of data
+#'
+#' | Function Input | Minimal | Low | Moderate | High | Very High |
+#' | --- | --- | --- | --- | --- | --- |
+#' | SC2_v1 | Up to 1.5 | > 1.5 and <= 3 | > 3 and <= 4.5 | > 4.5 and <= 8 | > 8 |
+#' | FLU_v1 | Up to 1.6 | > 1.6 and <= 4.5 | > 4.5 and <= 12.2 | > 12.2 and <= 20.1 | > 20.1 |
+#' | RSV_v1 | Up to 4 | > 4 and <= 8 | > 8 and <= 12 | > 12 and <= 20 | > 20 |
+#' | SC2_v2 | Up to 2 | > 2 and <= 3.4 | > 3.4 and <= 5.3 | > 5.3 and <= 7.8 | > 7.8 |
+#' | FLU_v2 | Up to 2.7 | > 2.7 and <= 6.2 | > 6.2 and <= 11.2 | > 11.2 and <= 17.6 | > 17.6 |
+#' | RSV_v2 | Up to 2.5 | > 2.5 and <= 5.2 | > 5.2 and <= 8 | > 8 and <= 11 | > 11 |
+#'
+#' Finally, any instances where the average_wval_calc is not a finite value are replaced
+#' with `NA`.
+#'
+#'
+#' @param wastewater_data_in A dataframe of wastewater data; must at least have columns of "id", "year", "week", "average_wval_calc", also must have "Geography" if site_to_regional_crosswalk is not used; most likely is output of r0100 to r0500
+#' @param site_to_region_crosswalk Defaults to NA. If provided, should be a dataframe of "id", "Geography", "weight"
+#' @param method Character string, either "median" or "mean", defaults to 'median'
+#' @param org A character string, either "SC2_v1", "FLU_v1", "RSV_v1", "SC2_v2", "FLU_v2", "RSV_v2" indicating what pathogen the wastewater data represents, and the CDC methodology version of level determination the user would like to use
+#' @return A data frame of weekly wval levels per site
+#' @export
 
 r0600_wval_regioncalc <- function(wastewater_data_in, site_to_region_crosswalk = NA, method = "median", org){
 
@@ -44,6 +86,10 @@ r0600_wval_regioncalc <- function(wastewater_data_in, site_to_region_crosswalk =
 
     regional <- merge(regional_weighted1, regional_weighted2, all.y = TRUE)
 
+
+  } else {
+
+    message(paste0("'method' input not recognized. User input = ", method, ". System accepts only 'mean' or 'median'."))
 
   }
 
