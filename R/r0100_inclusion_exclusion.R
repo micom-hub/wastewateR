@@ -32,7 +32,7 @@
 #' @return A data frame with (possibly) filtered row results
 #' @export
 
-r0100_inclusion_exclusion <- function(data_file, pop_serve_num = NA, sample_type_list = "blank", testing_site_type_list = "blank"){
+r0100_inclusion_exclusion <- function(data_file, pop_serve_num = NA, sample_type_list = NA, testing_site_type_list = NA){
 
   if (!is.na(pop_serve_num)){
 
@@ -40,14 +40,22 @@ r0100_inclusion_exclusion <- function(data_file, pop_serve_num = NA, sample_type
 
   }
 
-  if (sample_type_list != "blank"){
+  if (length(sample_type_list) != 1){
+
+    data_file <- filter(data_file, sampletype %in% sample_type_list)
+
+  } else if (!is.na(sample_type_list)){
 
     data_file <- filter(data_file, sampletype %in% sample_type_list)
 
   }
 
 
-  if (testing_site_type_list != "blank"){
+  if (length(testing_site_type_list) != 1){
+
+    data_file <- filter(data_file, sitetype %in% testing_site_type_list)
+
+  } else if (!is.na(testing_site_type_list)){
 
     data_file <- filter(data_file, sitetype %in% testing_site_type_list)
 
