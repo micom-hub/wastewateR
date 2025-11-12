@@ -195,7 +195,9 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_req
       lost_sites <- setdiff(start_site_names, end_site_names)
       message(paste0("These sites were removed as they have ", week_required, " or fewer weeks of data:"))
       if (length(lost_sites) > 0){
-        message(lost_sites)
+        for (es in lost_sites){
+          message(es)
+        }
       } else {
         message("None")
       }
@@ -357,7 +359,9 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_req
       lost_sites <- setdiff(start_site_names, end_site_names)
       message(paste0("These sites were removed as they have ", week_required, " or fewer weeks of data:"))
       if (length(lost_sites) > 0){
-        message(lost_sites)
+        for (es in lost_sites){
+          message(es)
+        }
       } else {
         message("None")
       }
@@ -464,8 +468,8 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_req
 
           combo1$baseline <- quantile(baseline_for_period_set$log_value, 0.1)[[1]][1]
           combo1$stdev <- sd(baseline_for_period_set$log_value, na.rm = TRUE)
-          combo1$baseline_mindate <- min(baseline_for_period_set$date)
-          combo1$baseline_maxdate <- max(baseline_for_period_set$date)
+          combo1$baseline_mindate <- min(baseline_for_period_set$date, na.rm = TRUE)
+          combo1$baseline_maxdate <- max(baseline_for_period_set$date, na.rm = TRUE)
           combo1$baseline_datapoints <- nrow(baseline_for_period_set)
           saved_baselines <- rbind(saved_baselines, combo1)
 
@@ -560,7 +564,9 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_req
       lost_sites <- setdiff(start_site_names, end_site_names)
       message(paste0("These sites were removed as they have ", week_required, " or fewer weeks of data:"))
       if (length(lost_sites) > 0){
-        message(lost_sites)
+        for (es in lost_sites){
+          message(es)
+        }
       } else {
         message("None")
       }
@@ -667,8 +673,8 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_req
 
           combo1$baseline <- quantile(baseline_for_period_set$log_value, 0.1)[[1]][1]
           combo1$stdev <- sd(baseline_for_period_set$log_value, na.rm = TRUE)
-          combo1$baseline_mindate <- min(baseline_for_period_set$date)
-          combo1$baseline_maxdate <- max(baseline_for_period_set$date)
+          combo1$baseline_mindate <- min(baseline_for_period_set$date, na.rm = TRUE)
+          combo1$baseline_maxdate <- max(baseline_for_period_set$date, na.rm = TRUE)
           combo1$baseline_datapoints <- nrow(baseline_for_period_set)
           saved_baselines <- rbind(saved_baselines, combo1)
 
@@ -849,7 +855,9 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_req
       lost_sites <- setdiff(start_site_names, end_site_names)
       message(paste0("These sites were removed as they have ", week_required, " or fewer weeks of data:"))
       if (length(lost_sites) > 0){
-        message(lost_sites)
+        for (es in lost_sites){
+          message(es)
+        }
       } else {
         message("None")
       }
