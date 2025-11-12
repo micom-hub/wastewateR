@@ -49,6 +49,20 @@ For "cdc_v1" and "cdc_v2", \code{week_required} must be considered. In the origi
 CDC wval calculations, this value was set to 6 for COVID data, and 10 for influenza A
 and RSV.
 
+August 2025 updates - RSV & Flu
+It's essentially cdc_v2, except the lookback is 24 months, not 18
+For "cdc_v3", baseline calculations are made based on the CDC August 2025 updates,
+including, aligning site-level baselines for COVID-19, influenza A, and RSV to 24 months
+\code{week_required} for this method would be set to 8 weeks.
+
+August 2025 updates - COVID
+It's essentially cdc_v1, except the lookback is 24 months and the baseline resets in
+April and October instead of January and July
+For "cdc_v4", baseline calculations are made based on the CDC August 2025 updates,
+including, aligning site-level baselines for COVID-19, influenza A, and RSV to 24 months,
+and shifting timing of the biannual COVID-19 WVAL updates to April and October.
+\code{week_required} for this method would be set to 8 weeks.
+
 If \code{method_choice} is set as "all_data" then the baseline is set as the 10th
 percentile of all \code{log_values} for each site. The standard deviation of all \code{log_values} is calculated,
 and the baseline minimum date and maximum date are set as the min and max available date
