@@ -778,9 +778,9 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_req
       # still need all the data to calculate these baselines for the times immediately after
       # the site has enough data, but only for sites that have both "durations" of data
       baseline_lots <- filter(wastewater_data_in2, multiple_durations == 2) %>%
-        mutate(year_half = case_when(month(date) < 4 ~ 1,
-                                     month(date) >= 4 & month(date) < 10 ~ 2,
-                                     month(date) >= 10 ~ 3,
+        mutate(year_half = case_when(month(date) < 4 ~ 2,
+                                     month(date) >= 4 & month(date) < 10 ~ 3,
+                                     month(date) >= 10 ~ 1,
                                      T ~ 9999),
                year = year(date))
 
@@ -817,18 +817,21 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_req
 
           if (combo1$year_half == 1){
 
-            full_set <- filter(working_site, date >= as_date(paste0(combo1$year - 1, "-10-01")) %m-% months(24) &
-                                 date < as_date(paste0(combo1$year - 1, "-10-01")))
+            # x to oct 1 (year)
+            full_set <- filter(working_site, Date >= (as_date(paste0(combo1$year, "-10-01")) %m-% months(24)) &
+                                 Date < as_date(paste0(combo1$year, "-10-01")))
 
           } else if (combo1$year_half == 2){
 
-            full_set <- filter(working_site, date >= as_date(paste0(combo1$year, "-04-01")) %m-% months(24) &
-                                 date < as_date(paste0(combo1$year, "-04-01")))
+            # x to oct 1 (year - 1)
+            full_set <- filter(working_site, Date >= (as_date(paste0((combo1$year - 1), "-10-01")) %m-% months(24)) &
+                                 Date < as_date(paste0((combo1$year - 1), "-10-01")))
 
           } else if (combo1$year_half == 3){
 
-            full_set <- filter(working_site, date >= as_date(paste0(combo1$year, "-10-01")) %m-% months(24) &
-                                 date < as_date(paste0(combo1$year, "-10-01")))
+            # x to apr 1 (year)
+            full_set <- filter(working_site, Date >= (as_date(paste0(combo1$year, "-04-01")) %m-% months(24)) &
+                                 Date < as_date(paste0(combo1$year, "-04-01")))
 
           }
 
@@ -958,8 +961,9 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_req
 
     #wastewater_data_in2 <- filter(wastewater_data_in2, year(date) >= year(Sys.Date()) - 1)
 
-    wastewater_data_in2 <- wastewater_data_in2 %>% mutate(month_or_week = case_when(x_months_data_yn == "yes" & month(date) < 7 ~ 1,
-                                                                                    x_months_data_yn == "yes" & month(date) >= 7 ~ 2,
+    wastewater_data_in2 <- wastewater_data_in2 %>% mutate(month_or_week = case_when(x_months_data_yn == "yes" & month(date) < 4 ~ 2,
+                                                                                    x_months_data_yn == "yes" & month(date) >= 4 & month(date) < 10 ~ 3,
+                                                                                    x_months_data_yn == "yes" & month(date) >= 10 ~ 1,
                                                                                     x_months_data_yn == "no" ~ epiweek(date),
                                                                                     T ~ 9999),
                                                           year = year(date))
@@ -988,7 +992,7 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_req
 
 
 
-    wastewater_data_in2 <- wastewater_data_in2 %>% select(id, date, sampletype,
+    wastewater_data_in2 <- wastewater_data_in2 %>% select(id, Date, sampletype,
                                                           sitetype, value, population_served,
                                                           sampletype, sitetype, gcper100ml,
                                                           microbial_val, flow_val, normalized_measurement,
