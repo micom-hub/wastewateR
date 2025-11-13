@@ -52,7 +52,7 @@ qaqc_processing_sc2_n1_slim <- function(file_in,
 
   file_in <- w0450_pos_control_breakdown_check(file_in, pos_rows, 35)
 
-  file_in <- w0600_ext_neg_control_check(file_in, 9, 3, 3, 1)
+  file_in <- w0600_ext_neg_control_check(file_in, 3, 3, 3, 1)
 
   w0650_cumulative_count_check(file_in, 3, "yes")
 
