@@ -543,8 +543,8 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_req
 
     wastewater_data_in2 <- wastewater_data_in2 %>%
       group_by(id) %>%
-      mutate(twelve_months_data_yn = case_when(days_since_first/365.25 > 1 ~ "yes",
-                                               T ~ "no"))
+      mutate(x_months_data_yn = case_when(days_since_first/365.25 > 1 ~ "yes",
+                                          T ~ "no"))
 
     # account for situation where dates have length between them, but there aren't enough samples in that range to justify moving to
     # the twelve months methodology
@@ -554,21 +554,21 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_req
       mutate(sample_counter = seq_along(gcper100ml))
 
     wastewater_data_in2 <- wastewater_data_in2 %>%
-      mutate(twelve_months_data_yn = case_when(sample_counter < 48 ~ "no",
-                                               T ~ twelve_months_data_yn))
+      mutate(x_months_data_yn = case_when(sample_counter < 48 ~ "no",
+                                          T ~ x_months_data_yn))
 
     wastewater_data_in2 <- wastewater_data_in2 %>%
       group_by(id) %>%
-      mutate(multiple_durations = length(unique(twelve_months_data_yn)))
+      mutate(multiple_durations = length(unique(x_months_data_yn)))
 
 
     # For sites and method combinations with less than twelve months of data, baselines
     # are computed weekly until reaching twelve months, after which they remain unchanged
     # until the next August 1st, at which time baselines are re-calculated.
 
-    if (any(wastewater_data_in2$twelve_months_data_yn == "no")){
+    if (any(wastewater_data_in2$x_months_data_yn == "no")){
 
-      baseline_few <- filter(wastewater_data_in2, twelve_months_data_yn == "no") %>%
+      baseline_few <- filter(wastewater_data_in2, x_months_data_yn == "no") %>%
         group_by(id) %>%
         mutate(week = epiweek(date),
                year = year(date),
@@ -660,9 +660,9 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_req
     #   calculated every August 1st using all available data in the previous 18 months.
 
 
-    if (any(wastewater_data_in2$twelve_months_data_yn == "yes")){
+    if (any(wastewater_data_in2$x_months_data_yn == "yes")){
 
-      baseline_lots <- filter(wastewater_data_in2, twelve_months_data_yn == "yes")
+      baseline_lots <- filter(wastewater_data_in2, x_months_data_yn == "yes")
 
       # mark every august 1st
       baseline_lots <- baseline_lots %>% group_by(id) %>% arrange(date) %>%
@@ -675,7 +675,7 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_req
 
       baseline_lots <- merge(baseline_lots, august1, all = TRUE)
 
-      baseline_add <- filter(wastewater_data_in2, twelve_months_data_yn == "no")
+      baseline_add <- filter(wastewater_data_in2, x_months_data_yn == "no")
       baseline_add$august1_id <- 0
       baseline_add$number_aug <- NA
 
@@ -729,9 +729,17 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_req
     w_w_base <- w_w_base %>% group_by(id) %>% arrange(date) %>% fill(baseline_datapoints, .direction = c("down"))
     w_w_base <- w_w_base %>% group_by(id) %>% arrange(date) %>% fill(baseline_maxdate, .direction = c("down"))
 
-    # need to make this select the correct columns in proper order to
-    # match other formats
-    wastewater_data_in2 <- w_w_base %>% select()
+
+    wastewater_data_in2 <- w_w_base %>% select(id, Date, sampletype,
+                                               sitetype, value, population_served,
+                                               sampletype, sitetype, gcper100ml,
+                                               microbial_val, flow_val, normalized_measurement,
+                                               log_value, oldest_date,
+                                               days_since_first, x_months_data_yn, sample_counter,
+                                               multiple_durations, baseline, stdev,
+                                               baseline_mindate, baseline_maxdate, baseline_datapoints)
+
+
 
   }
 
