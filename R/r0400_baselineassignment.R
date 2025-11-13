@@ -184,12 +184,12 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_req
 
 
       # small set site names
-      start_site_names <- unique(baseline_few$sitename)
+      start_site_names <- unique(baseline_few$id)
 
       baseline_few <- filter(baseline_few, total_weeks > week_required)
 
       # site names after we remove everything with 6 or fewer weeks of data
-      end_site_names <- unique(baseline_few$sitename)
+      end_site_names <- unique(baseline_few$id)
 
       # messaging
       lost_sites <- setdiff(start_site_names, end_site_names)
@@ -755,32 +755,32 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_req
 
     wastewater_data_in2 <- wastewater_data_in2 %>%
       group_by(id) %>%
-      mutate(six_months_data_yn = case_when(days_since_first/365.25 > 0.5 ~ "yes",
-                                            T ~ "no"))
+      mutate(x_months_data_yn = case_when(days_since_first/365.25 > 1 ~ "yes",
+                                          T ~ "no"))
 
     # account for situation where dates have length between them, but there aren't enough samples in that range to justify moving to
-    # the six months methodology
+    # the twelve months methodology
     wastewater_data_in2 <- wastewater_data_in2 %>%
       group_by(id) %>%
       arrange(date) %>%
       mutate(sample_counter = seq_along(gcper100ml))
 
     wastewater_data_in2 <- wastewater_data_in2 %>%
-      mutate(six_months_data_yn = case_when(sample_counter < 24 ~ "no",
-                                            T ~ six_months_data_yn))
+      mutate(x_months_data_yn = case_when(sample_counter < 48 ~ "no",
+                                          T ~ x_months_data_yn))
 
     wastewater_data_in2 <- wastewater_data_in2 %>%
       group_by(id) %>%
-      mutate(multiple_durations = length(unique(six_months_data_yn)))
+      mutate(multiple_durations = length(unique(x_months_data_yn)))
 
-    if (any(wastewater_data_in2$six_months_data_yn == "yes")){
+    if (any(wastewater_data_in2$x_months_data_yn == "yes")){
 
       # still need all the data to calculate these baselines for the times immediately after
       # the site has enough data, but only for sites that have both "durations" of data
       baseline_lots <- filter(wastewater_data_in2, multiple_durations == 2) %>%
         mutate(year_half = case_when(month(date) < 4 ~ 1,
-                                     month(date) >= 4 & month < 10 ~ 2,
-                                     month >= 10 ~ 3,
+                                     month(date) >= 4 & month(date) < 10 ~ 2,
+                                     month(date) >= 10 ~ 3,
                                      T ~ 9999),
                year = year(date))
 
@@ -868,8 +868,8 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_req
 
     ################################################################################
     # set up our baselines for new/short-term sites
-    if (any(wastewater_data_in2$six_months_data_yn == "no")){
-      baseline_few <- filter(wastewater_data_in2, six_months_data_yn == "no") %>% group_by(id) %>%
+    if (any(wastewater_data_in2$x_months_data_yn == "no")){
+      baseline_few <- filter(wastewater_data_in2, x_months_data_yn == "no") %>% group_by(id) %>%
         mutate(week = epiweek(date),
                year = year(date),
                total_weeks = length(unique(week)))
@@ -879,12 +879,12 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_req
 
 
       # small set site names
-      start_site_names <- unique(baseline_few$sitename)
+      start_site_names <- unique(baseline_few$id)
 
       baseline_few <- filter(baseline_few, total_weeks > week_required)
 
       # site names after we remove everything with 6 or fewer weeks of data
-      end_site_names <- unique(baseline_few$sitename)
+      end_site_names <- unique(baseline_few$id)
 
       # messaging
       lost_sites <- setdiff(start_site_names, end_site_names)
@@ -958,9 +958,9 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_req
 
     #wastewater_data_in2 <- filter(wastewater_data_in2, year(date) >= year(Sys.Date()) - 1)
 
-    wastewater_data_in2 <- wastewater_data_in2 %>% mutate(month_or_week = case_when(six_months_data_yn == "yes" & month(date) < 7 ~ 1,
-                                                                                    six_months_data_yn == "yes" & month(date) >= 7 ~ 2,
-                                                                                    six_months_data_yn == "no" ~ epiweek(date),
+    wastewater_data_in2 <- wastewater_data_in2 %>% mutate(month_or_week = case_when(x_months_data_yn == "yes" & month(date) < 7 ~ 1,
+                                                                                    x_months_data_yn == "yes" & month(date) >= 7 ~ 2,
+                                                                                    x_months_data_yn == "no" ~ epiweek(date),
                                                                                     T ~ 9999),
                                                           year = year(date))
 
@@ -970,26 +970,33 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_req
       stop()
     }
 
-    wastewater_data_in2 <- wastewater_data_in2 %>% mutate(year = case_when(six_months_data_yn == "no" & month_or_week >= 51 & month(date) == 1 ~ year - 1,
+    wastewater_data_in2 <- wastewater_data_in2 %>% mutate(year = case_when(x_months_data_yn == "no" & month_or_week >= 51 & month(date) == 1 ~ year - 1,
                                                                            T ~ year))
 
     # lots_baseline_set, few_baseline_set
     ### no data, needs to merge on the few dataset
 
-    wastewater_few <- merge(filter(wastewater_data_in2, six_months_data_yn == "no"), few_baseline_set, by.x = c("id", "year", "month_or_week"),
+    wastewater_few <- merge(filter(wastewater_data_in2, x_months_data_yn == "no"), few_baseline_set, by.x = c("id", "year", "month_or_week"),
                             by.y = c("id", "year", "year_half"), all.x = TRUE)
 
     ### yes data, needs to merge on the lots dataset
-    wastewater_lots <- merge(filter(wastewater_data_in2, six_months_data_yn == "yes"), lots_baseline_set, by.x = c("id", "year", "month_or_week"),
+    wastewater_lots <- merge(filter(wastewater_data_in2, x_months_data_yn == "yes"), lots_baseline_set, by.x = c("id", "year", "month_or_week"),
                              by.y = c("id", "year", "year_half"), all.x = TRUE)
 
-    # wastewater_data_in2 <- merge(wastewater_data_in2, all_baselines, by.x = c("id", "year", "month_or_week"),
-    #                     by.y = c("id", "year", "year_half"), all.x = TRUE)
 
     wastewater_data_in2 <- rbind(wastewater_few, wastewater_lots)
 
-    # wastewater_data_in2 <- filter(wastewater_data_in2, !is.na(baseline))
-    # wastewater_data_in2 <- filter(wastewater_data_in2, stdev != 0)
+
+
+    wastewater_data_in2 <- wastewater_data_in2 %>% select(id, Date, sampletype,
+                                                          sitetype, value, population_served,
+                                                          sampletype, sitetype, gcper100ml,
+                                                          microbial_val, flow_val, normalized_measurement,
+                                                          log_value, oldest_date,
+                                                          days_since_first, x_months_data_yn, sample_counter,
+                                                          multiple_durations, baseline, stdev,
+                                                          baseline_mindate, baseline_maxdate, baseline_datapoints)
+
 
   }
 
