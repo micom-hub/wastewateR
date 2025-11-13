@@ -18,7 +18,7 @@ A data frame
 }
 \description{
 This function takes in a dataframe of wastewater sample data by site and a character
-string of "cdc_v1", "cdc_v2", or "all_data" to determine the method of determining
+string of "cdc_v1", "cdc_v2", "cdc_v3", "cdc_v4", or "all_data" to determine the method of determining
 the "baseline" values for every site over time for the dataframe.
 }
 \details{
@@ -36,7 +36,7 @@ until the next January 1st or July 1st, at which time baselines are re-calculate
 }
 
 If \code{method_choice} is set as "cdc_v2" then the baseline is set according to the original
-baseline rules, using the 18 month look-back period originally used for Influenza A and RSV.
+baseline rules, using the 18 month look-back period used for Influenza A and RSV.
 \itemize{
 \item For sites and method combinations with less than twelve months of data, baselines
 are computed weekly until reaching twelve months, after which they remain unchanged
@@ -50,14 +50,13 @@ CDC wval calculations, this value was set to 6 for COVID data, and 10 for influe
 and RSV.
 
 August 2025 updates - RSV & Flu
-It's essentially cdc_v2, except the lookback is 24 months, not 18
+
 For "cdc_v3", baseline calculations are made based on the CDC August 2025 updates,
-including, aligning site-level baselines for COVID-19, influenza A, and RSV to 24 months
+including, aligning site-level baselines for COVID-19, influenza A, and RSV to 24 months.
 \code{week_required} for this method would be set to 8 weeks.
 
 August 2025 updates - COVID
-It's essentially cdc_v1, except the lookback is 24 months and the baseline resets in
-April and October instead of January and July
+
 For "cdc_v4", baseline calculations are made based on the CDC August 2025 updates,
 including, aligning site-level baselines for COVID-19, influenza A, and RSV to 24 months,
 and shifting timing of the biannual COVID-19 WVAL updates to April and October.
@@ -66,6 +65,12 @@ and shifting timing of the biannual COVID-19 WVAL updates to April and October.
 If \code{method_choice} is set as "all_data" then the baseline is set as the 10th
 percentile of all \code{log_values} for each site. The standard deviation of all \code{log_values} is calculated,
 and the baseline minimum date and maximum date are set as the min and max available date
-for all data per site. Any rorws where the baseline is \code{NA} are removed, and any
+for all data per site. Any rows where the baseline is \code{NA} are removed, and any
 rows where the standard deviation is zero are removed. The final dataframe is returned.
+
+For all methods, the returned dataframe consists of: \code{id}, \code{date}, \code{sampletype},
+\code{sitetype}, \code{population_served}, \code{gcper100ml}, \code{microbial_val}, \code{flow_val},
+\code{normalized_measurement}, \code{log_value}, \code{oldest_date}, \code{days_since_first},
+\code{x_months_data_yn}, \code{sample_counter}, \code{multiple_durations}, \code{baseline},
+\code{stdev}, \code{baseline_mindate}, \code{baseline_maxdate}, \code{baseline_datapoints}
 }
