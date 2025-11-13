@@ -293,7 +293,7 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_req
 
     wastewater_data_in2 <- rbind(wastewater_few, wastewater_lots)
 
-    wastewater_data_in2 <- wastewater_data_in2 %>% select(id, Date, sampletype,
+    wastewater_data_in2 <- wastewater_data_in2 %>% select(id, date, sampletype,
                                                           sitetype, value, population_served,
                                                           sampletype, sitetype, gcper100ml,
                                                           microbial_val, flow_val, normalized_measurement,
@@ -517,7 +517,7 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_req
 
     # need to make this select the correct columns in proper order to
     # match other formats
-    wastewater_data_in2 <- w_w_base %>% select(id, Date, sampletype,
+    wastewater_data_in2 <- w_w_base %>% select(id, date, sampletype,
                                                sitetype, value, population_served,
                                                sampletype, sitetype, gcper100ml,
                                                microbial_val, flow_val, normalized_measurement,
@@ -730,7 +730,7 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_req
     w_w_base <- w_w_base %>% group_by(id) %>% arrange(date) %>% fill(baseline_maxdate, .direction = c("down"))
 
 
-    wastewater_data_in2 <- w_w_base %>% select(id, Date, sampletype,
+    wastewater_data_in2 <- w_w_base %>% select(id, date, sampletype,
                                                sitetype, value, population_served,
                                                sampletype, sitetype, gcper100ml,
                                                microbial_val, flow_val, normalized_measurement,
@@ -817,18 +817,18 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_req
 
           if (combo1$year_half == 1){
 
-            full_set <- filter(working_site, Date >= as_date(paste0(combo1$year - 1, "-10-01")) %m-% months(24) &
-                                 Date < as_date(paste0(combo1$year - 1, "-10-01")))
+            full_set <- filter(working_site, date >= as_date(paste0(combo1$year - 1, "-10-01")) %m-% months(24) &
+                                 date < as_date(paste0(combo1$year - 1, "-10-01")))
 
           } else if (combo1$year_half == 2){
 
-            full_set <- filter(working_site, Date >= as_date(paste0(combo1$year, "-04-01")) %m-% months(24) &
-                                 Date < as_date(paste0(combo1$year, "-04-01")))
+            full_set <- filter(working_site, date >= as_date(paste0(combo1$year, "-04-01")) %m-% months(24) &
+                                 date < as_date(paste0(combo1$year, "-04-01")))
 
           } else if (combo1$year_half == 3){
 
-            full_set <- filter(working_site, Date >= as_date(paste0(combo1$year, "-10-01")) %m-% months(24) &
-                                 Date < as_date(paste0(combo1$year, "-10-01")))
+            full_set <- filter(working_site, date >= as_date(paste0(combo1$year, "-10-01")) %m-% months(24) &
+                                 date < as_date(paste0(combo1$year, "-10-01")))
 
           }
 
@@ -988,7 +988,7 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_req
 
 
 
-    wastewater_data_in2 <- wastewater_data_in2 %>% select(id, Date, sampletype,
+    wastewater_data_in2 <- wastewater_data_in2 %>% select(id, date, sampletype,
                                                           sitetype, value, population_served,
                                                           sampletype, sitetype, gcper100ml,
                                                           microbial_val, flow_val, normalized_measurement,
@@ -1010,11 +1010,34 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_req
              stdev = sd(log_value, na.rm = TRUE),
              baseline_mindate = min(date),
              baseline_maxdate = max(date),
-             year = year(date))
+             year = year(date),
+             oldest_date = min(date))
+
+    wastewater_data_in2 <- wastewater_data_in2 %>%
+      group_by(id) %>%
+      arrange(date) %>%
+      mutate(days_since_first = as.numeric(difftime(date, oldest_date, units = "days")),
+             x_months_data_yn = case_when(days_since_first/365.25 > 0.5 ~ "yes",
+                                          T ~ "no"),
+             sample_counter = seq_along(gcper100ml),
+             multiple_durations = length(unique(x_months_data_yn)),
+             baseline_datapoints = length(date))
+
+
+
+
 
     wastewater_data_in2 <- filter(wastewater_data_in2, !is.na(baseline))
     wastewater_data_in2 <- filter(wastewater_data_in2, stdev != 0)
 
+    wastewater_data_in2 <- wastewater_data_in2 %>% select(id, date, sampletype,
+                                                          sitetype, value, population_served,
+                                                          sampletype, sitetype, gcper100ml,
+                                                          microbial_val, flow_val, normalized_measurement,
+                                                          log_value, oldest_date,
+                                                          days_since_first, x_months_data_yn, sample_counter,
+                                                          multiple_durations, baseline, stdev,
+                                                          baseline_mindate, baseline_maxdate, baseline_datapoints)
 
   }
 
