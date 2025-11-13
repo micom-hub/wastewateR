@@ -16,7 +16,7 @@
 #' | EXT | BCOV | 3 |
 #' | NEG | PMMOV | 3 |
 #' | NEG | BCOV | 3 |
-#' | NTC | BCOV | 3 |
+#' | NTC | PMMOV | 3 |
 #' | NTC | BCOV | 3 |
 #' | NEG | N1 | 3 |
 #' | EXT | N1 | 3 |
@@ -25,7 +25,7 @@
 #'
 #' @param data_frame_in A dataframe of laboratory data.
 #' @param control_strings A vector of character strings for w0125_expected_controls_present (A vector of character strings that indicate control wells) and w0150_sample_naming_structure (A vector of character strings contained in control sample names)
-#' @param expected_count A numeric vector of the expected number of wells for each control type. Default vector is 12, 6, 12, 6, 12.
+#' @param expected_count A numeric vector of the expected number of wells for each control type. Default vector is 9, 3, 9, 6, 9.
 #' @param pos_rows A Sample-Target dataframe of character strings for w0450_pos_control_breakdown_check
 #' @param con_rows A Sample-Target dataframe of character strings for w0500_control_soft_check
 #' @param lab_id A character string vector for w0150_sample_naming_structure (A character string identifying the submitter laboratory)
@@ -35,7 +35,7 @@
 
 qaqc_processing_sc2_n1 <- function(file_in,
                 control_strings = c("NEG", "POS", "NTC", "BCOV", "EXT"),
-                expected_count = c(9, 3, 9, 3, 9),
+                expected_count = c(9, 3, 9, 6, 9),
                 pos_rows = data.frame(Samples = c("POS", "BCOV"),
                                        Targets = c("N1", "BCOV")),
                 con_rows = data.frame(Samples = c("BCOV"),
