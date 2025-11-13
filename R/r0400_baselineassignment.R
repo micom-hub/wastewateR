@@ -1,7 +1,7 @@
 #' Determining Baseline Values
 #'
 #' This function takes in a dataframe of wastewater sample data by site and a character
-#' string of "cdc_v1", "cdc_v2", or "all_data" to determine the method of determining
+#' string of "cdc_v1", "cdc_v2", "cdc_v3", "cdc_v4", or "all_data" to determine the method of determining
 #' the "baseline" values for every site over time for the dataframe.
 #'
 #' If `method_choice` is set as "cdc_v1" then the baseline is set according to the original CDC baseline
@@ -18,7 +18,7 @@
 #' until the next January 1st or July 1st, at which time baselines are re-calculated.
 #'
 #' If `method_choice` is set as "cdc_v2" then the baseline is set according to the original
-#' baseline rules, using the 18 month look-back period originally used for Influenza A and RSV.
+#' baseline rules, using the 18 month look-back period used for Influenza A and RSV.
 #'
 #' * For sites and method combinations with less than twelve months of data, baselines
 #' are computed weekly until reaching twelve months, after which they remain unchanged
@@ -32,14 +32,13 @@
 #' and RSV.
 #'
 #' August 2025 updates - RSV & Flu
-#' It's essentially cdc_v2, except the lookback is 24 months, not 18
+#'
 #' For "cdc_v3", baseline calculations are made based on the CDC August 2025 updates,
-#' including, aligning site-level baselines for COVID-19, influenza A, and RSV to 24 months
+#' including, aligning site-level baselines for COVID-19, influenza A, and RSV to 24 months.
 #' `week_required` for this method would be set to 8 weeks.
 #'
 #' August 2025 updates - COVID
-#' It's essentially cdc_v1, except the lookback is 24 months and the baseline resets in
-#' April and October instead of January and July
+#'
 #' For "cdc_v4", baseline calculations are made based on the CDC August 2025 updates,
 #' including, aligning site-level baselines for COVID-19, influenza A, and RSV to 24 months,
 #' and shifting timing of the biannual COVID-19 WVAL updates to April and October.
@@ -49,9 +48,14 @@
 #' If `method_choice` is set as "all_data" then the baseline is set as the 10th
 #' percentile of all `log_values` for each site. The standard deviation of all `log_values` is calculated,
 #' and the baseline minimum date and maximum date are set as the min and max available date
-#' for all data per site. Any rorws where the baseline is `NA` are removed, and any
+#' for all data per site. Any rows where the baseline is `NA` are removed, and any
 #' rows where the standard deviation is zero are removed. The final dataframe is returned.
 #'
+#' For all methods, the returned dataframe consists of: `id`, `date`, `sampletype`,
+#' `sitetype`, `population_served`, `gcper100ml`, `microbial_val`, `flow_val`,
+#' `normalized_measurement`, `log_value`, `oldest_date`, `days_since_first`,
+#' `x_months_data_yn`, `sample_counter`, `multiple_durations`, `baseline`,
+#' `stdev`, `baseline_mindate`, `baseline_maxdate`, `baseline_datapoints`
 #'
 #' @param wastewater_data_in A dataframe of wastewater site, metadata, and measurement values
 #' @param method_choice A character string of "cdc_v1", "cdc_v2", or "all_data" to determine method of baseline assignment
@@ -294,9 +298,8 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_req
     wastewater_data_in2 <- rbind(wastewater_few, wastewater_lots)
 
     wastewater_data_in2 <- wastewater_data_in2 %>% select(id, date, sampletype,
-                                                          sitetype, value, population_served,
-                                                          sampletype, sitetype, gcper100ml,
-                                                          microbial_val, flow_val, normalized_measurement,
+                                                          sitetype, population_served,
+                                                          gcper100ml, microbial_val, flow_val, normalized_measurement,
                                                           log_value, oldest_date,
                                                           days_since_first, x_months_data_yn, sample_counter,
                                                           multiple_durations, baseline, stdev,
@@ -518,9 +521,8 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_req
     # need to make this select the correct columns in proper order to
     # match other formats
     wastewater_data_in2 <- w_w_base %>% select(id, date, sampletype,
-                                               sitetype, value, population_served,
-                                               sampletype, sitetype, gcper100ml,
-                                               microbial_val, flow_val, normalized_measurement,
+                                               sitetype, population_served,
+                                               gcper100ml, microbial_val, flow_val, normalized_measurement,
                                                log_value, oldest_date,
                                                days_since_first, x_months_data_yn, sample_counter,
                                                multiple_durations, baseline, stdev,
@@ -731,9 +733,8 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_req
 
 
     wastewater_data_in2 <- w_w_base %>% select(id, date, sampletype,
-                                               sitetype, value, population_served,
-                                               sampletype, sitetype, gcper100ml,
-                                               microbial_val, flow_val, normalized_measurement,
+                                               sitetype, population_served,
+                                               gcper100ml, microbial_val, flow_val, normalized_measurement,
                                                log_value, oldest_date,
                                                days_since_first, x_months_data_yn, sample_counter,
                                                multiple_durations, baseline, stdev,
@@ -992,10 +993,9 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_req
 
 
 
-    wastewater_data_in2 <- wastewater_data_in2 %>% select(id, Date, sampletype,
-                                                          sitetype, value, population_served,
-                                                          sampletype, sitetype, gcper100ml,
-                                                          microbial_val, flow_val, normalized_measurement,
+    wastewater_data_in2 <- wastewater_data_in2 %>% select(id, date, sampletype,
+                                                          sitetype, population_served,
+                                                          gcper100ml, microbial_val, flow_val, normalized_measurement,
                                                           log_value, oldest_date,
                                                           days_since_first, x_months_data_yn, sample_counter,
                                                           multiple_durations, baseline, stdev,
@@ -1035,9 +1035,8 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_req
     wastewater_data_in2 <- filter(wastewater_data_in2, stdev != 0)
 
     wastewater_data_in2 <- wastewater_data_in2 %>% select(id, date, sampletype,
-                                                          sitetype, value, population_served,
-                                                          sampletype, sitetype, gcper100ml,
-                                                          microbial_val, flow_val, normalized_measurement,
+                                                          sitetype, population_served,
+                                                          gcper100ml, microbial_val, flow_val, normalized_measurement,
                                                           log_value, oldest_date,
                                                           days_since_first, x_months_data_yn, sample_counter,
                                                           multiple_durations, baseline, stdev,
