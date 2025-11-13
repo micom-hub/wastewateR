@@ -350,6 +350,7 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_req
       # small set site names
       start_site_names <- unique(baseline_few$id)
 
+      #week_required <- 8
       baseline_few <- filter(baseline_few, total_weeks > week_required)
 
       # site names after we remove everything with x or fewer weeks of data
@@ -443,7 +444,17 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_req
 
       baseline_lots <- merge(baseline_lots, august1, all = TRUE)
 
-      baseline_add <- filter(wastewater_data_in2, twelve_months_data_yn == "no")
+      # need to add these back in, in theory, since we want them to contribute to
+      # the baseline calculation
+      baseline_add <- filter(wastewater_data_in2, twelve_months_data_yn == "no") %>%
+        group_by(id) %>%
+        mutate(week = epiweek(date),
+               year = year(date),
+               total_weeks = length(unique(week)))
+
+      baseline_add <- filter(baseline_add, total_weeks > week_required)
+      baseline_add <- baseline_add %>% select(-week, -year, -total_weeks)
+
       baseline_add$august1_id <- 0
       baseline_add$number_aug <- NA
 
@@ -459,7 +470,7 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_req
 
         all_baseline_lots2 <- filter(all_baseline_lots, id == id_set)
 
-        for (i in seq(1:max(all_baseline_lots$number_aug, na.rm = TRUE))){
+        for (i in seq(1:max(all_baseline_lots2$number_aug, na.rm = TRUE))){
 
           combo1 <- data.frame(id = id_set)
           date_interest_line <- filter(all_baseline_lots2, number_aug == i)
@@ -499,7 +510,15 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_req
 
     # need to make this select the correct columns in proper order to
     # match other formats
-    wastewater_data_in2 <- w_w_base %>% select()
+    wastewater_data_in2 <- w_w_base %>% select(id, Date, city, variable,
+                                               type, value, population_served,
+                                               sampletype, sitetype, gcper100ml,
+                                               microbial_val, flow_val, normalized_measurement,
+                                               log_value, date, oldest_date,
+                                               days_since_first, twelve_months_data_yn, sample_counter,
+                                               multiple_durations, baseline, stdev,
+                                               baseline_mindate, baseline_maxdate, baseline_datapoints)
+
 
   }
 
