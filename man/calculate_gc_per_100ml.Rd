@@ -7,6 +7,7 @@
 calculate_gc_per_100ml(
   lab_df_in,
   all_weigh_info,
+  dilution_df = 1,
   volume_used_for_extraction_mL = 0.2,
   final_extraction_volume_uL = 80,
   positives_limit = 3,
@@ -18,7 +19,9 @@ calculate_gc_per_100ml(
 \arguments{
 \item{lab_df_in}{Dataframe of laboratory data, must contain columns: 'Sample', 'Positives', 'CP_uL'}
 
-\item{all_weigh_info}{Dataframe of weight/volumn data, must consist of "Sample", "initial_volume_analyzed_mL", "final_concentrate_volume_mL" columns}
+\item{all_weigh_info}{Dataframe of weight/volume data, must consist of "Sample", "initial_volume_analyzed_mL", "final_concentrate_volume_mL" columns}
+
+\item{dilution_df}{Dataframe of sample & dilution factor information. Dilution information should be provided in integer format (i.e. if diluted the sample 1:100, the dilution # given should be 100). If not provided, will default to 1 (i.e. assumes no dilution) for any sample}
 
 \item{volume_used_for_extraction_mL}{Numeric value of the volume used for extraction in mL}
 
@@ -42,6 +45,12 @@ This function takes in a dataframe of laboratory data, either merged or unmerged
 The dataframe of laboratory data is assumed to have columns of 'Sample', 'Positives', 'CP_uL'
 
 The dataframe of the weight/volume data is assumed to consist of three columns in the following order: "Sample", "initial_volume_analyzed_mL", "final_concentrate_volume_mL"
+
+The dataframe of diliutions is assumed to consist of three columns in the following order: "Sample", "Target", "DilutionFactor"
+Dilution factor should be what you want to MULTIPLY the value by to get the final measurement,
+so, for example, if you diluted the sample 1:100, you'd multiply the measurement by
+100 to get the final corrected gene copies per 100mL value. This dataframe is not necessary to
+provide to the function. The system will assume no dilutions were done in this instance.
 
 Default settings:
 volume_used_for_extraction_mL = 0.8,

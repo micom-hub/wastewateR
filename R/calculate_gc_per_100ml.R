@@ -6,6 +6,12 @@
 #'
 #' The dataframe of the weight/volume data is assumed to consist of three columns in the following order: "Sample", "initial_volume_analyzed_mL", "final_concentrate_volume_mL"
 #'
+#' The dataframe of diliutions is assumed to consist of three columns in the following order: "Sample", "Target", "DilutionFactor"
+#' Dilution factor should be what you want to MULTIPLY the value by to get the final measurement,
+#' so, for example, if you diluted the sample 1:100, you'd multiply the measurement by
+#' 100 to get the final corrected gene copies per 100mL value. This dataframe is not necessary to
+#' provide to the function. The system will assume no dilutions were done in this instance.
+#'
 #' Default settings:
 #' volume_used_for_extraction_mL = 0.8,
 #' final_extraction_volume_uL = 50,
@@ -25,7 +31,8 @@
 #' For more visual data on the mathematical calculations, please visit: https://micom-hub.org/wastewateR_documentation/
 #'
 #' @param lab_df_in Dataframe of laboratory data, must contain columns: 'Sample', 'Positives', 'CP_uL'
-#' @param all_weigh_info Dataframe of weight/volumn data, must consist of "Sample", "initial_volume_analyzed_mL", "final_concentrate_volume_mL" columns
+#' @param all_weigh_info Dataframe of weight/volume data, must consist of "Sample", "initial_volume_analyzed_mL", "final_concentrate_volume_mL" columns
+#' @param dilution_df Dataframe of sample & dilution factor information. Dilution information should be provided in integer format (i.e. if diluted the sample 1:100, the dilution # given should be 100). If not provided, will default to 1 (i.e. assumes no dilution) for any sample
 #' @param volume_used_for_extraction_mL Numeric value of the volume used for extraction in mL
 #' @param final_extraction_volume_uL Numeric value of the final extraction volume in uL
 #' @param positives_limit Positives limit for when to apply the gene copies per 100mL value calculation to the sample. If the Positives value is less than this value, the final gene copies per 100mL column will be filled with the Detection limit value instead
@@ -36,6 +43,7 @@
 #' @export
 
 calculate_gc_per_100ml <- function(lab_df_in, all_weigh_info,
+                                   dilution_df = 1,
                                    volume_used_for_extraction_mL = 0.2,
                                    final_extraction_volume_uL = 80,
                                    positives_limit = 3,
@@ -76,6 +84,19 @@ calculate_gc_per_100ml <- function(lab_df_in, all_weigh_info,
                         CP_100_mL_of_sample = case_when(Positives >= positives_limit ~ (((CP_uL*(final_extraction_volume_uL/div_frevu)*further_adjust*((final_concentrate_volume_mL/volume_used_for_extraction_mL)))/initial_volume_analyzed_mL)*100),
                                                         T ~ detection_limit_CP_100mL))
 
+  if (dilution_df != 1){
+
+      colnames(dilution_df) <- c("Sample", "Target", "DilutionFactor")
+      working_calc_set <- merge(working_calc_set, dilution_df, by = c("Sample", "Target"), all.x = TRUE)
+
+      working_calc_set <- working_calc_set %>% mutate(CP_100_mL_of_sample = CP_100_mL_of_sample * DilutionFactor,
+                                                      detection_limit_CP_100mL = detection_limit_CP_100mL * DilutionFactor)
+
+  } else {
+
+      working_calc_set$DilutionFactor <- 1
+
+  }
 
   return(working_calc_set)
 
