@@ -9,9 +9,9 @@ r0400_baselineassignment(wastewater_data_in, method_choice, week_required = 6)
 \arguments{
 \item{wastewater_data_in}{A dataframe of wastewater site, metadata, and measurement values}
 
-\item{method_choice}{A character string of "cdc_v1", "cdc_v2", or "all_data" to determine method of baseline assignment}
+\item{method_choice}{A character string of "cdc_v1", "cdc_v2", "cdc_v3", "cdc_v4", or "all_data" to determine method of baseline assignment}
 
-\item{week_required}{A numeric value required if using "cdc_v1" or "cdc_v2" that sets the minimum number of weeks of data a site must have in order to calculate baselines. If a site has fewer weeks of data than this number, they are removed from consideration.}
+\item{week_required}{A numeric value required if using "cdc_v1", "cdc_v2", "cdc_v3", or "cdc_v4" that sets the minimum number of weeks of data a site must have in order to calculate baselines. If a site has fewer weeks of data than this number, they are removed from consideration. Default value is 6}
 }
 \value{
 A data frame
