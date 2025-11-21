@@ -54,7 +54,9 @@ r0500_wval_sitecalc <- function(wastewater_data_in, org){
   # want to create some additional informational columns - first, the min date and
   # max date included for each id/year/week combination
   second_range <- wastewater_data_in2 %>%
-    mutate(week = epiweek(date)) %>%
+    mutate(week = epiweek(date),
+           # have to add in "year" as base, before we correct it if necessary with next line
+           year = year(date)) %>%
     mutate(year = case_when(week >= 51 & month(date) == 1 ~ year - 1,
                             T ~ year)) %>%
     group_by(id, year, week) %>%
@@ -64,7 +66,9 @@ r0500_wval_sitecalc <- function(wastewater_data_in, org){
   # then turn the wval calculation into the average wval per WEEK per site
   # and count the samples included in each week's calculation
   wastewater_data_in2 <- wastewater_data_in2 %>%
-    mutate(week = epiweek(date)) %>%
+    mutate(week = epiweek(date),
+           # have to add in "year" as base, before we correct it if necessary with next line
+           year = year(date)) %>%
     mutate(year = case_when(week >= 51 & month(date) == 1 ~ year - 1,
                             T ~ year)) %>%
     group_by(id, year, week) %>%
