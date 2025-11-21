@@ -67,14 +67,22 @@ r0600_wval_regioncalc <- function(wastewater_data_in, site_to_region_crosswalk =
   # method = median, mean
   # site_to_region_crosswalk must have columns = id, Geography, weight
 
-  if (!is.na(site_to_region_crosswalk)){
+  if (length(site_to_region_crosswalk) == 1){
 
-    colnames(site_to_region_crosswalk) <- c("id", "Geography", "weight")
-    wastewater_data_in <- merge(wastewater_data_in, site_to_region_crosswalk, by = c("id"))
+    if (is.na(site_to_region_crosswalk)){
+        wastewater_data_in$weight <- 1
+    } else {
+
+      message("Input provided for site_to_region_crosswalk by user: ")
+      message(site_to_region_crosswalk)
+      stop("Crosswalk dataframe or input is not an accepted format.")
+
+    }
 
   } else {
 
-    wastewater_data_in$weight <- 1
+    colnames(site_to_region_crosswalk) <- c("id", "Geography", "weight")
+    wastewater_data_in <- merge(wastewater_data_in, site_to_region_crosswalk, by = c("id"))
 
   }
 
