@@ -83,17 +83,19 @@ post_processing <- qaqc_processing_sc2_n1(file_in = format_for_use,
 ```
 
 
-
+The processing minor and wrapper functions are quality control, quality assurance (QAQC) type functions. The end output is meant to be either A) a warning that the data is corrupted or the quality is not as expected or B) a final "cleaned" data set of "raw" wastewater data. However, you may still want to process the data further into a metric such as "gene copies per 100mL". 
 
 ```{r}
 #| eval: false
 #| echo: true
 
 concentration_data <- read.csv("{data_file_name.csv}")
+# this data frame is expected to have "Sample", "initial_volume_analyzed_mL", "final_concentrate_volume_mL" as its three columns. 
 
 measurement_values <- calculate_gc_per_100ml(lab_df_in = post_processing, 
                                              all_weigh_info = concentration_data)
-
+# "detection_limit_CP_100mL" and "CP_100_mL_of_sample" are calculated, following MDHHS 
+# SEWER methodology
 
 
 ```
