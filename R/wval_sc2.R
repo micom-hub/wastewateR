@@ -16,7 +16,7 @@
 #' @param method_choice A character string of "cdc_v1", "cdc_v2", "cdc_v3", "cdc_v4", or "all_data" to determine method of baseline assignment. Defaults to "cdc_v4"
 #' @param week_required A numeric value required if using "cdc_v1", "cdc_v2", "cdc_v3", or "cdc_v4" that sets the minimum number of weeks of data a site must have in order to calculate baselines. If a site has fewer weeks of data than this number, they are removed from consideration. Default value is 8
 #' @param org A character string, either "SC2_v1", "FLU_v1", "RSV_v1", "SC2_v2", "FLU_v2", "RSV_v2" indicating what pathogen the wastewater data represents, and the CDC methodology version of level determination the user would like to use. Default value is "SC2_v2"
-#' @param method Character string, either "median" or "mean", defaults to "mean"
+#' @param method Character string, either "median" or "mean", defaults to "median"
 #' @param pop_serve_num A numeric input indicating the lower bound of acceptable population served values to include in the final data frame; Default value is `NA`
 #' @param sample_type_list A character string vector indicating the acceptable sample types to include in the final data frame; Default value is `NA`
 #' @param testing_site_type_list A character string vector indicating the acceptable site types to include in the final data frame; Default value is `NA`
@@ -30,7 +30,7 @@ wval_sc2 <- function(ww_df_in,
                      method_choice = "cdc_v4",
                      week_required = 8,
                      org = "SC2_v2",
-                     method = "mean",
+                     method = "median",
                      pop_serve_num = NA,
                      sample_type_list = NA,
                      testing_site_type_list = NA){

@@ -13,7 +13,7 @@ wval_sc2(
   method_choice = "cdc_v4",
   week_required = 8,
   org = "SC2_v2",
-  method = "mean",
+  method = "median",
   pop_serve_num = NA,
   sample_type_list = NA,
   testing_site_type_list = NA
@@ -36,7 +36,7 @@ wval_sc2(
 
 \item{org}{A character string, either "SC2_v1", "FLU_v1", "RSV_v1", "SC2_v2", "FLU_v2", "RSV_v2" indicating what pathogen the wastewater data represents, and the CDC methodology version of level determination the user would like to use. Default value is "SC2_v2"}
 
-\item{method}{Character string, either "median" or "mean", defaults to "mean"}
+\item{method}{Character string, either "median" or "mean", defaults to "median"}
 
 \item{pop_serve_num}{A numeric input indicating the lower bound of acceptable population served values to include in the final data frame; Default value is \code{NA}}
 
