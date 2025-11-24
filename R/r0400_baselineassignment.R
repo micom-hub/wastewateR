@@ -51,6 +51,11 @@
 #' for all data per site. Any rows where the baseline is `NA` are removed, and any
 #' rows where the standard deviation is zero are removed. The final dataframe is returned.
 #'
+#' Per CDC methodology, as of the August 15, 2025 methodology change, "all historical
+#' wVal values are updated with the new baseline when recalculated". If you'd like
+#' to use that method with the "cdc_v4" option, `hist_override` can be set equal to 1.
+#' By default, this behavior is not chosen, and `hist_override` is set equal to 0.
+#'
 #' For all methods, the returned dataframe consists of: `id`, `date`, `sampletype`,
 #' `sitetype`, `population_served`, `gcper100ml`, `microbial_val`, `flow_val`,
 #' `normalized_measurement`, `log_value`, `oldest_date`, `days_since_first`,
@@ -60,10 +65,11 @@
 #' @param wastewater_data_in A dataframe of wastewater site, metadata, and measurement values
 #' @param method_choice A character string of "cdc_v1", "cdc_v2", "cdc_v3", "cdc_v4", or "all_data" to determine method of baseline assignment
 #' @param week_required A numeric value required if using "cdc_v1", "cdc_v2", "cdc_v3", or "cdc_v4" that sets the minimum number of weeks of data a site must have in order to calculate baselines. If a site has fewer weeks of data than this number, they are removed from consideration. Default value is 6
+#' @param hist_override A numeric value of 0 if the user does not want to override all historic baselines with the most recent baseline calculation. If set equal to 1, all sites with more than six months of data will have their historic baselines overwritten with the most recently calculated baseline.
 #' @return A data frame
 #' @export
 
-r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_required = 6){
+r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_required = 6, hist_override = 0){
 
 
   if (method_choice == "cdc_v1"){
@@ -962,35 +968,72 @@ r0400_baselineassignment <- function(wastewater_data_in, method_choice, week_req
 
     #wastewater_data_in2 <- filter(wastewater_data_in2, year(date) >= year(Sys.Date()) - 1)
 
-    wastewater_data_in2 <- wastewater_data_in2 %>% mutate(month_or_week = case_when(x_months_data_yn == "yes" & month(date) < 4 ~ 2,
-                                                                                    x_months_data_yn == "yes" & month(date) >= 4 & month(date) < 10 ~ 3,
-                                                                                    x_months_data_yn == "yes" & month(date) >= 10 ~ 1,
-                                                                                    x_months_data_yn == "no" ~ epiweek(date),
-                                                                                    T ~ 9999),
-                                                          year = year(date))
 
 
-    if (any(wastewater_data_in2$month_or_week == 9999)){
-      message("Six month data or sample date data corrupted, assigned 9999 value.")
-      stop()
-    }
-
-    wastewater_data_in2 <- wastewater_data_in2 %>% mutate(year = case_when(x_months_data_yn == "no" & month_or_week >= 51 & month(date) == 1 ~ year - 1,
-                                                                           T ~ year))
-
-    # lots_baseline_set, few_baseline_set
-    ### no data, needs to merge on the few dataset
-
-    wastewater_few <- merge(filter(wastewater_data_in2, x_months_data_yn == "no"), few_baseline_set, by.x = c("id", "year", "month_or_week"),
-                            by.y = c("id", "year", "year_half"), all.x = TRUE)
-
-    ### yes data, needs to merge on the lots dataset
-    wastewater_lots <- merge(filter(wastewater_data_in2, x_months_data_yn == "yes"), lots_baseline_set, by.x = c("id", "year", "month_or_week"),
-                             by.y = c("id", "year", "year_half"), all.x = TRUE)
+        wastewater_data_in2 <- wastewater_data_in2 %>% mutate(month_or_week = case_when(x_months_data_yn == "yes" & month(date) < 4 ~ 2,
+                                                                                        x_months_data_yn == "yes" & month(date) >= 4 & month(date) < 10 ~ 3,
+                                                                                        x_months_data_yn == "yes" & month(date) >= 10 ~ 1,
+                                                                                        x_months_data_yn == "no" ~ epiweek(date),
+                                                                                        T ~ 9999),
+                                                              year = year(date))
 
 
-    wastewater_data_in2 <- rbind(wastewater_few, wastewater_lots)
+        if (any(wastewater_data_in2$month_or_week == 9999)){
+          message("Six month data or sample date data corrupted, assigned 9999 value.")
+          stop()
+        }
 
+        wastewater_data_in2 <- wastewater_data_in2 %>% mutate(year = case_when(x_months_data_yn == "no" & month_or_week >= 51 & month(date) == 1 ~ year - 1,
+                                                                               T ~ year))
+
+        # lots_baseline_set, few_baseline_set
+        ### no data, needs to merge on the few dataset
+
+        wastewater_few <- merge(filter(wastewater_data_in2, x_months_data_yn == "no"), few_baseline_set, by.x = c("id", "year", "month_or_week"),
+                                by.y = c("id", "year", "year_half"), all.x = TRUE)
+
+        ### yes data, needs to merge on the lots dataset
+        wastewater_lots <- merge(filter(wastewater_data_in2, x_months_data_yn == "yes"), lots_baseline_set, by.x = c("id", "year", "month_or_week"),
+                                 by.y = c("id", "year", "year_half"), all.x = TRUE)
+
+
+        wastewater_data_in2 <- rbind(wastewater_few, wastewater_lots)
+
+
+        ###### account for optional
+        # "All historical WVAL values are updated with the new baseline when recalculated."
+        # rule
+
+        if (hist_override == 1){
+
+          # if there is only low data, keep that
+          # otherwise if it has more, override all previous with the most recent baseline
+
+
+          most_recent_baselines <- filter(wastewater_data_in2, multiple_durations == 2) %>%
+            group_by(id) %>%
+            summarize(baseline_maxdate = max(baseline_maxdate, na.rm = TRUE))
+
+          most_recent_baselines <- merge(most_recent_baselines, wastewater_data_in2, by = c("id", "baseline_maxdate"), all.x = TRUE) %>%
+            select(id, baseline, stdev,
+                   baseline_mindate, baseline_maxdate, baseline_datapoints) %>% distinct()
+
+
+          override_set <- filter(wastewater_data_in2, id %in% unique(most_recent_baselines$id))
+          override_set <- override_set %>% select(id, date, sampletype,
+                                                  sitetype, population_served,
+                                                  gcper100ml, microbial_val, flow_val, normalized_measurement,
+                                                  log_value, oldest_date,
+                                                  days_since_first, x_months_data_yn, sample_counter,
+                                                  multiple_durations)
+          override_set <- merge(override_set, most_recent_baselines, by = c("id"), all.x = TRUE)
+
+          non_override <- filter(wastewater_data_in2, !id %in% unique(most_recent_baselines$id))
+
+          wastewater_data_in2 <- rbind(override_set, non_override)
+
+
+        }
 
 
     wastewater_data_in2 <- wastewater_data_in2 %>% select(id, date, sampletype,

@@ -4,7 +4,12 @@
 \alias{r0400_baselineassignment}
 \title{Determining Baseline Values}
 \usage{
-r0400_baselineassignment(wastewater_data_in, method_choice, week_required = 6)
+r0400_baselineassignment(
+  wastewater_data_in,
+  method_choice,
+  week_required = 6,
+  hist_override = 0
+)
 }
 \arguments{
 \item{wastewater_data_in}{A dataframe of wastewater site, metadata, and measurement values}
@@ -12,6 +17,8 @@ r0400_baselineassignment(wastewater_data_in, method_choice, week_required = 6)
 \item{method_choice}{A character string of "cdc_v1", "cdc_v2", "cdc_v3", "cdc_v4", or "all_data" to determine method of baseline assignment}
 
 \item{week_required}{A numeric value required if using "cdc_v1", "cdc_v2", "cdc_v3", or "cdc_v4" that sets the minimum number of weeks of data a site must have in order to calculate baselines. If a site has fewer weeks of data than this number, they are removed from consideration. Default value is 6}
+
+\item{hist_override}{A numeric value of 0 if the user does not want to override all historic baselines with the most recent baseline calculation. If set equal to 1, all sites with more than six months of data will have their historic baselines overwritten with the most recently calculated baseline.}
 }
 \value{
 A data frame
@@ -67,6 +74,11 @@ percentile of all \code{log_values} for each site. The standard deviation of all
 and the baseline minimum date and maximum date are set as the min and max available date
 for all data per site. Any rows where the baseline is \code{NA} are removed, and any
 rows where the standard deviation is zero are removed. The final dataframe is returned.
+
+Per CDC methodology, as of the August 15, 2025 methodology change, "all historical
+wVal values are updated with the new baseline when recalculated". If you'd like
+to use that method with the "cdc_v4" option, \code{hist_override} can be set equal to 1.
+By default, this behavior is not chosen, and \code{hist_override} is set equal to 0.
 
 For all methods, the returned dataframe consists of: \code{id}, \code{date}, \code{sampletype},
 \code{sitetype}, \code{population_served}, \code{gcper100ml}, \code{microbial_val}, \code{flow_val},

@@ -102,4 +102,3 @@ measurement_values <- calculate_gc_per_100ml(lab_df_in = post_processing,
 
 
 
-
