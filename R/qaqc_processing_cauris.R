@@ -18,33 +18,37 @@ qaqc_processing_cauris <- function(file_in,
                                    control_strings = c("NEG", "AUR", "NTC", "EXT"),
                                    pos_rows = data.frame(Samples = c("AUR", "AUR"),
                                                          Targets = c("CAUR", "CJEJ")),
-                                   con_rows = data.frame(Samples = c("AUR", "EXT", "NEG", "NTC", "AUR", "EXT", "NEG", "NTC"), 
+                                   con_rows = data.frame(Samples = c("AUR", "EXT", "NEG", "NTC", "AUR", "EXT", "NEG", "NTC"),
                                                          Targets = c("CAUR", "CAUR", "CAUR", "CAUR", "CJEJ", "CJEJ", "CJEJ", "CJEJ")),
                                    lab_id,
-                                   site_id_set){
-  
+                                   site_id_set,
+                                   e_w_c = 3){
+
     auris1_b <- w0110_sample_name_edits(file_in)
-    
-    auris1_c <- w0150_sample_naming_structure(auris1_b, 
-                                              lab_id, 
-                                              site_id_set, 
+
+    auris1_c <- w0150_sample_naming_structure(auris1_b,
+                                              lab_id,
+                                              site_id_set,
                                               control_strings)
-    
+
     auris1_c <- w0200_accepted_droplet_count(auris1_c, 10000)
-    
+
     auris1_c <- w0300_ntc_control_check(auris1_c)
-    
+
     w0400_pos_control_hard_stop(auris1_c, pos_rows)
-    
+
     auris1_d <- w0450_pos_control_breakdown_check(auris1_c, pos_rows)
-    
-    auris1_e <- w0600_ext_neg_control_check(auris1_d, 3, 3)
-    
+
+    auris1_e <- w0600_ext_neg_control_check(auris1_d, ext_well_count = e_w_c,
+                                            neg_well_count = 3,
+                                            positive_droplet = 3,
+                                            wells_over = 1)
+
     w0650_cumulative_count_check(auris1_e)
-    
+
     auris1_f <- w0700_pos_droplet_sum(auris1_e, 4, con_rows)
-    
+
     auris1_g <- w1000_remove_rows_as_chosen(auris1_f, c(2, 3, 6))
-    
-    return(auris1_g)   
+
+    return(auris1_g)
 }
