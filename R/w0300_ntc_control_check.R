@@ -30,7 +30,7 @@
 #' @return A list with the first element being a dataframe identical to df_in with one additional column, and the second element being either 0 (for no failure stop) or 1 (for failure stop)
 #' @export
 
-w0300_ntc_control_check <- function(df_in, positive_droplet_limit = 3, stop_choice = "yes"){
+w0300_ntc_control_check <- function(df_in, positive_droplet_limit = 3, stop_choice = "no"){
     ################################################################################
     # Check #3: NTC Well Check
     message("") # just for visual clarity

@@ -4,7 +4,7 @@
 \alias{w0300_ntc_control_check}
 \title{NTC Control Check}
 \usage{
-w0300_ntc_control_check(df_in, positive_droplet_limit = 3, stop_choice = "yes")
+w0300_ntc_control_check(df_in, positive_droplet_limit = 3, stop_choice = "no")
 }
 \arguments{
 \item{df_in}{A dataframe of laboratory data}

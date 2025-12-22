@@ -8,7 +8,7 @@ w0150_sample_naming_structure(
   df_in,
   site_identifiers,
   control_strs,
-  stop_choice = "yes"
+  stop_choice = "no"
 )
 }
 \arguments{

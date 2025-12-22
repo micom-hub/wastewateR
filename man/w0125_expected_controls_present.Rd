@@ -7,7 +7,8 @@
 w0125_expected_controls_present(
   df_in,
   exp_cntrl_v = c("NEG", "POS", "NTC", "BCOV", "EXT"),
-  expected_count = c(3, 3, 3, 3, 3)
+  expected_count = c(3, 3, 3, 3, 3),
+  stop_choice = "no"
 )
 }
 \arguments{

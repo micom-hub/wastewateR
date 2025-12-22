@@ -34,7 +34,7 @@
 #' @return A list with the first element being a dataframe identical to df_in, and the second element being either 0 (for no failure stop) or 1 (for failure stop)
 #' @export
 
-w0125_expected_controls_present <- function(df_in, exp_cntrl_v = c("NEG", "POS", "NTC", "BCOV", "EXT"), expected_count = c(3, 3, 3, 3, 3)){
+w0125_expected_controls_present <- function(df_in, exp_cntrl_v = c("NEG", "POS", "NTC", "BCOV", "EXT"), expected_count = c(3, 3, 3, 3, 3), stop_choice = "no"){
 
     message("CHECK #1.25: Control Samples Present")
     message("") # just for visual clarity

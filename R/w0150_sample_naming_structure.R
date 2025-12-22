@@ -70,7 +70,7 @@
 #' @return A list with the first element being a dataframe that is identical to the input dataframe, and the second element being either 0 (for no failure stop) or 1 (for failure stop)
 #' @export
 
-w0150_sample_naming_structure <- function(df_in, site_identifiers, control_strs, stop_choice = "yes"){
+w0150_sample_naming_structure <- function(df_in, site_identifiers, control_strs, stop_choice = "no"){
 
     ################################################################################
     # Check #1.5: Look at sample naming structure, as well as date information
