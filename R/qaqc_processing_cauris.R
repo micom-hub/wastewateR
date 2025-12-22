@@ -11,7 +11,7 @@
 #' @param con_rows A Sample-Target dataframe of character strings for w0500_control_soft_check
 #' @param lab_id A character string vector for w0150_sample_naming_structure (A character string identifying the submitter laboratory)
 #' @param site_id_set A vector of character strings for w0150_sample_naming_structure (A vector of character strings identifying the potential site ids)
-#' @return A dataframe containing unmerged Sample-Target data points
+#' @return A list where the first element is the dataframe containing unmerged Sample-Target data points, and the second element is an error stop notification dataframe that is generated if hard stop notifications are not used
 #' @export
 
 qaqc_processing_cauris <- function(file_in,
@@ -26,29 +26,46 @@ qaqc_processing_cauris <- function(file_in,
 
     auris1_b <- w0110_sample_name_edits(file_in)
 
+    # e track
     auris1_c <- w0150_sample_naming_structure(auris1_b,
                                               lab_id,
                                               site_id_set,
                                               control_strings)
 
-    auris1_c <- w0200_accepted_droplet_count(auris1_c, 10000)
+    error_line <- c("w0150")
+    error_val <- c(auris1_c[1][[2]])
 
+    auris1_c <- w0200_accepted_droplet_count(auris1_c[1][[1]], 10000)
+
+    # e track
     auris1_c <- w0300_ntc_control_check(auris1_c)
 
-    w0400_pos_control_hard_stop(auris1_c, pos_rows)
+    error_line <- c(error_line, "w0300")
+    error_val <- c(error_val, auris1_c[1][[2]])
 
-    auris1_d <- w0450_pos_control_breakdown_check(auris1_c, pos_rows)
+    # e track
+    error_line <- c(error_line, "w0400")
+    error_val <- c(error_val, w0400_pos_control_hard_stop(auris1_c[1][[1]], pos_rows))
 
+    auris1_d <- w0450_pos_control_breakdown_check(auris1_c[1][[1]], pos_rows)
+
+    # e track
     auris1_e <- w0600_ext_neg_control_check(auris1_d, ext_well_count = e_w_c,
                                             neg_well_count = 3,
                                             positive_droplet = 3,
                                             wells_over = 1)
+    error_line <- c(error_line, "w0600")
+    error_val <- c(error_val, auris1_e[1][[2]])
 
-    w0650_cumulative_count_check(auris1_e)
+    # e track
+    error_line <- c(error_line, "w0650")
+    error_val <- c(error_val, w0650_cumulative_count_check(auris1_e[1][[1]]))
 
-    auris1_f <- w0700_pos_droplet_sum(auris1_e, 4, con_rows)
+    auris1_f <- w0700_pos_droplet_sum(auris1_e[1][[1]], 4, con_rows)
 
     auris1_g <- w1000_remove_rows_as_chosen(auris1_f, c(2, 3, 6))
 
-    return(auris1_g)
+    error_df <- data.frame(error_line, error_val)
+
+    return(list(auris1_g, error_df))
 }
