@@ -11,7 +11,8 @@ qaqc_processing_cauris(
   con_rows = data.frame(Samples = c("AUR", "EXT", "NEG", "NTC", "AUR", "EXT", "NEG",
     "NTC"), Targets = c("CAUR", "CAUR", "CAUR", "CAUR", "CJEJ", "CJEJ", "CJEJ", "CJEJ")),
   lab_id,
-  site_id_set
+  site_id_set,
+  e_w_c = 3
 )
 }
 \arguments{

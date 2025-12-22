@@ -16,9 +16,11 @@ w0125_expected_controls_present(
 \item{exp_cntrl_v}{A vector of character strings that indicate control wells. Default vector is "NEG", "POS", "NTC", "BCOV", "EXT"}
 
 \item{expected_count}{A numeric vector of the expected number of wells for each control type. Default vector is 3, 3, 3, 3, 3}
+
+\item{stop_choice}{A character string of "yes" or "no" to indicate whether this should be a hard stop function or not}
 }
 \value{
-A dataframe identical to df_in
+A list with the first element being a dataframe identical to df_in, and the second element being either 0 (for no failure stop) or 1 (for failure stop)
 }
 \description{
 This function takes in a data frame of laboratory data
@@ -38,8 +40,14 @@ The default numeric vector of the expected number of wells is: 3, 3, 3, 3, 3
 Please note: This check will not alert if there is a control that is NOT
 mentioned.
 
+if stop_choice is "yes" then:
 STOP ALERT: If there are any instances of inconsistencies between the actual
 number of control wells identified and the expected number as indicated by
 the two input vectors, the offending control type and the well counts will be
 printed to the console. The code will STOP RUNNING if this occurs.
+
+if stop_choice is "no" then:
+The error information will print to the console and the return list will have the
+output data frame as the first element in the list and a stop indicator of 1 as the
+second element in the list.
 }
