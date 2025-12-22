@@ -237,7 +237,7 @@ w0150_sample_naming_structure <- function(df_in, site_identifiers, control_strs,
       message("Stop error encountered - #1.5")
     }
 
-    if (stop_choice == "yes"){
+    if (stop_choice == "yes" & stop_indicator == 1){
       stop()
     }
 

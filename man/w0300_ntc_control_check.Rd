@@ -4,22 +4,27 @@
 \alias{w0300_ntc_control_check}
 \title{NTC Control Check}
 \usage{
-w0300_ntc_control_check(df_in, positive_droplet_limit = 3)
+w0300_ntc_control_check(df_in, positive_droplet_limit = 3, stop_choice = "yes")
 }
 \arguments{
 \item{df_in}{A dataframe of laboratory data}
 
 \item{positive_droplet_limit}{A number indicating the limit for the number of positive droplets}
+
+\item{stop_choice}{A character string of "yes" or "no" to indicate whether this should be a hard stop function or not}
 }
 \value{
-A dataframe identical to df_in with one additional column
+A list with the first element being a dataframe identical to df_in with one additional column, and the second element being either 0 (for no failure stop) or 1 (for failure stop)
 }
 \description{
 This function takes in a data frame of laboratory data, as well as a numeric
-positives droplet limit. It only needs to be done if there are NTC control
-well data in the data file.
+positives droplet limit. It also takes in a character string "yes" or "no"
+to indicate if the function should act as a hard stop or not.
 }
 \details{
+This function only needs to be run if there are NTC control
+well data in the data file.
+
 It looks only at rows where the character string "NTC" is present in the
 Sample column. If the Positives column for any of those rows is greater
 than or equal to the positives droplet limit, it will mark those rows.
@@ -30,6 +35,7 @@ which will contain a value of 1 if the sample name contains "NTC"
 AND the Positives value is greater than or equal to the positives droplet
 limit set by the user. Otherwise, the value will be 0.
 
+if stop_choice == "yes":
 STOP ALERT: If the NTC rows have more than one well / row that is over
 the droplet limit, all NTC rows will be printed to the console - Sample,
 Target, Positives, and AcceptedDroplets columns. The code will STOP RUNNING
