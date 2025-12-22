@@ -64,5 +64,7 @@ qaqc_processing_cauris <- function(file_in,
 
     error_df <- data.frame(error_line, error_val)
 
+    message("End wrapper for C. auris.")
+
     return(list(auris1_g, error_df))
 }
