@@ -6,22 +6,22 @@
 \usage{
 w0150_sample_naming_structure(
   df_in,
-  submitter_id,
-  site_abbreviations,
-  control_strs
+  site_identifiers,
+  control_strs,
+  stop_choice = "yes"
 )
 }
 \arguments{
 \item{df_in}{A dataframe of laboratory data, must contain a column called 'Sample'}
 
-\item{submitter_id}{A vector of character strings identifying the submitter laboratory code(s)}
-
-\item{site_abbreviations}{A vector of character strings identifying the potential site ids}
+\item{site_identifiers}{A vector of four-character character strings identifying the submitter laboratory code(s) and site ids}
 
 \item{control_strs}{A vector of character strings contained in control sample names}
+
+\item{stop_choice}{A character string of "yes" or "no" to indicate whether this should be a hard stop function or not}
 }
 \value{
-A dataframe that is identical to the input dataframe
+A list with the first element being a dataframe that is identical to the input dataframe, and the second element being either 0 (for no failure stop) or 1 (for failure stop)
 }
 \description{
 This function was specifically crafted to accommodate the sample naming
@@ -31,16 +31,15 @@ of this repository.
 }
 \details{
 This function takes in a data frame. It also takes in a vector of character strings for
-acceptable submitter ids, a vector of acceptable site abbreviations, and a vector of
-control strings. It does not edit the input -- input and output are identical
+acceptable site identifiers, and a vector of
+control strings. It does not edit the input dataframe -- input and output dataframes are identical
 in this case.
 
 The vector of character strings for submitter ids and the vector of acceptable site
 abbreviations should align with the following sample naming structure:
 \itemize{
 \item there should be 11 characters in the sample name
-\item submitter identifier, two characters
-\item city/site identifier, two character
+\item submitter identifier, two characters & city/site identifier, two character as one input
 \item date of sample collection in YYMMDD format
 \item Sample end indicator: I or S, for influent or solid, or A, for first sample collected in a given day
 }
@@ -75,10 +74,8 @@ those six characters transformed into an R date data type, and the last characte
 
 Individual checks are then run on each of these columns:
 \enumerate{
-\item That the first two characters of non-control sample names are an option provided
-in the vector of acceptable submitter identifier s
-\item That the next two characters of non-control rows are an option provided
-in the vector of acceptable site abbreviations
+\item That the first four characters of non-control rows are an option provided
+in the vector of acceptable site identifiers
 \item That the next six characters of all non-control rows are numbers, and a
 date not in the future
 \item That the last character of non-control wells is either an I, S, or an A
