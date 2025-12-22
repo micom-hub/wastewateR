@@ -8,7 +8,7 @@ w0750_neg_droplet_samples(
   new_file_in,
   sum_neg_drop = 4,
   controls_to_drop,
-  stop_choice = "yes"
+  stop_choice = "no"
 )
 }
 \arguments{
@@ -18,10 +18,10 @@ w0750_neg_droplet_samples(
 
 \item{controls_to_drop}{a dataframe of Sample-Target pairs to EXCLUDE from this check}
 
-\item{stop_choice}{a character string, either 'yes' or 'no' to indicate whether you'd like to treat this as a STOP check. Default value is 'yes'.}
+\item{stop_choice}{a character string, either 'yes' or 'no' to indicate whether you'd like to treat this as a STOP check.}
 }
 \value{
-A dataframe just like the input data frame, with one new column (sample_wells_negatives75) added
+A list with the first element being a dataframe just like the input data frame, with one new column (sample_wells_negatives75) added, and the second element being either 0 (for no failure stop) or 1 (for failure stop)
 }
 \description{
 This function is meant to be used to check non-control wells for low negative

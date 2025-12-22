@@ -49,11 +49,11 @@
 #' @param new_file_in A dataframe of laboratory data
 #' @param sum_neg_drop a numeric indicator for the sum of negative droplets check
 #' @param controls_to_drop a dataframe of Sample-Target pairs to EXCLUDE from this check
-#' @param stop_choice a character string, either 'yes' or 'no' to indicate whether you'd like to treat this as a STOP check. Default value is 'yes'.
-#' @return A dataframe just like the input data frame, with one new column (sample_wells_negatives75) added
+#' @param stop_choice a character string, either 'yes' or 'no' to indicate whether you'd like to treat this as a STOP check.
+#' @return A list with the first element being a dataframe just like the input data frame, with one new column (sample_wells_negatives75) added, and the second element being either 0 (for no failure stop) or 1 (for failure stop)
 #' @export
 
-w0750_neg_droplet_samples <- function(new_file_in, sum_neg_drop = 4, controls_to_drop, stop_choice = "yes"){
+w0750_neg_droplet_samples <- function(new_file_in, sum_neg_drop = 4, controls_to_drop, stop_choice = "no"){
 
     # add warning for LOD
     message(paste0("CHECK #7.5: IF ANY SAMPLES HAVE A SUM OF NEGATIVES DROPLET COUNT LESS THAN ", sum_neg_drop))
@@ -63,6 +63,8 @@ w0750_neg_droplet_samples <- function(new_file_in, sum_neg_drop = 4, controls_to
       stop("Stop choice entry is incorrect. Please use either 'yes' or 'no'.")
 
     }
+
+    stop_indicator <- 0
 
     ### need to filter out controls from consideration
     SAM_wells <- data.frame()
@@ -105,7 +107,8 @@ w0750_neg_droplet_samples <- function(new_file_in, sum_neg_drop = 4, controls_to
 
         stop_message <- "STOP - Consider disregarding results and rerun ddPCR to determine whether the sample may be a false positive or if it needs to be diluted."
 
-        stop(stop_message)
+        message(stop_message)
+        stop_indicator <- 1
 
       }
 
@@ -121,9 +124,13 @@ w0750_neg_droplet_samples <- function(new_file_in, sum_neg_drop = 4, controls_to
 
     new_file_in <- rbind(new_file_in, SAM_wells2)
 
-    message("Through CHECK #7.")
+    message("Through CHECK #7.5")
 
-    return(new_file_in)
+    if (stop_indicator == 1 & stop_choice == "yes"){
+      stop("Stop error encountered - #7.5")
+    }
+
+    return(list(new_file_in, stop_indicator))
 
 }
 

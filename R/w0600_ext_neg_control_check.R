@@ -172,7 +172,7 @@ w0600_ext_neg_control_check <- function(new_file_in, ext_well_count = 3, neg_wel
   message("Through Check #6")
 
   if (stop_choice == "yes" & stop_indicator == 1){
-    stop()
+    stop("Stop error encountered - #6")
   }
 
   return(list(new_file_in, stop_indicator))
