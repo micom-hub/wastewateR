@@ -9,7 +9,8 @@ w0600_ext_neg_control_check(
   ext_well_count = 3,
   neg_well_count = 3,
   positive_droplet = 3,
-  wells_over = 1
+  wells_over = 1,
+  stop_choice = "no"
 )
 }
 \arguments{
@@ -22,9 +23,11 @@ w0600_ext_neg_control_check(
 \item{positive_droplet}{A numeric positives droplet limit. Default value set to 3}
 
 \item{wells_over}{A numeric indicator for the acceptable number of wells that you'd allow to be over the positive droplet limit (for example, if you had run a control in quaduplicate, you might still accept the plate data results if 2 of the 4 controls were over the positive droplet limit, so you'd enter 2); default value is 1}
+
+\item{stop_choice}{A character string of "yes" or "no" to indicate whether this should be a hard stop function or not}
 }
 \value{
-A dataframe just like the input data frame, with one new column (ext_neg_control_check6) added
+A list with the first element being a dataframe just like the input data frame, with one new column (ext_neg_control_check6) added, and the second element being either 0 (for no failure stop) or 1 (for failure stop)
 }
 \description{
 This function is looking for extraction control (EXT) and negative control (NEG)
@@ -34,16 +37,19 @@ This function is looking for extraction control (EXT) and negative control (NEG)
 \item a numeric indicator for how many EXT control wells are expected
 \item a numeric indicator for how many NEG control wells are expected
 \item a numeric positive droplet limit; default value is 3
-\item and an acceptable number of wells that you'd allow to be over the positive
+\item an acceptable number of wells that you'd allow to be over the positive
 droplet limit (for example, if you had run a control in quaduplicate, you might
 still accept the plate data results if 2 of the 4 controls were over the positive
 droplet limit, so you'd enter 2); default value is 1
+\item a character string of "yes" or "no" for whether the user would like to treat this
+function as a hard stop function
 }
 }
 \details{
 Extraction controls and negative controls are identified as any rows that have
 "EXT" or "NEG" in the character string of the 'Sample' column.
 
+if stop_choice == "yes":
 STOP ALERT: If either the negative controls or the extraction controls do not
 have the number of rows indicated, the 'Well', 'Sample', and 'Target' column
 values will be printed to the console. The code will STOP RUNNING if this occurs.
@@ -64,5 +70,6 @@ NEG or EXT control rows with a 'Positives' (positive droplet measurement)
 greater than or equal to the indicated positive droplet limit are marked with 1,
 otherwise they are marked with 0. Non-relevant rows are marked with 'NA'.
 
-A data frame is returned from this function.
+A list of a data frame and a numeric indicator of 0 (if no stop trigger was encountered)
+or 1 (if a stop trigger was encountered) is returned from this function.
 }

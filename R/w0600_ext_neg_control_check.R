@@ -7,14 +7,17 @@
 #' - a numeric indicator for how many EXT control wells are expected
 #' - a numeric indicator for how many NEG control wells are expected
 #' - a numeric positive droplet limit; default value is 3
-#' - and an acceptable number of wells that you'd allow to be over the positive
+#' - an acceptable number of wells that you'd allow to be over the positive
 #' droplet limit (for example, if you had run a control in quaduplicate, you might
 #' still accept the plate data results if 2 of the 4 controls were over the positive
 #' droplet limit, so you'd enter 2); default value is 1
+#' - a character string of "yes" or "no" for whether the user would like to treat this
+#' function as a hard stop function
 #'
 #' Extraction controls and negative controls are identified as any rows that have
 #' "EXT" or "NEG" in the character string of the 'Sample' column.
 #'
+#' if stop_choice == "yes":
 #' STOP ALERT: If either the negative controls or the extraction controls do not
 #' have the number of rows indicated, the 'Well', 'Sample', and 'Target' column
 #' values will be printed to the console. The code will STOP RUNNING if this occurs.
@@ -35,21 +38,24 @@
 #' greater than or equal to the indicated positive droplet limit are marked with 1,
 #' otherwise they are marked with 0. Non-relevant rows are marked with 'NA'.
 #'
-#' A data frame is returned from this function.
+#' A list of a data frame and a numeric indicator of 0 (if no stop trigger was encountered)
+#' or 1 (if a stop trigger was encountered) is returned from this function.
 #'
 #' @param new_file_in A dataframe of laboratory data
 #' @param ext_well_count A numeric indicator for how many EXT control wells are expected (for example, if you'd expect there to be 3 EXT Sample wells, you would enter 3); default value is 3
 #' @param neg_well_count A numeric indicator for how many NEG control wells are expected (for example, if you'd expect there to be 3 NEG Sample wells, you would enter 3); default value is 3
 #' @param positive_droplet A numeric positives droplet limit. Default value set to 3
 #' @param wells_over A numeric indicator for the acceptable number of wells that you'd allow to be over the positive droplet limit (for example, if you had run a control in quaduplicate, you might still accept the plate data results if 2 of the 4 controls were over the positive droplet limit, so you'd enter 2); default value is 1
-#' @return A dataframe just like the input data frame, with one new column (ext_neg_control_check6) added
+#' @param stop_choice A character string of "yes" or "no" to indicate whether this should be a hard stop function or not
+#' @return A list with the first element being a dataframe just like the input data frame, with one new column (ext_neg_control_check6) added, and the second element being either 0 (for no failure stop) or 1 (for failure stop)
 #' @export
 
 
-w0600_ext_neg_control_check <- function(new_file_in, ext_well_count = 3, neg_well_count = 3, positive_droplet = 3, wells_over = 1){
+w0600_ext_neg_control_check <- function(new_file_in, ext_well_count = 3, neg_well_count = 3, positive_droplet = 3, wells_over = 1, stop_choice = "no"){
 
   message("CHECK #6: Extraction Control & Negative Control Well Check")
 
+  stop_indicator <- 0
 
   x <- 0
 
@@ -86,7 +92,7 @@ w0600_ext_neg_control_check <- function(new_file_in, ext_well_count = 3, neg_wel
   }
 
   if (x != 0){
-    stop()
+    stop_indicator <- 1
   }
 
   #####
@@ -153,7 +159,7 @@ w0600_ext_neg_control_check <- function(new_file_in, ext_well_count = 3, neg_wel
   }
 
   if (y != 0){
-    stop()
+    stop_indicator <- 1
   }
 
 
@@ -164,6 +170,11 @@ w0600_ext_neg_control_check <- function(new_file_in, ext_well_count = 3, neg_wel
                                                                            T ~ NA_real_))
   message("") # just for visual clarity
   message("Through Check #6")
-  return(new_file_in)
+
+  if (stop_choice == "yes" & stop_indicator == 1){
+    stop()
+  }
+
+  return(list(new_file_in, stop_indicator))
 
 }
