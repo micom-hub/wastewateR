@@ -52,7 +52,7 @@ qaqc_processing_cauris <- function(file_in,
                                             positive_droplet = 3,
                                             wells_over = 1)
     error_line <- c(error_line, "w0600")
-    error_val <- c(error_val, auris1_e[1][[2]])
+    error_val <- c(error_val, auris1_e[2][[1]])
 
     # e track
     error_line <- c(error_line, "w0650")
