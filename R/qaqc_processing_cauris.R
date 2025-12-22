@@ -30,7 +30,7 @@ qaqc_processing_cauris <- function(file_in,
                                               control_strings)
 
     error_line <- c("w0150")
-    error_val <- c(auris1_c[1][[2]])
+    error_val <- c(auris1_c[2][[1]])
 
     auris1_c <- w0200_accepted_droplet_count(auris1_c[1][[1]], 10000)
 
@@ -38,7 +38,7 @@ qaqc_processing_cauris <- function(file_in,
     auris1_c <- w0300_ntc_control_check(auris1_c)
 
     error_line <- c(error_line, "w0300")
-    error_val <- c(error_val, auris1_c[1][[2]])
+    error_val <- c(error_val, auris1_c[2][[1]])
 
     # e track
     error_line <- c(error_line, "w0400")
