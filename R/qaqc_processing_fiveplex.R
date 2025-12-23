@@ -22,6 +22,8 @@ qaqc_processing_fiveplex <- function(file_in,
                                    control_strings = c("NEG", "POS", "NTC", "EXT"),
                                    pos_rows = data.frame(Samples = c("POS", "POS", "POS", "POS", "POS"),
                                                          Targets = c("FluA", "FluB", "RSV", "SC2", "H5")),
+                                   con_rows = data.frame(Samples = c("NEG", "POS", "NTC", "NEG", "POS", "NTC", "NEG", "POS", "NTC", "NEG", "POS", "NTC", "NEG", "POS", "NTC"),
+                                                         Targets = c("FluA", "FluA", "FluA","FluB", "FluB", "FluB","RSV","RSV","RSV", "SC2", "SC2","SC2","H5","H5","H5")),
                                    lab_site_ids){
 
   file_in <- w0110_sample_name_edits(file_in)
@@ -61,9 +63,9 @@ qaqc_processing_fiveplex <- function(file_in,
   error_line <- c(error_line, "w0650")
   error_val <- c(error_val, w0650_cumulative_count_check(file_in[1][[1]], 3, "yes"))
 
-  file_in <- w0700_pos_droplet_sum(file_in[1][[1]], controls_to_drop = control_strings)
+  file_in <- w0700_pos_droplet_sum(file_in[1][[1]], controls_to_drop = con_rows)
 
-  file_in <- w0750_neg_droplet_samples(file_in, controls_to_drop = control_strings)
+  file_in <- w0750_neg_droplet_samples(file_in, controls_to_drop = con_rows)
   error_line <- c(error_line, "w0750")
   error_val <- c(error_val, file_in[2][[1]])
 
