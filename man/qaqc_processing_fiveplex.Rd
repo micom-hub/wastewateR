@@ -9,16 +9,19 @@ qaqc_processing_fiveplex(
   control_strings = c("NEG", "POS", "NTC", "EXT"),
   pos_rows = data.frame(Samples = c("POS", "POS", "POS", "POS", "POS"), Targets =
     c("FluA", "FluB", "RSV", "SC2", "H5")),
-  con_rows = data.frame(Samples = c("BCOV"), Targets = c("PMMOV")),
+  con_rows = data.frame(Samples = c("NEG", "POS", "NTC", "NEG", "POS", "NTC", "NEG",
+    "POS", "NTC", "NEG", "POS", "NTC", "NEG", "POS", "NTC"), Targets = c("FluA", "FluA",
+    "FluA", "FluB", "FluB", "FluB", "RSV", "RSV", "RSV", "SC2", "SC2", "SC2", "H5", "H5",
+    "H5")),
   lab_site_ids
 )
 }
 \arguments{
 \item{control_strings}{A vector of character strings for w0125_expected_controls_present (A vector of character strings that indicate control wells) and w0150_sample_naming_structure (A vector of character strings contained in control sample names)}
 
-\item{pos_rows}{A Sample-Target dataframe of character strings for w0450_pos_control_breakdown_check}
+\item{pos_rows}{A Sample-Target dataframe of character strings for w0450 and w0500}
 
-\item{con_rows}{A Sample-Target dataframe of character strings for w0500_control_soft_check}
+\item{con_rows}{A Sample-Target dataframe of character strings for w0700 and w0750}
 
 \item{lab_site_ids}{A character string vector for w0150_sample_naming_structure (A character string vector identifying the submitter sites)}
 

@@ -6,18 +6,22 @@
 \usage{
 qaqc_processing_norog1g2(
   file_in,
+  lab_site_ids,
   control_strings = c("NEG", "POS", "NTC", "EXT"),
   pos_rows = data.frame(Samples = c("POS", "POS"), Targets = c("NVG1", "NVG2")),
-  lab_site_ids,
+  con_rows = data.frame(Samples = c("NEG", "POS", "NTC", "NEG", "POS", "NTC"), Targets =
+    c("NVG1", "NVG1", "NVG1", "NVG2", "NVG2", "NVG2")),
   rules = c(2, 3, 6)
 )
 }
 \arguments{
+\item{lab_site_ids}{A character string vector for w0150_sample_naming_structure (A character string vector identifying the submitter sites)}
+
 \item{control_strings}{A vector of character strings for w0125_expected_controls_present (A vector of character strings that indicate control wells) and w0150_sample_naming_structure (A vector of character strings contained in control sample names)}
 
-\item{pos_rows}{A Sample-Target dataframe of character strings for w0450_pos_control_breakdown_check}
+\item{pos_rows}{A Sample-Target dataframe of character strings for w0450}
 
-\item{lab_site_ids}{A character string vector for w0150_sample_naming_structure (A character string vector identifying the submitter sites)}
+\item{con_rows}{A Sample-Target dataframe of character strings for w0700 and w0750}
 
 \item{data_frame_in}{A dataframe of laboratory data.}
 }
