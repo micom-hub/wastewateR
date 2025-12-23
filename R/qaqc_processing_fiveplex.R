@@ -35,7 +35,7 @@ qaqc_processing_fiveplex <- function(file_in,
   error_line <- c("w0125")
   error_val <- c(file_in[2][[1]])
 
-  file_in <- w0150_sample_naming_structure(file_in,
+  file_in <- w0150_sample_naming_structure(file_in[1][[1]],
                                            lab_site_ids,
                                            control_strings)
 
