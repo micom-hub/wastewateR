@@ -13,7 +13,6 @@
 #' @param data_frame_in A dataframe of laboratory data.
 #' @param control_strings A vector of character strings for w0125_expected_controls_present (A vector of character strings that indicate control wells) and w0150_sample_naming_structure (A vector of character strings contained in control sample names)
 #' @param pos_rows A Sample-Target dataframe of character strings for w0450_pos_control_breakdown_check
-#' @param con_rows A Sample-Target dataframe of character strings for w0500_control_soft_check
 #' @param lab_site_ids A character string vector for w0150_sample_naming_structure (A character string vector identifying the submitter sites)
 #' @return A list where the first element is the dataframe containing unmerged Sample-Target data points, and the second element is an error stop notification dataframe that is generated if hard stop notifications are not used
 #' @export
@@ -62,9 +61,7 @@ qaqc_processing_norog1g2 <- function(file_in,
   error_line <- c(error_line, "w0650")
   error_val <- c(error_val, w0650_cumulative_count_check(file_in[1][[1]], 3, "yes"))
 
-  file_in <- w0800_recover_control_check(file_in[1][[1]], "BCOV", c("POS", "NEG", "EXT", "NTC"), 0.3)
-
-  file_in <- w0900_positives_comparison_rule(file_in, c("POS"), c("NVG1", "NVG2"), c("POS", "NEG", "EXT", "NTC"), 3)
+  file_in <- w0900_positives_comparison_rule(file_in[1][[1]], c("POS"), c("NVG1", "NVG2"), c("POS", "NEG", "EXT", "NTC"), 3)
 
   file_in <- w1000_remove_rows_as_chosen(file_in, rules)
 

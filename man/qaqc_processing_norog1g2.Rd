@@ -20,8 +20,6 @@ qaqc_processing_norog1g2(
 \item{lab_site_ids}{A character string vector for w0150_sample_naming_structure (A character string vector identifying the submitter sites)}
 
 \item{data_frame_in}{A dataframe of laboratory data.}
-
-\item{con_rows}{A Sample-Target dataframe of character strings for w0500_control_soft_check}
 }
 \value{
 A list where the first element is the dataframe containing unmerged Sample-Target data points, and the second element is an error stop notification dataframe that is generated if hard stop notifications are not used
