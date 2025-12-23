@@ -60,7 +60,7 @@ then the sum would be 19. If any of those sums calculated are less than the
 numeric indicator for the sum of negative droplets check, then the Sample-Target
 pairs that are low would be printed to the console.
 
-STOP ALERT: If "yes" is entered as the last input into this function, and any
+STOP ALERT: If "yes" is entered as stop_choice, and any
 of the samples have fewer than the numeric indicator for the sum of negative
 droplets check, the code will STOP RUNNING.
 

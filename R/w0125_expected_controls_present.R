@@ -1,4 +1,4 @@
-#' Check for the presence of expected control labelling in Sample column
+#' Check for the presence of expected control labeling in Sample column
 #'
 #' This function takes in a data frame of laboratory data
 #' and checks for the presence of control wells. This function also

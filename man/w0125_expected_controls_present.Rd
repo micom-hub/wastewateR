@@ -2,7 +2,7 @@
 % Please edit documentation in R/w0125_expected_controls_present.R
 \name{w0125_expected_controls_present}
 \alias{w0125_expected_controls_present}
-\title{Check for the presence of expected control labelling in Sample column}
+\title{Check for the presence of expected control labeling in Sample column}
 \usage{
 w0125_expected_controls_present(
   df_in,

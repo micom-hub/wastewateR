@@ -35,6 +35,7 @@
 #' on the same plate, or on different plates. These will run through and
 #' will not trigger an "over 11 characters" stop.
 #'
+#' if stop_choice is "yes":
 #' STOP ALERT: All NOT A CONTROL samples that are NOT 11 characters in
 #' length are pulled and if there are one or more instances of this,
 #' the offending sample names will be printed to the console with "Sample
@@ -48,11 +49,12 @@
 #'
 #' 1. That the first four characters of non-control rows are an option provided
 #'  in the vector of acceptable site identifiers
-#' 3. That the next six characters of all non-control rows are numbers, and a
+#' 2. That the next six characters of all non-control rows are numbers, and a
 #' date not in the future
-#' 4. That the last character of non-control wells is either an I, S, or an A
+#' 3. That the last character of non-control wells is either an I, S, or an A
 #'
-#' STOP ALERT: If any of those four checks do not pass, the offending sample
+#' if stop_choice is "yes":
+#' STOP ALERT: If any of those three checks do not pass, the offending sample
 #'  names will be printed out to the console along with a relevant check
 #'  message. The code will STOP RUNNING if this occurs.
 #'

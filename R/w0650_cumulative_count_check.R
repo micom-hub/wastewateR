@@ -14,7 +14,7 @@
 #' * accepted_droplet_limit2
 #'
 #' * ntc_control_check3
-#
+#'
 #' * ext_neg_control_check6
 #'
 #' if stop_choice == "yes":

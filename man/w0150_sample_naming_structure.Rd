@@ -63,6 +63,7 @@ name to identify if the same sample is tested multiple times
 on the same plate, or on different plates. These will run through and
 will not trigger an "over 11 characters" stop.
 
+if stop_choice is "yes":
 STOP ALERT: All NOT A CONTROL samples that are NOT 11 characters in
 length are pulled and if there are one or more instances of this,
 the offending sample names will be printed to the console with "Sample
@@ -81,7 +82,8 @@ date not in the future
 \item That the last character of non-control wells is either an I, S, or an A
 }
 
-STOP ALERT: If any of those four checks do not pass, the offending sample
+if stop_choice is "yes":
+STOP ALERT: If any of those three checks do not pass, the offending sample
 names will be printed out to the console along with a relevant check
 message. The code will STOP RUNNING if this occurs.
 
