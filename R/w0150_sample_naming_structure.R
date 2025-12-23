@@ -106,7 +106,7 @@ w0150_sample_naming_structure <- function(df_in, site_identifiers, control_strs,
 
     check_length_count <- filter(check_length_count, second_check != 11)
 
-    if (nrow(check_length_count >= 1)){
+    if (nrow(check_length_count) >= 1){
 
       for (i in unique(check_length_count$Sample)){
         message(i)

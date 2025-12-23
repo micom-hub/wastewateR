@@ -22,8 +22,6 @@ qaqc_processing_fiveplex <- function(file_in,
                                    control_strings = c("NEG", "POS", "NTC", "EXT"),
                                    pos_rows = data.frame(Samples = c("POS", "POS", "POS", "POS", "POS"),
                                                          Targets = c("FluA", "FluB", "RSV", "SC2", "H5")),
-                                   con_rows = data.frame(Samples = c("BCOV"),
-                                                         Targets = c("PMMOV")),
                                    lab_site_ids){
 
   file_in <- w0110_sample_name_edits(file_in)
@@ -54,8 +52,6 @@ qaqc_processing_fiveplex <- function(file_in,
   # just a check, no return value
 
   file_in <- w0450_pos_control_breakdown_check(file_in[1][[1]], pos_rows, 35)
-
-  file_in <- w0500_control_soft_check(file_in, con_rows)
 
   file_in <- w0600_ext_neg_control_check(file_in, 9, 3, 3, 1)
 
