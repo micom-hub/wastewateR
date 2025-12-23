@@ -26,7 +26,7 @@
 #' @param expected_count A numeric vector of the expected number of wells for each control type. Default vector is 3, 3, 3, 3.
 #' @param pos_rows A Sample-Target dataframe of character strings for w0450_pos_control_breakdown_check
 #' @param lab_site_ids A character string vector for w0150_sample_naming_structure (A character string vector identifying the submitter sites)
-#' @return A dataframe containing unmerged Sample-Target data points
+#' @return A list where the first element is the dataframe containing unmerged Sample-Target data points, and the second element is an error stop notification dataframe that is generated if hard stop notifications are not used
 #' @export
 
 qaqc_processing_sc2_n1_slim <- function(file_in,
@@ -60,7 +60,7 @@ qaqc_processing_sc2_n1_slim <- function(file_in,
 
   error_line <- c(error_line, "w0400")
   error_val <- c(error_val, ww0400_pos_control_hard_stop(file_in[1][[1]], pos_rows))
-  # just a check, no return value
+
 
   file_in <- w0450_pos_control_breakdown_check(file_in[1][[1]], pos_rows, 35)
 

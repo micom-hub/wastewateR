@@ -24,7 +24,7 @@ qaqc_processing_sc2_n1_slim(
 \item{data_frame_in}{A dataframe of laboratory data.}
 }
 \value{
-A dataframe containing unmerged Sample-Target data points
+A list where the first element is the dataframe containing unmerged Sample-Target data points, and the second element is an error stop notification dataframe that is generated if hard stop notifications are not used
 }
 \description{
 This function is meant to run a standard QAQC set-up using the functions available
