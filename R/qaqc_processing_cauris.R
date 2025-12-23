@@ -28,10 +28,11 @@ qaqc_processing_cauris <- function(file_in,
                                    lab_site_ids,
                                    e_w_c = 3){
 
-    auris1_b <- w0110_sample_name_edits(file_in)
+    auris1 <- w0110_sample_name_edits(file_in)
+
 
     # e track
-    auris1_c <- w0150_sample_naming_structure(auris1_b,
+    auris1_c <- w0150_sample_naming_structure(auris1,
                                               lab_site_ids,
                                               control_strings)
 
