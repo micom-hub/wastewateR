@@ -64,6 +64,7 @@ qaqc_processing_sc2_n1_slim <- function(file_in,
 
   file_in <- w0450_pos_control_breakdown_check(file_in[1][[1]], pos_rows, 35)
 
+
   file_in <- w0600_ext_neg_control_check(file_in, 3, 3, 3, 1)
 
   error_line <- c(error_line, "w0600")
@@ -72,7 +73,15 @@ qaqc_processing_sc2_n1_slim <- function(file_in,
   error_line <- c(error_line, "w0650")
   error_val <- c(error_val, w0650_cumulative_count_check(file_in[1][[1]], 3, "yes"))
 
-  file_in <- w0900_positives_comparison_rule(file_in[1][[1]], c("POS"), c("N1"), c("POS", "NEG", "EXT", "NTC"), 3)
+  file_in <- w0700_pos_droplet_sum(file_in[1][[1]], control_strings)
+
+  file_in <- w0750_neg_droplet_samples(file_in, controls_to_drop = control_strings)
+  error_line <- c(error_line, "w0750")
+  error_val <- c(error_val, file_in[2][[1]])
+
+  file_in <- w0800_recover_control_check(file_in[1][[1]], "BCOV", c("POS", "NEG", "EXT", "NTC"), 0.3)
+
+  file_in <- w0900_positives_comparison_rule(file_in, c("POS"), c("N1"), c("POS", "NEG", "EXT", "NTC"), 3)
 
   file_in <- w1000_remove_rows_as_chosen(file_in)
 
