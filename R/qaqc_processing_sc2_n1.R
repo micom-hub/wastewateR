@@ -32,20 +32,21 @@
 #' @param data_frame_in A dataframe of laboratory data.
 #' @param control_strings A vector of character strings for w0125_expected_controls_present (A vector of character strings that indicate control wells) and w0150_sample_naming_structure (A vector of character strings contained in control sample names)
 #' @param expected_count A numeric vector of the expected number of wells for each control type. Default vector is 9, 3, 9, 6, 9.
-#' @param pos_rows A Sample-Target dataframe of character strings for w0450_pos_control_breakdown_check
-#' @param con_rows A Sample-Target dataframe of character strings for w0500_control_soft_check
+#' @param pos_rows A Sample-Target dataframe of character strings for w0400 and w0450
+#' @param con_rows A Sample-Target dataframe of character strings for w0500, w0700, w0750
 #' @param lab_site_ids A character string vector for w0150_sample_naming_structure (A character string vector identifying the submitter sites)
 #' @return A list where the first element is the dataframe containing unmerged Sample-Target data points, and the second element is an error stop notification dataframe that is generated if hard stop notifications are not used
 #' @export
 
 qaqc_processing_sc2_n1 <- function(file_in,
+                                   lab_site_ids,
                 control_strings = c("NEG", "POS", "NTC", "BCOV", "EXT"),
                 expected_count = c(9, 3, 9, 6, 9),
                 pos_rows = data.frame(Samples = c("POS", "BCOV"),
                                        Targets = c("N1", "BCOV")),
-                con_rows = data.frame(Samples = c("BCOV"),
-                                       Targets = c("PMMOV")),
-                lab_site_ids){
+                con_rows = data.frame(Samples = c("BCOV", "BCOV", "POS", "EXT", "EXT","EXT","NEG","NEG","NEG", "NTC", "NTC", "NTC"),
+                                       Targets = c("PMMOV", "BCOV",  "N1", "PMMOV", "N1", "BCOV", "PMMOV", "N1", "BCOV", "PMMOV", "N1", "BCOV"))
+                ){
 
   file_in <- w0110_sample_name_edits(file_in)
 
@@ -85,9 +86,9 @@ qaqc_processing_sc2_n1 <- function(file_in,
   error_line <- c(error_line, "w0650")
   error_val <- c(error_val, w0650_cumulative_count_check(file_in[1][[1]], 3, "yes"))
 
-  file_in <- w0700_pos_droplet_sum(file_in[1][[1]], control_strings)
+  file_in <- w0700_pos_droplet_sum(file_in[1][[1]], controls_to_drop = con_rows)
 
-  file_in <- w0750_neg_droplet_samples(file_in, controls_to_drop = control_strings)
+  file_in <- w0750_neg_droplet_samples(file_in, controls_to_drop = con_rows)
   error_line <- c(error_line, "w0750")
   error_val <- c(error_val, file_in[2][[1]])
 

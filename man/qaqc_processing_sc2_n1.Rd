@@ -6,23 +6,25 @@
 \usage{
 qaqc_processing_sc2_n1(
   file_in,
+  lab_site_ids,
   control_strings = c("NEG", "POS", "NTC", "BCOV", "EXT"),
   expected_count = c(9, 3, 9, 6, 9),
   pos_rows = data.frame(Samples = c("POS", "BCOV"), Targets = c("N1", "BCOV")),
-  con_rows = data.frame(Samples = c("BCOV"), Targets = c("PMMOV")),
-  lab_site_ids
+  con_rows = data.frame(Samples = c("BCOV", "BCOV", "POS", "EXT", "EXT", "EXT", "NEG",
+    "NEG", "NEG", "NTC", "NTC", "NTC"), Targets = c("PMMOV", "BCOV", "N1", "PMMOV", "N1",
+    "BCOV", "PMMOV", "N1", "BCOV", "PMMOV", "N1", "BCOV"))
 )
 }
 \arguments{
+\item{lab_site_ids}{A character string vector for w0150_sample_naming_structure (A character string vector identifying the submitter sites)}
+
 \item{control_strings}{A vector of character strings for w0125_expected_controls_present (A vector of character strings that indicate control wells) and w0150_sample_naming_structure (A vector of character strings contained in control sample names)}
 
 \item{expected_count}{A numeric vector of the expected number of wells for each control type. Default vector is 9, 3, 9, 6, 9.}
 
-\item{pos_rows}{A Sample-Target dataframe of character strings for w0450_pos_control_breakdown_check}
+\item{pos_rows}{A Sample-Target dataframe of character strings for w0400 and w0450}
 
-\item{con_rows}{A Sample-Target dataframe of character strings for w0500_control_soft_check}
-
-\item{lab_site_ids}{A character string vector for w0150_sample_naming_structure (A character string vector identifying the submitter sites)}
+\item{con_rows}{A Sample-Target dataframe of character strings for w0500, w0700, w0750}
 
 \item{data_frame_in}{A dataframe of laboratory data.}
 }
