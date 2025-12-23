@@ -11,10 +11,11 @@
 #' are not used.
 #'
 #' @param data_frame_in A dataframe of laboratory data.
-#' @param control_strings A vector of character strings for w0125_expected_controls_present (A vector of character strings that indicate control wells) and w0150_sample_naming_structure (A vector of character strings contained in control sample names)
-#' @param pos_rows A Sample-Target dataframe of character strings for w0450
-#' @param con_rows A Sample-Target dataframe of character strings for w0700 and w0750
 #' @param lab_site_ids A character string vector for w0150_sample_naming_structure (A character string vector identifying the submitter sites)
+#' @param control_strings A vector of character strings for w0125_expected_controls_present (A vector of character strings that indicate control wells) and w0150_sample_naming_structure (A vector of character strings contained in control sample names)
+#' @param pos_rows A Sample-Target dataframe of character strings for w0400 and w0450
+#' @param con_rows A Sample-Target dataframe of character strings for w0700 and w0750
+#' @param rules A vector of numbers indicating what rules to remove violators from (w1000)
 #' @return A list where the first element is the dataframe containing unmerged Sample-Target data points, and the second element is an error stop notification dataframe that is generated if hard stop notifications are not used
 #' @export
 

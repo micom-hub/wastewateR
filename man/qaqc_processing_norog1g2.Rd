@@ -19,9 +19,11 @@ qaqc_processing_norog1g2(
 
 \item{control_strings}{A vector of character strings for w0125_expected_controls_present (A vector of character strings that indicate control wells) and w0150_sample_naming_structure (A vector of character strings contained in control sample names)}
 
-\item{pos_rows}{A Sample-Target dataframe of character strings for w0450}
+\item{pos_rows}{A Sample-Target dataframe of character strings for w0400 and w0450}
 
 \item{con_rows}{A Sample-Target dataframe of character strings for w0700 and w0750}
+
+\item{rules}{A vector of numbers indicating what rules to remove violators from (w1000)}
 
 \item{data_frame_in}{A dataframe of laboratory data.}
 }
