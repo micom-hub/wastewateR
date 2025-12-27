@@ -28,7 +28,7 @@ stop limit, or just a warning.
 \details{
 This function is checking the sum of:
 \itemize{
-\item accepted_droplet_limit2
+\item accepted_droplet_limit2 / 3
 \item ntc_control_check3
 \item ext_neg_control_check6
 }

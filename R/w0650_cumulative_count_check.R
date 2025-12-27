@@ -11,7 +11,7 @@
 #'
 #' This function is checking the sum of:
 #'
-#' * accepted_droplet_limit2
+#' * accepted_droplet_limit2 / 3
 #'
 #' * ntc_control_check3
 #'
@@ -48,7 +48,7 @@ w0650_cumulative_count_check <- function(df_file_in, set_limit = 3, stop_choice 
   # checks 2, 3, 6 make:
   # columns = accepted_droplet_limit2, ntc_control_check3, ext_neg_control_check6
 
-  two <- sum(df_file_in$accepted_droplet_limit2, na.rm = TRUE)
+  two <- sum(df_file_in$accepted_droplet_limit2, na.rm = TRUE)/3
   three <- sum(df_file_in$ntc_control_check3, na.rm = TRUE)
   six <- sum(df_file_in$ext_neg_control_check6, na.rm = TRUE)
 
