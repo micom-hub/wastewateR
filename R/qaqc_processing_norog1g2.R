@@ -63,7 +63,7 @@ qaqc_processing_norog1g2 <- function(file_in, lab_site_ids,
   error_val <- c(error_val, file_in[2][[1]])
 
   error_line <- c(error_line, "w0650")
-  error_val <- c(error_val, w0650_cumulative_count_check(file_in[1][[1]], 3, "yes"))
+  error_val <- c(error_val, w0650_cumulative_count_check(file_in[1][[1]], 3, "no"))
 
   file_in <- w0700_pos_droplet_sum(file_in[1][[1]], controls_to_drop = con_rows)
 
