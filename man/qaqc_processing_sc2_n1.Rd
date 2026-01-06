@@ -12,10 +12,13 @@ qaqc_processing_sc2_n1(
   pos_rows = data.frame(Samples = c("POS", "BCOV"), Targets = c("N1", "BCOV")),
   con_rows = data.frame(Samples = c("BCOV", "BCOV", "POS", "EXT", "EXT", "EXT", "NEG",
     "NEG", "NEG", "NTC", "NTC", "NTC"), Targets = c("PMMOV", "BCOV", "N1", "PMMOV", "N1",
-    "BCOV", "PMMOV", "N1", "BCOV", "PMMOV", "N1", "BCOV"))
+    "BCOV", "PMMOV", "N1", "BCOV", "PMMOV", "N1", "BCOV")),
+  recover_unit = "BCOV"
 )
 }
 \arguments{
+\item{file_in}{A dataframe of laboratory data.}
+
 \item{lab_site_ids}{A character string vector for w0150_sample_naming_structure (A character string vector identifying the submitter sites)}
 
 \item{control_strings}{A vector of character strings for w0125_expected_controls_present (A vector of character strings that indicate control wells) and w0150_sample_naming_structure (A vector of character strings contained in control sample names)}
@@ -26,7 +29,7 @@ qaqc_processing_sc2_n1(
 
 \item{con_rows}{A Sample-Target dataframe of character strings for w0500, w0700, w0750}
 
-\item{data_frame_in}{A dataframe of laboratory data.}
+\item{recover_unit}{A character string indicating the recovery control being used; default is BCOV}
 }
 \value{
 A list where the first element is the dataframe containing unmerged Sample-Target data points, and the second element is an error stop notification dataframe that is generated if hard stop notifications are not used

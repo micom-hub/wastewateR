@@ -29,12 +29,13 @@
 #' error stop notification dataframe that is generated if hard stop notifications
 #' are not used.
 #'
-#' @param data_frame_in A dataframe of laboratory data.
+#' @param file_in A dataframe of laboratory data.
+#' @param lab_site_ids A character string vector for w0150_sample_naming_structure (A character string vector identifying the submitter sites)
 #' @param control_strings A vector of character strings for w0125_expected_controls_present (A vector of character strings that indicate control wells) and w0150_sample_naming_structure (A vector of character strings contained in control sample names)
 #' @param expected_count A numeric vector of the expected number of wells for each control type. Default vector is 9, 3, 9, 6, 9.
 #' @param pos_rows A Sample-Target dataframe of character strings for w0400 and w0450
 #' @param con_rows A Sample-Target dataframe of character strings for w0500, w0700, w0750
-#' @param lab_site_ids A character string vector for w0150_sample_naming_structure (A character string vector identifying the submitter sites)
+#' @param recover_unit A character string indicating the recovery control being used; default is BCOV
 #' @return A list where the first element is the dataframe containing unmerged Sample-Target data points, and the second element is an error stop notification dataframe that is generated if hard stop notifications are not used
 #' @export
 
@@ -45,7 +46,8 @@ qaqc_processing_sc2_n1 <- function(file_in,
                 pos_rows = data.frame(Samples = c("POS", "BCOV"),
                                        Targets = c("N1", "BCOV")),
                 con_rows = data.frame(Samples = c("BCOV", "BCOV", "POS", "EXT", "EXT","EXT","NEG","NEG","NEG", "NTC", "NTC", "NTC"),
-                                       Targets = c("PMMOV", "BCOV",  "N1", "PMMOV", "N1", "BCOV", "PMMOV", "N1", "BCOV", "PMMOV", "N1", "BCOV"))
+                                       Targets = c("PMMOV", "BCOV",  "N1", "PMMOV", "N1", "BCOV", "PMMOV", "N1", "BCOV", "PMMOV", "N1", "BCOV")),
+                recover_unit = "BCOV"
                 ){
 
   file_in <- w0110_sample_name_edits(file_in)
@@ -92,9 +94,9 @@ qaqc_processing_sc2_n1 <- function(file_in,
   error_line <- c(error_line, "w0750")
   error_val <- c(error_val, file_in[2][[1]])
 
-  file_in <- w0800_recover_control_check(file_in[1][[1]], "BCOV", c("POS", "NEG", "EXT", "NTC"), 0.3)
+  file_in <- w0800_recover_control_check(file_in[1][[1]], recover_unit, control_strings, 0.3)
 
-  file_in <- w0900_positives_comparison_rule(file_in, c("POS"), c("N1"), c("POS", "NEG", "EXT", "NTC"), 3)
+  file_in <- w0900_positives_comparison_rule(file_in, pos_rows[, 1], pos_rows[, 2], control_strings, 3)
 
   file_in <- w1000_remove_rows_as_chosen(file_in)
 
