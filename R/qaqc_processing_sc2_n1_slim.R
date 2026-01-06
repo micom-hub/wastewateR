@@ -27,6 +27,7 @@
 #' @param expected_count A numeric vector of the expected number of wells for each control type. Default vector is 3, 3, 3, 3.
 #' @param pos_rows A Sample-Target dataframe of character strings for w0450_pos_control_breakdown_check
 #' @param con_rows A Sample-Target dataframe of character strings for w0500, w0700, w0750
+#' @param recover_unit A character string indicating the recovery control being used; default is BCOV
 #' @param rules A vector of numbers indicating what rules to remove violators from (w1000)
 #' @return A list where the first element is the dataframe containing unmerged Sample-Target data points, and the second element is an error stop notification dataframe that is generated if hard stop notifications are not used
 #' @export
@@ -39,6 +40,7 @@ qaqc_processing_sc2_n1_slim <- function(file_in,
                                                               Targets = c("N1")),
                                         con_rows = data.frame(Samples = c("POS", "NEG", "NTC", "EXT"),
                                                               Targets = c("N1", "N1", "N1", "N1")),
+                                        recover_unit = "BCOV",
 
                                         rules = c(2, 3, 6)){
 
@@ -85,9 +87,9 @@ qaqc_processing_sc2_n1_slim <- function(file_in,
   error_line <- c(error_line, "w0750")
   error_val <- c(error_val, file_in[2][[1]])
 
-  file_in <- w0800_recover_control_check(file_in[1][[1]], "BCOV", c("POS", "NEG", "EXT", "NTC"), 0.3)
+  file_in <- w0800_recover_control_check(file_in[1][[1]], recover_unit, control_strings, 0.3)
 
-  file_in <- w0900_positives_comparison_rule(file_in, c("POS"), c("N1"), c("POS", "NEG", "EXT", "NTC"), 3)
+  file_in <- w0900_positives_comparison_rule(file_in, pos_rows[, 1], pos_rows[, 2], control_strings, 3)
 
   file_in <- w1000_remove_rows_as_chosen(file_in, rules)
 
