@@ -71,7 +71,7 @@ qaqc_processing_fiveplex <- function(file_in,
   error_line <- c(error_line, "w0750")
   error_val <- c(error_val, file_in[2][[1]])
 
-  file_in <- w0900_positives_comparison_rule(file_in[1][[1]], c("POS"), c("N1"), c("POS", "NEG", "EXT", "NTC"), 3)
+  file_in <- w0900_positives_comparison_rule(file_in[1][[1]], pos_rows[, 1], pos_rows[, 2], control_strings, 3)
 
   file_in <- w1000_remove_rows_as_chosen(file_in)
 
