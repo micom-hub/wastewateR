@@ -17,6 +17,8 @@ qaqc_processing_sc2_n1_slim(
 )
 }
 \arguments{
+\item{file_in}{A dataframe of laboratory data.}
+
 \item{lab_site_ids}{A character string vector for w0150_sample_naming_structure (A character string vector identifying the submitter sites)}
 
 \item{control_strings}{A vector of character strings for w0125_expected_controls_present (A vector of character strings that indicate control wells) and w0150_sample_naming_structure (A vector of character strings contained in control sample names)}
@@ -30,8 +32,6 @@ qaqc_processing_sc2_n1_slim(
 \item{recover_unit}{A character string indicating the recovery control being used; default is BCOV}
 
 \item{rules}{A vector of numbers indicating what rules to remove violators from (w1000)}
-
-\item{data_frame_in}{A dataframe of laboratory data.}
 }
 \value{
 A list where the first element is the dataframe containing unmerged Sample-Target data points, and the second element is an error stop notification dataframe that is generated if hard stop notifications are not used
