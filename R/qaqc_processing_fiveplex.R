@@ -10,21 +10,22 @@
 #' error stop notification dataframe that is generated if hard stop notifications
 #' are not used.
 #'
-#' @param data_frame_in A dataframe of laboratory data.
+#' @param file_in A dataframe of laboratory data.
+#' @param lab_site_ids A character string vector for w0150_sample_naming_structure (A character string vector identifying the submitter sites)
 #' @param control_strings A vector of character strings for w0125_expected_controls_present (A vector of character strings that indicate control wells) and w0150_sample_naming_structure (A vector of character strings contained in control sample names)
 #' @param pos_rows A Sample-Target dataframe of character strings for w0450 and w0500
 #' @param con_rows A Sample-Target dataframe of character strings for w0700 and w0750
-#' @param lab_site_ids A character string vector for w0150_sample_naming_structure (A character string vector identifying the submitter sites)
 #' @return A list where the first element is the dataframe containing unmerged Sample-Target data points, and the second element is an error stop notification dataframe that is generated if hard stop notifications are not used
 #' @export
 
 qaqc_processing_fiveplex <- function(file_in,
+                                     lab_site_ids,
                                    control_strings = c("NEG", "POS", "NTC", "EXT"),
                                    pos_rows = data.frame(Samples = c("POS", "POS", "POS", "POS", "POS"),
                                                          Targets = c("FluA", "FluB", "RSV", "SC2", "H5")),
                                    con_rows = data.frame(Samples = c("NEG", "POS", "NTC", "NEG", "POS", "NTC", "NEG", "POS", "NTC", "NEG", "POS", "NTC", "NEG", "POS", "NTC"),
-                                                         Targets = c("FluA", "FluA", "FluA","FluB", "FluB", "FluB","RSV","RSV","RSV", "SC2", "SC2","SC2","H5","H5","H5")),
-                                   lab_site_ids){
+                                                         Targets = c("FluA", "FluA", "FluA","FluB", "FluB", "FluB","RSV","RSV","RSV", "SC2", "SC2","SC2","H5","H5","H5"))
+                                   ){
 
   file_in <- w0110_sample_name_edits(file_in)
 

@@ -6,24 +6,26 @@
 \usage{
 qaqc_processing_cauris(
   file_in,
+  lab_site_ids,
   control_strings = c("NEG", "AUR", "NTC", "EXT"),
   pos_rows = data.frame(Samples = c("AUR", "AUR"), Targets = c("CAUR", "CJEJ")),
   con_rows = data.frame(Samples = c("AUR", "EXT", "NEG", "NTC", "AUR", "EXT", "NEG",
     "NTC"), Targets = c("CAUR", "CAUR", "CAUR", "CAUR", "CJEJ", "CJEJ", "CJEJ", "CJEJ")),
-  lab_site_ids,
   e_w_c = 3
 )
 }
 \arguments{
+\item{file_in}{A dataframe of laboratory data.}
+
+\item{lab_site_ids}{A character string vector for w0150_sample_naming_structure (A character string vector identifying the submitter sites)}
+
 \item{control_strings}{A vector of character strings for w0125_expected_controls_present (A vector of character strings that indicate control wells) and w0150_sample_naming_structure (A vector of character strings contained in control sample names)}
 
 \item{pos_rows}{A Sample-Target dataframe of character strings for w0450_pos_control_breakdown_check}
 
 \item{con_rows}{A Sample-Target dataframe of character strings for w0500_control_soft_check}
 
-\item{lab_site_ids}{A character string vector for w0150_sample_naming_structure (A character string vector identifying the submitter sites)}
-
-\item{data_frame_in}{A dataframe of laboratory data.}
+\item{e_w_c}{A numeric value indicating the number of EXT wells to expect, for use in w0600}
 }
 \value{
 A list where the first element is the dataframe containing unmerged Sample-Target data points, and the second element is an error stop notification dataframe that is generated if hard stop notifications are not used
