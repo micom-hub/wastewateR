@@ -21,7 +21,7 @@
 #' error stop notification dataframe that is generated if hard stop notifications
 #' are not used.
 #'
-#' @param data_frame_in A dataframe of laboratory data.
+#' @param file_in A dataframe of laboratory data.
 #' @param lab_site_ids A character string vector for w0150_sample_naming_structure (A character string vector identifying the submitter sites)
 #' @param control_strings A vector of character strings for w0125_expected_controls_present (A vector of character strings that indicate control wells) and w0150_sample_naming_structure (A vector of character strings contained in control sample names)
 #' @param expected_count A numeric vector of the expected number of wells for each control type. Default vector is 3, 3, 3, 3.

@@ -19,7 +19,8 @@
 #' @return A list where the first element is the dataframe containing unmerged Sample-Target data points, and the second element is an error stop notification dataframe that is generated if hard stop notifications are not used
 #' @export
 
-qaqc_processing_norog1g2 <- function(file_in, lab_site_ids,
+qaqc_processing_norog1g2 <- function(file_in,
+                                     lab_site_ids,
                                      control_strings = c("NEG", "POS", "NTC", "EXT"),
                                      pos_rows = data.frame(Samples = c("POS", "POS"),
                                                            Targets = c("NVG1", "NVG2")),
