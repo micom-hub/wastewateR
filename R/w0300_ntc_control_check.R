@@ -57,11 +57,13 @@ w0300_ntc_control_check <- function(df_in, positive_droplet_limit = 3, stop_choi
 
                 }
 
-                stop_message <- paste0("NTC Sample wells have more than one well with more than ", positive_droplet_limit, " positive droplets.")
+                stop_message <- paste0("NTC Sample wells have more than one well with ", positive_droplet_limit, " or more positive droplets.")
 
                 message(stop_message)
 
                 stop_indicator <- 1
+
+                message("Stop error encountered - #3")
 
           } else if (sum(only_NTC$ntc_control_check3, na.rm = TRUE) == 1){
 
@@ -75,13 +77,13 @@ w0300_ntc_control_check <- function(df_in, positive_droplet_limit = 3, stop_choi
 
                 }
 
-                message(paste0("NTC Sample wells have one well with more than ", positive_droplet_limit, " positive droplets."))
+                message(paste0("NTC Sample wells have one well with ", positive_droplet_limit, " or more positive droplets."))
 
 
 
           } else {
 
-                message(paste0("NTC Sample wells have zero wells with more than ", positive_droplet_limit, " positive droplets."))
+                message(paste0("NTC Sample wells have zero wells with ", positive_droplet_limit, " or more positive droplets."))
 
           }
 
