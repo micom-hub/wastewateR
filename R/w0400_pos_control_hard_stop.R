@@ -63,13 +63,13 @@ w0400_pos_control_hard_stop <- function(new_file_in, samples_targets, pos_drop_l
   # if anything in this set has a well with a Positive droplet count less than 3
   if (any(POS_wells$Positives < pos_drop_lim)){
     # figure out what the samples are
-    POS_wells2 <- filter(POS_wells, Positives < pos_drop_lim) %>% select(Sample, Target, Positives)
+    POS_wells2 <- filter(POS_wells, Positives < pos_drop_lim) %>% select(Sample, Target, Positives, Well)
 
-    message("Sample | Target | Positives")
+    message("Sample | Target | Positives | Well ")
 
     for (i in seq(1, nrow(POS_wells2))){
 
-      message(paste0(POS_wells2[i, 1], " | ", POS_wells2[i, 2], " | ", POS_wells2[i, 3]))
+      message(paste0(POS_wells2[i, 1], " | ", POS_wells2[i, 2], " | ", POS_wells2[i, 3], " | ", POS_wells2[i, 4]))
 
     }
 
@@ -78,6 +78,8 @@ w0400_pos_control_hard_stop <- function(new_file_in, samples_targets, pos_drop_l
     message(stop_message)
 
     stop_indicator <- 1
+
+    message("Stop error encountered - #4")
 
   } else {
 
