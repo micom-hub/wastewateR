@@ -91,7 +91,7 @@ w0900_positives_comparison_rule <- function(new_file_in, pos_samp_str, target_st
       pos_to_flag <- rbind(pos_to_flag, pos_out)
 
     } else {
-      message(paste0("No ", target_str[each_item], " targets above positives limit."))
+      message(paste0("No Target = ", target_str[each_item], "and Sample = ", pos_samp_str[each_item], " combinations above positives limit."))
 
     }
   }
