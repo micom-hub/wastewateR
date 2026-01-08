@@ -63,7 +63,7 @@ w0300_ntc_control_check <- function(df_in, positive_droplet_limit = 3, stop_choi
 
                 stop_indicator <- 1
 
-          } else if (sum(only_NTC$ntc_control_check3, na.rm = TRUE) > 1){
+          } else if (sum(only_NTC$ntc_control_check3, na.rm = TRUE) == 1){
 
                 message("Sample | Target | Positives | AcceptedDroplets")
 
