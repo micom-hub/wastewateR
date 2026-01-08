@@ -154,7 +154,7 @@ w0150_sample_naming_structure <- function(df_in, site_identifiers, control_strs,
         stop_indicator <- 1
 
         message("Sample name(s) [that are NOT expected to be controls] may be missing pieces or otherwise incorrectly named.")
-        message(piece_set[each_row_num, ]$Sample)
+        message(paste0(piece_set[each_row_num, ]$Sample, " in well: ", piece_set[each_row_num, ]$Well))
 
         record_samples <- c(record_samples, piece_set[each_row_num, ]$Sample)
 
