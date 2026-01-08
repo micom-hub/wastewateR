@@ -127,6 +127,45 @@ w0150_sample_naming_structure <- function(df_in, site_identifiers, control_strs,
                                           next_six_date = as.POSIXct(next_six, format = "%y%m%d"),
                                           last_one = substr(Sample, 11, 11))
 
+
+    # checking if any not-controls don't have all the pieces
+    piece_set <- filter(new_file_in, control_check == "NOT A CONTROL")
+    record_samples <- c()
+
+    for (each_row_num in seq(1, nrow(piece_set))){
+
+      counter <- 0
+
+      ff <- as.character(piece_set[each_row_num, ]$first_four)
+      if (ff == ""){
+        counter <- counter + 1
+      }
+      ns <- as.character(piece_set[each_row_num, ]$next_six)
+      if (ns == ""){
+        counter <- counter + 1
+      }
+      lo <- as.character(piece_set[each_row_num, ]$last_one)
+      if (lo == ""){
+        counter <- counter + 1
+      }
+
+      if (counter != 0){
+
+        stop_indicator <- 1
+
+        message("Sample name(s) [that are NOT expected to be controls] may be missing pieces or otherwise incorrectly named.")
+        message(piece_set[each_row_num, ]$Sample)
+
+        record_samples <- c(record_samples, piece_set[each_row_num, ]$Sample)
+
+      }
+
+    }
+
+    new_file_in <- new_file_in %>% mutate(odd_piece = case_when(Sample %in% record_samples ~ 1,
+                                                                T ~ 0))
+
+
     message("") # just for visual clarity
 
     # quick check that all site_identifiers are 4 characters long
@@ -178,7 +217,7 @@ w0150_sample_naming_structure <- function(df_in, site_identifiers, control_strs,
 
     message("") # just for visual clarity
 
-    if (any(filter(new_file_in, control_check == "NOT A CONTROL")$next_six_date > Sys.Date())){
+    if (any(filter(new_file_in, control_check == "NOT A CONTROL" & odd_piece == 0)$next_six_date > Sys.Date())){
 
       for (i in unique(filter(new_file_in, next_six_date > Sys.Date)$Sample)){
         message(i)
