@@ -54,6 +54,7 @@
 w0600_ext_neg_control_check <- function(new_file_in, ext_well_count = 3, neg_well_count = 3, positive_droplet = 3, wells_over = 1, stop_choice = "no"){
 
   message("CHECK #6: Extraction Control & Negative Control Well Check")
+  message("") #aesthetics
 
   stop_indicator <- 0
 
@@ -74,14 +75,14 @@ w0600_ext_neg_control_check <- function(new_file_in, ext_well_count = 3, neg_wel
 
     if (any(controls_g$count != control_well_count)){
       controls2 <- controls %>% select(Well, Sample, Target)
-      message("") #aesthetics
+
       message("Well | Sample | Target")
       for (i in seq(1, nrow(controls2))){
 
         message(paste0(controls2[i, 1], " | ", controls2[i, 2], " | ", controls2[i, 3]))
 
       }
-
+      message("") #aesthetics
       stop_message <- paste0("Not ", control_well_count, " rows with ", each_control_type, " in Sample name")
 
       message(stop_message)
@@ -116,7 +117,7 @@ w0600_ext_neg_control_check <- function(new_file_in, ext_well_count = 3, neg_wel
         example_set <- filter(controls, Sample %in% bad_ones$Sample) %>% select(Sample, Target, Positives)
         example_set <- filter(example_set, Target %in% bad_ones$Target)
 
-        message("") #aesthetics
+
         message("Sample | Target | Positives")
 
         for (i in seq(1, nrow(example_set))){
@@ -124,7 +125,7 @@ w0600_ext_neg_control_check <- function(new_file_in, ext_well_count = 3, neg_wel
           message(paste0(example_set[i, 1], " | ", example_set[i, 2], " | ", example_set[i, 3]))
 
         }
-
+        message("") #aesthetics
         stop_message <- paste0("More than ", wells_over, " ", each_control_type, " control replicates have ", positive_droplet, " or more positive droplets.")
 
         message(stop_message)
@@ -134,13 +135,12 @@ w0600_ext_neg_control_check <- function(new_file_in, ext_well_count = 3, neg_wel
       } else {
 
         # just a warning printed out
-        message(paste0(wells_over, " or fewer but more than 0 ", each_control_type, " control replicates have ", positive_droplet, " or more positive droplets."))
 
         bad_ones <- filter(count_controls, count_over_2 >= wells_over)
         example_set <- filter(controls, Sample %in% bad_ones$Sample) %>% select(Sample, Target, Positives)
         example_set <- filter(example_set, Target %in% bad_ones$Target)
 
-        message("") #aesthetics
+
         message("Sample | Target | Positives")
 
         for (i in seq(1, nrow(example_set))){
@@ -148,6 +148,8 @@ w0600_ext_neg_control_check <- function(new_file_in, ext_well_count = 3, neg_wel
           message(paste0(example_set[i, 1], " | ", example_set[i, 2], " | ", example_set[i, 3]))
 
         }
+        message("") #aesthetics
+        message(paste0(wells_over, " or fewer but more than 0 ", each_control_type, " control replicates have ", positive_droplet, " or more positive droplets."))
 
       }
     } else {
