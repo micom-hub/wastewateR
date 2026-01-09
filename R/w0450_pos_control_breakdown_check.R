@@ -79,7 +79,8 @@ w0450_pos_control_breakdown_check <- function(new_file_in, samples_targets, limi
                                               Target,
                                               Concentration,
                                               CopiesPer20uLWell,
-                                              Positives)
+                                              Positives,
+                                              Well)
   # and check the Positives droplet column. if there are fewer droplets than
   # the limit number set, make note of it!
   if (any(POS_wells_breakdown$Positives < limit_number)){
@@ -88,7 +89,7 @@ w0450_pos_control_breakdown_check <- function(new_file_in, samples_targets, limi
     POS_wells_breakdown <- POS_wells_breakdown %>% mutate(Mark = case_when(Positives < limit_number ~ "***",
                                                                            T ~ ""))
 
-    message("Sample | Target | Concentration | CopiesPer20uLWell | Positives | Mark")
+    message("Sample | Target | Concentration | CopiesPer20uLWell | Positives | Well | Mark")
     for (i in seq(1, nrow(POS_wells_breakdown))){
 
       message(paste0(POS_wells_breakdown[i, 1], " | ",
@@ -96,7 +97,8 @@ w0450_pos_control_breakdown_check <- function(new_file_in, samples_targets, limi
                      POS_wells_breakdown[i, 3], " | ",
                      POS_wells_breakdown[i, 4], " | ",
                      POS_wells_breakdown[i, 5], " | ",
-                     POS_wells_breakdown[i, 6]))
+                     POS_wells_breakdown[i, 6], " | ",
+                     POS_wells_breakdown[i, 7]))
 
     }
 
