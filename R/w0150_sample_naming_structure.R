@@ -271,6 +271,9 @@ w0150_sample_naming_structure <- function(df_in, site_identifiers, control_strs,
 
     }
 
+
+    new_file_in <- new_file_in %>% select(-odd_piece)
+
     message("") # just for visual clarity
     message("Through Check #1.5")
 
@@ -281,6 +284,9 @@ w0150_sample_naming_structure <- function(df_in, site_identifiers, control_strs,
     if (stop_choice == "yes" & stop_indicator == 1){
       stop()
     }
+
+
+
 
     return(list(new_file_in, stop_indicator))
 
