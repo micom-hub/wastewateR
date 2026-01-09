@@ -53,67 +53,104 @@
 
 w0600_ext_neg_control_check <- function(new_file_in, ext_well_count = 3, neg_well_count = 3, positive_droplet = 3, wells_over = 1, stop_choice = "no"){
 
+  # initial messaging
   message("CHECK #6: Extraction Control & Negative Control Well Check")
   message("") #aesthetics
 
-  stop_indicator <- 0
+  stop_indicator <- 0 # setting up stop notification holder
 
-  x <- 0
+  x <- 0 # setting up error catcher
+  # this allows us to iterate through both EXT and NEG scenarios, then make note
+  # of the error (rather than erroring out on one, having a situation where that's fixed,
+  # then running again, and the second one errors out on the same thing)
 
+  # do the following for both EXT and NEG samples, closed with '### ;'
+  # note: this is hard coded to only work for "EXT" and "NEG" naming convention, however
+  # it is flexible enough that it's looking for these character strings inside the
+  # sample name - so "NEG1" would still get picked up, or "EXT 2026"
   for (each_control_type in c("EXT", "NEG")){
 
+    # set our expectation for how many EXT or NEG wells we expect to have
+    # this is flexible - aka can have a different number of EXT and NEG wells
     if (each_control_type == "EXT"){
       control_well_count <- ext_well_count
     } else if (each_control_type == "NEG"){
       control_well_count <- neg_well_count
     }
 
-
+    # looking only at either our EXT or NEG sample names. Note this is looking at
+    # all possible Target values for these wells
     controls <- filter(new_file_in, grepl(each_control_type, Sample))
 
+    # group either our EXT or NEG samples by Sample name and Target, then count how
+    # many Wells are in each
     controls_g <- controls %>% group_by(Sample, Target) %>% summarize(count = length(Well))
 
+    # note - this check is a NOT EQUALS. so we're alerting if it's not what we expect it
+    # to be, either higher or lower. It's also target agnostic, we're looking for any
+    # instances of these control types and looking at how many wells are present on the plate/file
     if (any(controls_g$count != control_well_count)){
+
+      # if there are discrepancies, we want to see them. so we grab all of them
+      # (not JUST the sample/target combination that alerted.)
       controls2 <- controls %>% select(Well, Sample, Target)
 
-      message("Well | Sample | Target")
+      message("Well | Sample | Target") # print out a header
+
       for (i in seq(1, nrow(controls2))){
 
         message(paste0(controls2[i, 1], " | ", controls2[i, 2], " | ", controls2[i, 3]))
 
-      }
-      message("") #aesthetics
-      stop_message <- paste0("Not ", control_well_count, " rows with ", each_control_type, " in Sample name")
+      } # and message out a row for every well, sample, and target line that was pulled
 
+      message("") #aesthetics
+      stop_message <- paste0("Not ", control_well_count, " rows/wells with ", each_control_type, " in Sample name.")
+      # message that there is not the entered expected number of rows (wells) with the indicated NEG or EXT in the sample name
       message(stop_message)
 
-      x <- x + 1
+      x <- x + 1 # we log that in our holder
     }
 
-  }
+  } ### ;
 
+  # and if we have logged a stop indication, we hold it in our stop indicator master tracker
+  # we don't want to stop here if the hard stop trait is "on" - we want to get to the end
+  # of this whole check before we would do that, so we won't have a stop() call in here.
   if (x != 0){
     stop_indicator <- 1
   }
 
   #####
 
-  y <- 0
+  # second half of this test/check
+  y <- 0 # setting up error catcher
 
+  # do the following for both EXT and NEG samples, closed with '### **'
   for (each_control_type in c("EXT", "NEG")){
 
+    # again get the EXT or NEG samples only (agnostic of Target type)
     controls <- filter(new_file_in, grepl(each_control_type, Sample))
 
+    # for each row, mark with 1 if the Positives column is greater than or equal to the
+    # positive droplet limit set (default value is 3)
     count_controls <- controls %>% mutate(count_over = case_when(Positives >= positive_droplet ~ 1,
-                                                                 T ~ 0)) %>%
+                                                                 T ~ 0))
+
+    # then group by Sample/Target combinations, and sum them
+    # so we should have a single row for each sample name and target type combination
+    # with a third column that is the sum of the number of wells that are over the limit.
+    #
+    count_controls <- count_controls %>%
       group_by(Sample, Target) %>%
-      summarize(count_over_2 = sum(count_over))
+      summarize(count_over_2 = sum(count_over, na.rm = TRUE))
 
+    # if that sum is not zero then ...
+    if (any(count_controls$count_over_2 != 0)){ # end of this if/else is marked with '## ---'
 
-    if (any(count_controls$count_over_2 != 0)){
-      if (any(count_controls$count_over_2 > wells_over)){
-        # find out which ones are >= 2
-        bad_ones <- filter(count_controls, count_over_2 > wells_over)
+      if (any(count_controls$count_over_2 > wells_over)){ # wells over is the number of wells we're willing to allow
+        # to "fail"
+
+        bad_ones <- filter(count_controls, count_over_2 > wells_over) # get the rows that are over
         example_set <- filter(controls, Sample %in% bad_ones$Sample) %>% select(Sample, Target, Positives)
         example_set <- filter(example_set, Target %in% bad_ones$Target)
 
@@ -136,7 +173,7 @@ w0600_ext_neg_control_check <- function(new_file_in, ext_well_count = 3, neg_wel
 
         # just a warning printed out
 
-        bad_ones <- filter(count_controls, count_over_2 >= wells_over)
+        bad_ones <- filter(count_controls, count_over_2 <= wells_over)
         example_set <- filter(controls, Sample %in% bad_ones$Sample) %>% select(Sample, Target, Positives)
         example_set <- filter(example_set, Target %in% bad_ones$Target)
 
@@ -156,9 +193,9 @@ w0600_ext_neg_control_check <- function(new_file_in, ext_well_count = 3, neg_wel
 
       message(paste0("All ", each_control_type, " control replicates have fewer than ", positive_droplet, " positive droplets."))
 
-    }
+    } ## ---
 
-  }
+  } ### **
 
   if (y != 0){
     stop_indicator <- 1
