@@ -53,11 +53,11 @@ w0650_cumulative_count_check <- function(df_file_in, set_limit = 3, stop_choice 
   two <- sum(two_check$accepted_droplet_limit2, na.rm = TRUE)/3
 
   ### need to make this more specific to the sample/target combination
-  three_check <- df_file_in %>% select(Sample, Well, ntc_control_check3) %>% distinct()
+  three_check <- df_file_in %>% select(Sample, Target, ntc_control_check3) %>% distinct()
   three <- sum(three_check$ntc_control_check3, na.rm = TRUE)
 
   ### need to make this more specific to the sample/target combination
-  six_check <- df_file_in %>% select(Sample, Well, ext_neg_control_check6) %>% distinct()
+  six_check <- df_file_in %>% select(Sample, Target, ext_neg_control_check6) %>% distinct()
   six <- sum(six_check$ext_neg_control_check6, na.rm = TRUE)
 
   message("") # just for visual clarity

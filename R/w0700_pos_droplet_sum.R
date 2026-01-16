@@ -48,6 +48,7 @@ w0700_pos_droplet_sum <- function(new_file_in, sum_pos_drop = 4, controls_to_dro
 
   # add warning for LOD
   message(paste0("CHECK #7: IF ANY SAMPLES HAVE A SUM OF POSITIVES DROPLET COUNT LESS THAN ", sum_pos_drop))
+  message("") #aesthetics
 
   ### need to filter out controls from consideration
   SAM_wells <- data.frame()
@@ -82,6 +83,7 @@ w0700_pos_droplet_sum <- function(new_file_in, sum_pos_drop = 4, controls_to_dro
 
     }
 
+    message("") #aesthetics
     message(paste0(nrow(belows), " of ", nrow(positives_check), " sample/target combinations have sum of positive droplet count less than ", sum_pos_drop, "."))
 
   }
