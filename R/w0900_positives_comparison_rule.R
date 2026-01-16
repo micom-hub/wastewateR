@@ -93,7 +93,7 @@ w0900_positives_comparison_rule <- function(new_file_in, pos_samp_str, target_st
 
       pos_to_flag <- rbind(pos_to_flag, pos_out)
 
-    } else if (nrow(n1_samples) == 0){
+    } else if (nrow(POS_target_N1) == 0){
       message(paste0("No Target = ", target_str[each_item], " and Sample = ", pos_samp_str[each_item], " combinations present."))
     } else {
       message(paste0("No Target = ", target_str[each_item], " and Sample = ", pos_samp_str[each_item], " combinations above positives limit (", (thresh_size * POS_limit), ")."))
