@@ -78,15 +78,15 @@ w0900_positives_comparison_rule <- function(new_file_in, pos_samp_str, target_st
 
       message(paste0("Some ", target_str[each_item], " targets above positives limit (", (thresh_size * POS_limit), ")."))
       pos_out <- filter(n1_samples, positives_more_than_limit == 1)
-      pos_out <- pos_out %>% select(Sample, Target, Positives)
+      pos_out <- pos_out %>% select(Well, Sample, Target, Positives)
       ### print those out
       message(paste0("Threshold = ", thresh_size, " * ", POS_limit))
       message("")
-      message("Sample | Target | Positives")
+      message("Well | Sample | Target | Positives")
 
       for (i in seq(1, nrow(pos_out))){
 
-        message(pos_out[i, 1], " | ", pos_out[i, 2], " | ", pos_out[i, 3])
+        message(pos_out[i, 1], " | ", pos_out[i, 2], " | ", pos_out[i, 3], " | ", pos_out[i, 4])
 
       }
 
