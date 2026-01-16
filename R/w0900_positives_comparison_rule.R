@@ -56,6 +56,7 @@ w0900_positives_comparison_rule <- function(new_file_in, pos_samp_str, target_st
   for (each_item in seq(1, length(pos_samp_str))){
 
     POS_target_N1 <- filter(new_file_in, grepl(pos_samp_str[each_item], Sample) & grepl(target_str[each_item], Target))
+
     POS_limit <- mean(POS_target_N1$Positives)
 
     n1_samples <- filter(new_file_in, grepl(target_str[each_item], Target))
@@ -92,6 +93,8 @@ w0900_positives_comparison_rule <- function(new_file_in, pos_samp_str, target_st
 
       pos_to_flag <- rbind(pos_to_flag, pos_out)
 
+    } else if (nrow(n1_samples) == 0){
+      message(paste0("No Target = ", target_str[each_item], " and Sample = ", pos_samp_str[each_item], " combinations present."))
     } else {
       message(paste0("No Target = ", target_str[each_item], " and Sample = ", pos_samp_str[each_item], " combinations above positives limit (", (thresh_size * POS_limit), ")."))
 
