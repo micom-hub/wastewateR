@@ -57,6 +57,7 @@ w0750_neg_droplet_samples <- function(new_file_in, sum_neg_drop = 4, controls_to
 
     # add warning for LOD
     message(paste0("CHECK #7.5: IF ANY SAMPLES HAVE A SUM OF NEGATIVES DROPLET COUNT LESS THAN ", sum_neg_drop))
+    message("") # just for visual clarity
 
     if (!trimws(tolower(stop_choice)) %in% c("yes", "no")){
 
@@ -99,6 +100,7 @@ w0750_neg_droplet_samples <- function(new_file_in, sum_neg_drop = 4, controls_to
 
       }
 
+      message("") # just for visual clarity
       message(paste0(nrow(belows), " of ", nrow(negatives_check), " sample/target combinations have sum of negative droplet count less than ", sum_neg_drop, "."))
 
       # stop check implementation - leaving it flexible, in case this is something you
@@ -124,6 +126,7 @@ w0750_neg_droplet_samples <- function(new_file_in, sum_neg_drop = 4, controls_to
 
     new_file_in <- rbind(new_file_in, SAM_wells2)
 
+    message("") # just for visual clarity
     message("Through CHECK #7.5")
 
     if (stop_indicator == 1 & stop_choice == "yes"){
