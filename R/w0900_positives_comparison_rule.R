@@ -49,6 +49,7 @@
 w0900_positives_comparison_rule <- function(new_file_in, pos_samp_str, target_str, control_ids, thresh_size = 3){
 
   message("CHECK #9: Positives Comparison Rule")
+  message("")
 
   pos_to_flag <- data.frame()
 
@@ -75,11 +76,12 @@ w0900_positives_comparison_rule <- function(new_file_in, pos_samp_str, target_st
 
     if (any(n1_samples$positives_more_than_limit == 1)){
 
-      message(paste0("Some ", target_str[each_item], " targets above positives limit."))
+      message(paste0("Some ", target_str[each_item], " targets above positives limit (", (thresh_size * POS_limit), ")."))
       pos_out <- filter(n1_samples, positives_more_than_limit == 1)
       pos_out <- pos_out %>% select(Sample, Target, Positives)
       ### print those out
       message(paste0("Threshold = ", thresh_size, " * ", POS_limit))
+      message("")
       message("Sample | Target | Positives")
 
       for (i in seq(1, nrow(pos_out))){
@@ -91,7 +93,7 @@ w0900_positives_comparison_rule <- function(new_file_in, pos_samp_str, target_st
       pos_to_flag <- rbind(pos_to_flag, pos_out)
 
     } else {
-      message(paste0("No Target = ", target_str[each_item], "and Sample = ", pos_samp_str[each_item], " combinations above positives limit."))
+      message(paste0("No Target = ", target_str[each_item], " and Sample = ", pos_samp_str[each_item], " combinations above positives limit (", (thresh_size * POS_limit), ")."))
 
     }
   }
@@ -109,6 +111,7 @@ w0900_positives_comparison_rule <- function(new_file_in, pos_samp_str, target_st
 
   }
 
+  message("")
   message("Through Check #9.")
 
   return(new_file_in)
