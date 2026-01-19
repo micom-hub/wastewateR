@@ -1,0 +1,26 @@
+---
+title: "how-major-minor-interact-vignette"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{how-major-minor-interact-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(tidyverse)
+library(wastewateR)
+```
+
+
+This vignette dives into an example of how the wrappers and minor functions of this package interact.
+
+
+
