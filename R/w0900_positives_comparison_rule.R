@@ -48,7 +48,7 @@
 
 w0900_positives_comparison_rule <- function(new_file_in, pos_samp_str, target_str, control_ids, thresh_size = 3){
 
-  message("CHECK #9: Positives Comparison Rule")
+  message("CHECK #9: Sample Positives Comparison to Positive Control Positives Rule")
   message("")
 
   pos_to_flag <- data.frame()
@@ -77,7 +77,7 @@ w0900_positives_comparison_rule <- function(new_file_in, pos_samp_str, target_st
 
     if (any(n1_samples$positives_more_than_limit == 1)){
 
-      message(paste0("Some ", target_str[each_item], " targets above positives limit (", (thresh_size * POS_limit), ")."))
+      message(paste0("Some ", target_str[each_item], " targets above positives limit (", (thresh_size * POS_limit), ") set by positive control."))
       pos_out <- filter(n1_samples, positives_more_than_limit == 1)
       pos_out <- pos_out %>% select(Well, Sample, Target, Positives)
       ### print those out
@@ -94,9 +94,9 @@ w0900_positives_comparison_rule <- function(new_file_in, pos_samp_str, target_st
       pos_to_flag <- rbind(pos_to_flag, pos_out)
 
     } else if (nrow(POS_target_N1) == 0){
-      message(paste0("No Sample = ", pos_samp_str[each_item], " and Target = ", target_str[each_item], " combinations present."))
+      message(paste0("No Sample = ", pos_samp_str[each_item], " and Target = ", target_str[each_item], " combinations present to generate a positives limit."))
     } else {
-      message(paste0("No Sample = ", pos_samp_str[each_item], " and Target = ", target_str[each_item], " combinations above positives limit (", (thresh_size * POS_limit), ")."))
+      message(paste0("No Sample combinations above positives limit (", (thresh_size * POS_limit), ") set by Sample = ", pos_samp_str[each_item], " and Target = ", target_str[each_item]))
 
     }
   }
@@ -104,7 +104,7 @@ w0900_positives_comparison_rule <- function(new_file_in, pos_samp_str, target_st
   if (nrow(pos_to_flag) > 0){
     ### add pos flag
     pos_to_flag$sample_pos_limit_flag9 <- 1
-    new_file_in <- merge(new_file_in, pos_to_flag, by = c("Sample", "Target", "Positives"), all.x = TRUE, all.y = FALSE)
+    new_file_in <- merge(new_file_in, pos_to_flag, by = c("Well", "Sample", "Target", "Positives"), all.x = TRUE)
     new_file_in <- new_file_in %>% mutate(sample_pos_limit_flag9 = case_when(is.na(sample_pos_limit_flag9) ~ 0,
                                                                             T ~ sample_pos_limit_flag9))
 
