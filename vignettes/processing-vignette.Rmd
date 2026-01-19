@@ -77,8 +77,7 @@ if (any("Sample.description.1" %in% colnames(raw_data_file))){
 #| echo: true
 
 post_processing <- qaqc_processing_sc2_n1(file_in = format_for_use, 
-                                          lab_id = "{id}", 
-                                          site_id_set = c("{id}", "{id}"))
+                                          lab_site_ids = c("{id}", "{id}"))
 
 ```
 
