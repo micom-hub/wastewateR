@@ -13,6 +13,7 @@
 #'
 #' @param file_in A dataframe of laboratory data.
 #' @param lab_site_ids A character string vector for w0150_sample_naming_structure (A character string vector identifying the submitter sites)
+#' @param targets_to_keep A vector of character strings indicating the Target values the user would like to allow (w0115)
 #' @param control_strings A vector of character strings for w0125_expected_controls_present (A vector of character strings that indicate control wells) and w0150_sample_naming_structure (A vector of character strings contained in control sample names)
 #' @param pos_rows A Sample-Target dataframe of character strings for w0450_pos_control_breakdown_check
 #' @param con_rows A Sample-Target dataframe of character strings for w0500_control_soft_check
@@ -22,6 +23,7 @@
 
 qaqc_processing_cauris <- function(file_in,
                                    lab_site_ids,
+                                   targets_to_keep = c("CAUR", "CJEJ"),
                                    control_strings = c("NEG", "AUR", "NTC", "EXT"),
                                    pos_rows = data.frame(Samples = c("AUR", "AUR"),
                                                          Targets = c("CAUR", "CJEJ")),
@@ -32,9 +34,12 @@ qaqc_processing_cauris <- function(file_in,
 
     auris1 <- w0110_sample_name_edits(file_in)
 
+    auris1 <- w0115_target_check(auris1, targets_to_keep)
+    error_line <- c("w0115")
+    error_val <- c(auris1[2][[1]])
 
     # e track
-    auris1_c <- w0150_sample_naming_structure(auris1,
+    auris1_c <- w0150_sample_naming_structure(auris1[1][[1]],
                                               lab_site_ids,
                                               control_strings)
 

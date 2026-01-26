@@ -12,6 +12,7 @@
 #'
 #' @param data_frame_in A dataframe of laboratory data.
 #' @param lab_site_ids A character string vector for w0150_sample_naming_structure (A character string vector identifying the submitter sites)
+#' @param targets_to_keep A vector of character strings indicating the Target values the user would like to allow (w0115)
 #' @param control_strings A vector of character strings for w0125_expected_controls_present (A vector of character strings that indicate control wells) and w0150_sample_naming_structure (A vector of character strings contained in control sample names)
 #' @param pos_rows A Sample-Target dataframe of character strings for w0400 and w0450
 #' @param con_rows A Sample-Target dataframe of character strings for w0700 and w0750
@@ -21,6 +22,7 @@
 
 qaqc_processing_norog1g2 <- function(file_in,
                                      lab_site_ids,
+                                     targets_to_keep = c("NVG1", "NVG2"),
                                      control_strings = c("NEG", "POS", "NTC", "EXT"),
                                      pos_rows = data.frame(Samples = c("POS", "POS"),
                                                            Targets = c("NVG1", "NVG2")),
@@ -31,7 +33,11 @@ qaqc_processing_norog1g2 <- function(file_in,
 
   file_in <- w0110_sample_name_edits(file_in)
 
-  file_in <- w0125_expected_controls_present(file_in,
+  file_in <- w0115_target_check(file_in, targets_to_keep)
+  error_line <- c("w0115")
+  error_val <- c(file_in[2][[1]])
+
+  file_in <- w0125_expected_controls_present(file_in[1][[1]],
                                              control_strings,
                                              c(12, 12, 12, 0))
 

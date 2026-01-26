@@ -7,6 +7,7 @@
 qaqc_processing_cauris(
   file_in,
   lab_site_ids,
+  targets_to_keep = c("CAUR", "CJEJ"),
   control_strings = c("NEG", "AUR", "NTC", "EXT"),
   pos_rows = data.frame(Samples = c("AUR", "AUR"), Targets = c("CAUR", "CJEJ")),
   con_rows = data.frame(Samples = c("AUR", "EXT", "NEG", "NTC", "AUR", "EXT", "NEG",
@@ -18,6 +19,8 @@ qaqc_processing_cauris(
 \item{file_in}{A dataframe of laboratory data.}
 
 \item{lab_site_ids}{A character string vector for w0150_sample_naming_structure (A character string vector identifying the submitter sites)}
+
+\item{targets_to_keep}{A vector of character strings indicating the Target values the user would like to allow (w0115)}
 
 \item{control_strings}{A vector of character strings for w0125_expected_controls_present (A vector of character strings that indicate control wells) and w0150_sample_naming_structure (A vector of character strings contained in control sample names)}
 

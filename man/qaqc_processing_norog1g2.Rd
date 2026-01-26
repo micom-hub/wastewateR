@@ -7,6 +7,7 @@
 qaqc_processing_norog1g2(
   file_in,
   lab_site_ids,
+  targets_to_keep = c("NVG1", "NVG2"),
   control_strings = c("NEG", "POS", "NTC", "EXT"),
   pos_rows = data.frame(Samples = c("POS", "POS"), Targets = c("NVG1", "NVG2")),
   con_rows = data.frame(Samples = c("NEG", "POS", "NTC", "NEG", "POS", "NTC"), Targets =
@@ -16,6 +17,8 @@ qaqc_processing_norog1g2(
 }
 \arguments{
 \item{lab_site_ids}{A character string vector for w0150_sample_naming_structure (A character string vector identifying the submitter sites)}
+
+\item{targets_to_keep}{A vector of character strings indicating the Target values the user would like to allow (w0115)}
 
 \item{control_strings}{A vector of character strings for w0125_expected_controls_present (A vector of character strings that indicate control wells) and w0150_sample_naming_structure (A vector of character strings contained in control sample names)}
 

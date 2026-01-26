@@ -7,6 +7,7 @@
 qaqc_processing_sc2_n1_slim(
   file_in,
   lab_site_ids,
+  targets_to_keep = c("N1"),
   control_strings = c("NEG", "POS", "NTC", "EXT"),
   expected_count = c(3, 3, 3, 3),
   pos_rows = data.frame(Samples = c("POS"), Targets = c("N1")),
@@ -20,6 +21,8 @@ qaqc_processing_sc2_n1_slim(
 \item{file_in}{A dataframe of laboratory data.}
 
 \item{lab_site_ids}{A character string vector for w0150_sample_naming_structure (A character string vector identifying the submitter sites)}
+
+\item{targets_to_keep}{A vector of character strings indicating the Target values the user would like to allow (w0115)}
 
 \item{control_strings}{A vector of character strings for w0125_expected_controls_present (A vector of character strings that indicate control wells) and w0150_sample_naming_structure (A vector of character strings contained in control sample names)}
 
