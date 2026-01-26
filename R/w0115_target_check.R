@@ -94,6 +94,7 @@ w0115_target_check <- function(new_file_in, targets_allowed,
 
         }
 
+        message(build_message)
         message("")
 
     }
