@@ -107,12 +107,14 @@ qaqc_processing_sc2_n1_slim <- function(file_in,
 
   } else {
 
-    message("SARS-CoV-2 N1 (slim) - Error with Targets listed encountered - Stop Error #1.15")
+    error_df <- data.frame(error_line, error_val)
+
+    message("SARS-CoV-2 N1 (slim) - Error with Targets listed & encountered - Stop Error #1.15")
 
   }
 
 
-  return(list(file_in, error_df))
+  return(list(file_in[1][[1]], error_df))
 
 }
 
