@@ -38,47 +38,60 @@ qaqc_processing_cauris <- function(file_in,
     error_line <- c("w0115")
     error_val <- c(auris1[2][[1]])
 
-    # e track
-    auris1_c <- w0150_sample_naming_structure(auris1[1][[1]],
-                                              lab_site_ids,
-                                              control_strings)
+    if (file_in[2][[1]] == 0){
 
-    error_line <- c("w0150")
-    error_val <- c(auris1_c[2][[1]])
+        # e track
+        auris1_c <- w0150_sample_naming_structure(auris1[1][[1]],
+                                                  lab_site_ids,
+                                                  control_strings)
 
-    auris1_c <- w0200_accepted_droplet_count(auris1_c[1][[1]], 10000)
+        error_line <- c("w0150")
+        error_val <- c(auris1_c[2][[1]])
 
-    # e track
-    auris1_c <- w0300_ntc_control_check(auris1_c)
+        auris1_c <- w0200_accepted_droplet_count(auris1_c[1][[1]], 10000)
 
-    error_line <- c(error_line, "w0300")
-    error_val <- c(error_val, auris1_c[2][[1]])
+        # e track
+        auris1_c <- w0300_ntc_control_check(auris1_c)
 
-    # e track
-    error_line <- c(error_line, "w0400")
-    error_val <- c(error_val, w0400_pos_control_hard_stop(auris1_c[1][[1]], pos_rows))
+        error_line <- c(error_line, "w0300")
+        error_val <- c(error_val, auris1_c[2][[1]])
 
-    auris1_d <- w0450_pos_control_breakdown_check(auris1_c[1][[1]], pos_rows)
+        # e track
+        error_line <- c(error_line, "w0400")
+        error_val <- c(error_val, w0400_pos_control_hard_stop(auris1_c[1][[1]], pos_rows))
 
-    # e track
-    auris1_e <- w0600_ext_neg_control_check(auris1_d, ext_well_count = e_w_c,
-                                            neg_well_count = 3,
-                                            positive_droplet = 3,
-                                            wells_over = 1)
-    error_line <- c(error_line, "w0600")
-    error_val <- c(error_val, auris1_e[2][[1]])
+        auris1_d <- w0450_pos_control_breakdown_check(auris1_c[1][[1]], pos_rows)
 
-    # e track
-    error_line <- c(error_line, "w0650")
-    error_val <- c(error_val, w0650_cumulative_count_check(auris1_e[1][[1]]))
+        # e track
+        auris1_e <- w0600_ext_neg_control_check(auris1_d, ext_well_count = e_w_c,
+                                                neg_well_count = 3,
+                                                positive_droplet = 3,
+                                                wells_over = 1)
+        error_line <- c(error_line, "w0600")
+        error_val <- c(error_val, auris1_e[2][[1]])
 
-    auris1_f <- w0700_pos_droplet_sum(auris1_e[1][[1]], 4, con_rows)
+        # e track
+        error_line <- c(error_line, "w0650")
+        error_val <- c(error_val, w0650_cumulative_count_check(auris1_e[1][[1]]))
 
-    auris1_g <- w1000_remove_rows_as_chosen(auris1_f, c(2, 3, 6))
+        auris1_f <- w0700_pos_droplet_sum(auris1_e[1][[1]], 4, con_rows)
 
-    error_df <- data.frame(error_line, error_val)
+        auris1_g <- w1000_remove_rows_as_chosen(auris1_f, c(2, 3, 6))
 
-    message("End wrapper for C. auris.")
+        error_df <- data.frame(error_line, error_val)
 
-    return(list(auris1_g, error_df))
+        message("End wrapper for C. auris.")
+
+        return(list(auris1_g, error_df))
+
+    } else {
+
+      error_df <- data.frame(error_line, error_val)
+
+      message("C. auris - Error with Targets listed & encountered - Stop Error #1.15")
+
+      return(list(auris1[1][[1]], error_df))
+
+    }
+
 }

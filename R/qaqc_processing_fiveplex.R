@@ -36,56 +36,66 @@ qaqc_processing_fiveplex <- function(file_in,
   error_line <- c("w0115")
   error_val <- c(file_in[2][[1]])
 
-  file_in <- w0125_expected_controls_present(file_in[1][[1]],
-                                             control_strings,
-                                             c(12, 12, 12, 0))
+  if (file_in[2][[1]] == 0){
 
-  error_line <- c("w0125")
-  error_val <- c(file_in[2][[1]])
+      file_in <- w0125_expected_controls_present(file_in[1][[1]],
+                                                 control_strings,
+                                                 c(12, 12, 12, 0))
 
-  file_in <- w0150_sample_naming_structure(file_in[1][[1]],
-                                           lab_site_ids,
-                                           control_strings)
+      error_line <- c("w0125")
+      error_val <- c(file_in[2][[1]])
 
-  error_line <- c(error_line, "w0150")
-  error_val <- c(error_val, file_in[2][[1]])
+      file_in <- w0150_sample_naming_structure(file_in[1][[1]],
+                                               lab_site_ids,
+                                               control_strings)
 
-  file_in <- w0200_accepted_droplet_count(file_in[1][[1]])
+      error_line <- c(error_line, "w0150")
+      error_val <- c(error_val, file_in[2][[1]])
 
-  file_in <- w0300_ntc_control_check(file_in)
+      file_in <- w0200_accepted_droplet_count(file_in[1][[1]])
 
-  error_line <- c(error_line, "w0300")
-  error_val <- c(error_val, file_in[2][[1]])
+      file_in <- w0300_ntc_control_check(file_in)
 
-  error_line <- c(error_line, "w0400")
-  error_val <- c(error_val, w0400_pos_control_hard_stop(file_in[1][[1]], pos_rows))
-  # just a check, no return value
+      error_line <- c(error_line, "w0300")
+      error_val <- c(error_val, file_in[2][[1]])
 
-  file_in <- w0450_pos_control_breakdown_check(file_in[1][[1]], pos_rows, 35)
+      error_line <- c(error_line, "w0400")
+      error_val <- c(error_val, w0400_pos_control_hard_stop(file_in[1][[1]], pos_rows))
+      # just a check, no return value
 
-  file_in <- w0500_control_soft_check(file_in, pos_rows)
+      file_in <- w0450_pos_control_breakdown_check(file_in[1][[1]], pos_rows, 35)
 
-  file_in <- w0600_ext_neg_control_check(file_in, 9, 3, 3, 1)
+      file_in <- w0500_control_soft_check(file_in, pos_rows)
 
-  error_line <- c(error_line, "w0600")
-  error_val <- c(error_val, file_in[2][[1]])
+      file_in <- w0600_ext_neg_control_check(file_in, 9, 3, 3, 1)
 
-  error_line <- c(error_line, "w0650")
-  error_val <- c(error_val, w0650_cumulative_count_check(file_in[1][[1]], 3, "no"))
+      error_line <- c(error_line, "w0600")
+      error_val <- c(error_val, file_in[2][[1]])
 
-  file_in <- w0700_pos_droplet_sum(file_in[1][[1]], controls_to_drop = con_rows)
+      error_line <- c(error_line, "w0650")
+      error_val <- c(error_val, w0650_cumulative_count_check(file_in[1][[1]], 3, "no"))
 
-  file_in <- w0750_neg_droplet_samples(file_in, controls_to_drop = con_rows)
-  error_line <- c(error_line, "w0750")
-  error_val <- c(error_val, file_in[2][[1]])
+      file_in <- w0700_pos_droplet_sum(file_in[1][[1]], controls_to_drop = con_rows)
 
-  file_in <- w0900_positives_comparison_rule(file_in[1][[1]], pos_rows[, 1], pos_rows[, 2], control_strings, 3)
+      file_in <- w0750_neg_droplet_samples(file_in, controls_to_drop = con_rows)
+      error_line <- c(error_line, "w0750")
+      error_val <- c(error_val, file_in[2][[1]])
 
-  file_in <- w1000_remove_rows_as_chosen(file_in)
+      file_in <- w0900_positives_comparison_rule(file_in[1][[1]], pos_rows[, 1], pos_rows[, 2], control_strings, 3)
 
-  error_df <- data.frame(error_line, error_val)
+      file_in <- w1000_remove_rows_as_chosen(file_in)
 
-  message("End wrapper for FivePlex.")
+      error_df <- data.frame(error_line, error_val)
+
+      message("End wrapper for FivePlex.")
+
+  } else {
+
+      error_df <- data.frame(error_line, error_val)
+
+      message("FivePlex  - Error with Targets listed & encountered - Stop Error #1.15")
+
+  }
 
   return(list(file_in, error_df))
 
