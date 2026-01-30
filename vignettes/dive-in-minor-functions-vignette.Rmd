@@ -26,3 +26,51 @@ n1_example_data <- system.file("extdata", "n1_example_20250102.csv", package = "
 This vignette displays a step-by-step example of how the minor functions act and what messaging the user can expect from each individual piece.
 
 
+## Step 1: Look at Data, Format Correctly
+
+The wastewateR package processing functions expect the data frame supplied to them to have the following columns: 
+
+<b style='color:#DB5461;'>
+- “Well”, “Sample”, “Target”, “Concentration”, “CopiesPer20uLWell”, “AcceptedDroplets”, “Positives”, and “Negatives”
+</b>
+
+<em>
+Depending on your output, the columns in your data may also be: 
+
+- "Well", "Sample.description.1", "Target", "Conc.copies.µL.", "Copies.20µLWell", "Accepted.Droplets", "Positives", and "Negatives"
+
+In that case, you will need to rename them to align with the expected naming convention.
+</em>
+
+```{r}
+
+# what columns are in my data set? 
+print(colnames(n1_example_data))
+
+# what Target does this data apply to?
+print(unique(n1_example_data$Target))
+
+```
+
+From the above, we see that we have too many columns, and that we have SARS-CoV-2 N1 data. Let's first select only the columns we need for QAQC processing of this data.
+
+```{r}
+
+n1_example_data <- n1_example_data %>% select(Well, Sample, Target, Concentration, CopiesPer20uLWell, AcceptedDroplets, Positives, Negatives)
+
+```
+
+Then, let's take a look at our "plate" to understand how this data looks even further. 
+
+```{r}
+
+ggplot() + 
+  geom_tile(n1_example_data, aes(x = substr(Well, 2, 3), y = substr(Well, 1, 1), fill = Concentration)) + 
+  geom_text(n1_example_data, aes(x = substr(Well, 2, 3), y = substr(Well, 1, 1), label = paste0("Sample:\n", Sample, "\nTarget:\n", Target)))
+
+```
+
+
+
+
+
