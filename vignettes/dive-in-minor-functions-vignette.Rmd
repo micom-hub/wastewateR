@@ -152,4 +152,45 @@ ggplot() +
 :::
 
 
+We can see that this is not a full plate of data, as in a typical 96 well plate, there are rows of A-I and columns of 1-12. That's a-okay, and will not affect the functioning of this R package. 
+
+We can also see that we have 15 Samples in triplicate, a positive control (POS) set in triplicate, a negative control (NEG) set in triplicate, a non-template control (NTC) set in triplicate, and an extraction control (EXT) set in triplicate, for a total of 57 wells of data.
+
+While we could just apply the wrapper function `qaqc_processing_sc2_n1_slim()` to this data, below we will walk through each minor function that makes up that wrapper function while making deliberate edits to our data file. This will allow us to see what the messaging and output of each minor function looks like. If the user will only be using the wrapper functions, the messaging and final output will be the two things that are most relevant. If the user will be building their own set of functions or wrapper function to process their data, this guide will hopefully address common questions, and all portions would be relevant.  
+
+## Step 2: Individual Minor Functions
+
+#### w0110_sample_name_edits()
+
+#### w0115_target_check()
+
+#### w0125_expected_controls_present()
+
+#### w0150_sample_naming_structure()
+
+#### w0200_accepted_droplet_count()
+
+#### w0300_ntc_control_check()
+
+#### w0400_pos_control_hard_stop()
+
+#### w0450_pos_control_breakdown_check()
+
+#### w0600_ext_neg_control_check()
+
+#### w0650_cumulative_count_check()
+
+#### w0700_pos_droplet_sum()
+
+#### w0750_neg_droplet_samples()
+
+#### w0800_recover_control_check()
+
+#### w0900_positives_comparison_rule()
+
+#### w1000_remove_rows_as_chosen()
+
+
+
+
 
