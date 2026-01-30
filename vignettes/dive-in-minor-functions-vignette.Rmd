@@ -56,7 +56,10 @@ From the above, we see that we have too many columns, and that we have SARS-CoV-
 
 ```{r}
 
-n1_example_data <- n1_example_data %>% select(Well, Sample, Target, Concentration, CopiesPer20uLWell, AcceptedDroplets, Positives, Negatives)
+n1_example_data <- n1_example_data %>% 
+  select(Well, Sample, Target, 
+         Concentration, CopiesPer20uLWell, AcceptedDroplets, 
+         Positives, Negatives)
 
 ```
 
@@ -66,11 +69,16 @@ Then, let's take a look at our "plate" to understand how this data looks even fu
 
 ### Concentration
 
-```{r}
+```{r, fig.height=8, fig.width=10}
 
 ggplot() + 
-  geom_tile(data = n1_example_data, aes(x = substr(Well, 2, 3), y = substr(Well, 1, 1), fill = Concentration)) + 
-  geom_text(data = n1_example_data, aes(x = substr(Well, 2, 3), y = substr(Well, 1, 1), label = paste0("Sample:\n", Sample, "\nTarget:\n", Target)), size = 3) + 
+  geom_tile(data = n1_example_data, aes(x = substr(Well, 2, 3), 
+                                        y = substr(Well, 1, 1), 
+                                        fill = Concentration)) + 
+  geom_text(data = n1_example_data, aes(x = substr(Well, 2, 3), 
+                                        y = substr(Well, 1, 1), 
+                                        label = paste0("Sample:\n", Sample, "\nTarget:\n", Target)), 
+            size = 3) + 
   scale_y_discrete(limits=rev) + 
   scale_x_discrete(position = "top") + 
   labs(x = "", 
@@ -83,11 +91,16 @@ ggplot() +
 
 ### CopiesPer20uLWell
 
-```{r}
+```{r, fig.height=8, fig.width=10}
 
 ggplot() + 
-  geom_tile(data = n1_example_data, aes(x = substr(Well, 2, 3), y = substr(Well, 1, 1), fill = CopiesPer20uLWell)) + 
-  geom_text(data = n1_example_data, aes(x = substr(Well, 2, 3), y = substr(Well, 1, 1), label = paste0("Sample:\n", Sample, "\nTarget:\n", Target)), size = 3) + 
+  geom_tile(data = n1_example_data, aes(x = substr(Well, 2, 3), 
+                                        y = substr(Well, 1, 1), 
+                                        fill = CopiesPer20uLWell)) + 
+  geom_text(data = n1_example_data, aes(x = substr(Well, 2, 3), 
+                                        y = substr(Well, 1, 1), 
+                                        label = paste0("Sample:\n", Sample, "\nTarget:\n", Target)), 
+            size = 3) + 
   scale_y_discrete(limits=rev) + 
   scale_x_discrete(position = "top") + 
   labs(x = "", 
@@ -100,11 +113,16 @@ ggplot() +
 
 ### AcceptedDroplets
 
-```{r}
+```{r, fig.height=8, fig.width=10}
 
 ggplot() + 
-  geom_tile(data = n1_example_data, aes(x = substr(Well, 2, 3), y = substr(Well, 1, 1), fill = AcceptedDroplets)) + 
-  geom_text(data = n1_example_data, aes(x = substr(Well, 2, 3), y = substr(Well, 1, 1), label = paste0("Sample:\n", Sample, "\nTarget:\n", Target)), size = 3) + 
+  geom_tile(data = n1_example_data, aes(x = substr(Well, 2, 3), 
+                                        y = substr(Well, 1, 1), 
+                                        fill = AcceptedDroplets)) + 
+  geom_text(data = n1_example_data, aes(x = substr(Well, 2, 3), 
+                                        y = substr(Well, 1, 1), 
+                                        label = paste0("Sample:\n", Sample, "\nTarget:\n", Target)), 
+            size = 3) + 
   scale_y_discrete(limits=rev) + 
   scale_x_discrete(position = "top") + 
   labs(x = "", 
@@ -117,11 +135,16 @@ ggplot() +
 
 ### Positives
 
-```{r}
+```{r, fig.height=8, fig.width=10}
 
 ggplot() + 
-  geom_tile(data = n1_example_data, aes(x = substr(Well, 2, 3), y = substr(Well, 1, 1), fill = Positives)) + 
-  geom_text(data = n1_example_data, aes(x = substr(Well, 2, 3), y = substr(Well, 1, 1), label = paste0("Sample:\n", Sample, "\nTarget:\n", Target)), size = 3) + 
+  geom_tile(data = n1_example_data, aes(x = substr(Well, 2, 3), 
+                                        y = substr(Well, 1, 1), 
+                                        fill = Positives)) + 
+  geom_text(data = n1_example_data, aes(x = substr(Well, 2, 3), 
+                                        y = substr(Well, 1, 1), 
+                                        label = paste0("Sample:\n", Sample, "\nTarget:\n", Target)), 
+            size = 3) + 
   scale_y_discrete(limits=rev) + 
   scale_x_discrete(position = "top") + 
   labs(x = "", 
@@ -134,11 +157,16 @@ ggplot() +
 
 ### Negatives
 
-```{r}
+```{r, fig.height=8, fig.width=10}
 
 ggplot() + 
-  geom_tile(data = n1_example_data, aes(x = substr(Well, 2, 3), y = substr(Well, 1, 1), fill = Negatives)) + 
-  geom_text(data = n1_example_data, aes(x = substr(Well, 2, 3), y = substr(Well, 1, 1), label = paste0("Sample:\n", Sample, "\nTarget:\n", Target)), size = 3) + 
+  geom_tile(data = n1_example_data, aes(x = substr(Well, 2, 3), 
+                                        y = substr(Well, 1, 1), 
+                                        fill = Negatives)) + 
+  geom_text(data = n1_example_data, aes(x = substr(Well, 2, 3), 
+                                        y = substr(Well, 1, 1), 
+                                        label = paste0("Sample:\n", Sample, "\nTarget:\n", Target)), 
+            size = 3) + 
   scale_y_discrete(limits=rev) + 
   scale_x_discrete(position = "top") + 
   labs(x = "", 
@@ -160,37 +188,417 @@ While we could just apply the wrapper function `qaqc_processing_sc2_n1_slim()` t
 
 ## Step 2: Individual Minor Functions
 
+**An important note: Some of the minor functions return a data frame, some return a list of a data frame and a numeric value, and some just return a numeric value. This is dependent on the kind of check the function is supposed to implement. Remember, the final output of all the wrapper functions is a list of two dataframes - the first data frame being the final post-QAQC results, and the second data frame being the set of stop error indicators (aka any error determined large enough that the user might consider revisiting the laboratory testing or that indicates a human error in the generation of the data file). This structure is considered in the full breadth of the wrapper functions, but it will only be noted when relevant in the descriptions here.**
+
 #### w0110_sample_name_edits()
+
+We know that this function: 
+
+ - Removes all spaces from strings in Sample and Target (leading, lagging, and interior)
+ 
+ - Changes all letter characters in Sample and Target to capitalized / uppercase letters
+ 
+So to display this functionality, we'll first edit a few of our sample names to have these errors:
+
+
+
+```{r}
+
+n1_example_data <- n1_example_data %>% 
+  mutate(Sample = case_when(Sample == "NEG" ~ "N EG", # interior spaces
+                            Sample == "26AA241219I" ~ "26AA241219I ", 
+                            # lagging spaces
+                            Sample == "26FL241222I" ~ " 26FL241222I",
+                            # leading spaces
+                            Sample == "26FL241219I" ~ "26fl241219I", 
+                            # and lowercase letters
+                            T ~ Sample))
+
+```
+
+We see now, those changes displayed in our data: 
+
+```{r}
+
+unique(n1_example_data$Sample)
+
+```
+
+And we expect that applying the `w0110` function to the data frame will resolve those issues.
+
+```{r}
+n1_example_data <- w0110_sample_name_edits(n1_example_data)
+
+unique(n1_example_data$Sample)
+
+```
+
+*Please note: this function will not catch or correct non-alphanumeric characters in your Sample names or incorrectly named samples.*
+
+This function is a "correction" function only. It is not a function that would or should instigate a "stop" event, and therefore it returns only a data frame. 
+
+```{r}
+
+class(n1_example_data)
+
+```
 
 #### w0115_target_check()
 
+This function checks that the Targets present in the provided dataframe are the allowed Target values. This is also a unique function, in that if the "stop" element of this function is reached, in its use in a wrapper function, it will divert to the end of the wrapper function and none of the other checks will be implemented. 
+
+We see that in this case, the Targets in our working data set are the same as our input `targets_allowed` values:
+
+```{r}
+
+unique(n1_example_data$Target)
+
+n1_example_data_1 <- w0115_target_check(n1_example_data, targets_allowed = c("N1"))
+
+```
+
+And our output is a list of one data frame and one numeric value:
+
+```{r}
+
+print(head(n1_example_data_1[1][[1]]))
+
+print(n1_example_data_1[2][[1]])
+
+```
+
+
+If we were to change the `targets_allowed` input to a value that was not present in the data frame: 
+
+```{r}
+
+n1_example_data_2 <- w0115_target_check(n1_example_data, targets_allowed = c("N2"))
+
+```
+
+
+Then we see the impact of that, where the data frame of "continuing" values is empty (because none of the rows had a Target value of "N2") and the data frame of stop error information has triggered (has a value of 1 instead of zero).
+
+```{r}
+
+print(head(n1_example_data_2[1][[1]]))
+
+print(n1_example_data_2[2][[1]])
+
+```
+
+
 #### w0125_expected_controls_present()
+
+This function determines if the data frame contains the expected count of each laboratory control. It needs, as input, a set of control string "names" as well as a set of expected counts. 
+
+If the data frame aligns with the provided expected values: 
+
+```{r}
+
+n1_example_data <- n1_example_data_1
+
+control_strings <- c("NEG", "POS", "NTC", "EXT")
+expected_count <- c(3, 3, 3, 3)
+
+n1_example_data_1 <- w0125_expected_controls_present(n1_example_data[1][[1]],
+                                           control_strings,
+                                           expected_count)
+
+```
+
+The data continues on through as the first data frame in the list, and there is no stop error logged.
+
+```{r}
+
+print(head(n1_example_data_1[1][[1]]))
+
+print(n1_example_data_1[2][[1]])
+
+```
+
+When extra control strings that are not present are part of the provided information: 
+
+```{r}
+
+
+control_strings <- c("NEG", "POS", "NTC", "EXT", "COV", "EC")
+expected_count <- c(3, 3, 3, 3, 3, 3)
+
+n1_example_data_2 <- w0125_expected_controls_present(n1_example_data[1][[1]],
+                                           control_strings,
+                                           expected_count)
+
+```
+
+Those discrepancies are logged in the messaging output and in the second numeric value. Note that the data frame output is still present - this is so that the data file can continue to pass through the minor function ecosystem, and additional errors can be logged so that the user can address them all at once. There are capabilities within the minor functions to have them act as hard stops instead, or the user could set-up their code to instigate hard stops or other functionality if these alerts were triggered.
+
+```{r}
+
+print(head(n1_example_data_2[1][[1]]))
+
+print(n1_example_data_2[2][[1]])
+
+```
+
+When a control is not present: 
+
+```{r}
+
+
+control_strings <- c("NEG", "POS", "NTC", "EXT")
+expected_count <- c(3, 3, 3, 3)
+
+n1_example_data_3 <- filter(n1_example_data[1][[1]], Sample != "NEG")
+
+n1_example_data_3 <- w0125_expected_controls_present(n1_example_data_3,
+                                           control_strings,
+                                           expected_count)
+
+```
+
+
+```{r}
+
+print(head(n1_example_data_3[1][[1]]))
+
+print(n1_example_data_3[2][[1]])
+
+```
+
+
+When the controls are present, but the number of expected wells is not present:
+
+```{r}
+
+control_strings <- c("NEG", "POS", "NTC", "EXT")
+expected_count <- c(4, 3, 3, 2)
+
+n1_example_data_4 <- w0125_expected_controls_present(n1_example_data[1][[1]],
+                                           control_strings,
+                                           expected_count)
+
+```
+
+```{r}
+
+print(head(n1_example_data_4[1][[1]]))
+
+print(n1_example_data_4[2][[1]])
+
+```
 
 #### w0150_sample_naming_structure()
 
+This function is checking the Sample naming structure - it does not address the control sample naming format. It is also specifically designed for the MDHHS SEWER program naming convention, as mentioned elsewhere. If your samples are not named in this way, you can either a) skip this function and include your own code at this point or b) contact the writer of this package and request a custom function with or without wrapper integration. 
+
+If everything is as expected: 
+
+```{r}
+
+n1_example_data <- n1_example_data_1
+
+lab_site_ids <- c("26AA", "26FL", 
+                 "26JS", "26TM", "26YC")
+
+n1_example_data_1 <- w0150_sample_naming_structure(n1_example_data[1][[1]],
+                                         lab_site_ids,
+                                         control_strings)
+
+```
+
+Here we see that the samples are older than six months, which is noted but still allowed. 
+
+The output from this function: 
+
+```{r}
+
+print(head(n1_example_data_1[1][[1]]))
+
+print(n1_example_data_1[2][[1]])
+
+```
+
+Shows the data frame that is continuing through (note our first addition of columns) and that no stop error was encountered.
+
+
+If there are more acceptable sites listed as appropriate than are present in the data frame Sample column: 
+
+```{r}
+
+lab_site_ids <- c("23MC", "26AA", "26FL", 
+                 "26JS", "26TM", "26YC", 
+                 "10M1", "11CA", "11MP", 
+                 "13WP", "18AN", "18IB", 
+                 "23DW")
+
+n1_example_data_2 <- w0150_sample_naming_structure(n1_example_data[1][[1]],
+                                         lab_site_ids,
+                                         control_strings)
+
+```
+
+This is fine, and the output is the same as if the vector of provided `lab_site_ids` contained only exactly the site ids that were present in the data frame. 
+
+```{r}
+
+print(head(n1_example_data_2[1][[1]]))
+
+print(n1_example_data_2[2][[1]])
+
+```
+
+If the data frame contains a site id that is not included in `lab_site_ids`: 
+
+```{r}
+
+lab_site_ids <- c("26AA", "26FL", 
+                  "26TM", "26YC")
+
+n1_example_data_3 <- w0150_sample_naming_structure(n1_example_data[1][[1]],
+                                         lab_site_ids,
+                                         control_strings)
+
+```
+
+Then we see the error noted: 
+
+```{r}
+
+print(head(n1_example_data_3[1][[1]]))
+
+print(n1_example_data_3[2][[1]])
+
+```
+
 #### w0200_accepted_droplet_count()
+
+```{r}
+
+n1_example_data <- n1_example_data_1
+
+n1_example_data[1][[1]] <- n1_example_data[1][[1]] %>% mutate(AcceptedDroplets = case_when(Sample == "26AA241219I" ~ "", 
+                                                           T ~ as.character(AcceptedDroplets)))
+
+n1_example_data <- w0200_accepted_droplet_count(n1_example_data[1][[1]])
+
+```
 
 #### w0300_ntc_control_check()
 
+```{r}
+
+n1_example_data <- n1_example_data %>% mutate(Positives = case_when(Sample == "NTC" & Well == "D08" ~ 3,
+                                                    Sample == "NTC" & Well == "F08" ~ 3,
+                                                    T ~ Positives))
+
+n1_example_data <- w0300_ntc_control_check(n1_example_data)
+
+```
+
 #### w0400_pos_control_hard_stop()
+
+```{r}
+
+pos_rows <- data.frame(Samples = c("POS", "COV"),
+                      Targets = c("N1", "N1"))
+
+n1_example_data[1][[1]] <- n1_example_data[1][[1]] %>% mutate(Positives = case_when(Sample == "POS" & Well == "H04" ~ 0,
+                                                    T ~ Positives))
+
+w0400_pos_control_hard_stop(n1_example_data[1][[1]], pos_rows)
+
+```
 
 #### w0450_pos_control_breakdown_check()
 
+```{r}
+
+n1_example_data <- w0450_pos_control_breakdown_check(n1_example_data[1][[1]], pos_rows, 35)
+
+```
+
 #### w0600_ext_neg_control_check()
+
+```{r}
+
+n1_example_data <- n1_example_data %>% mutate(Positives = case_when(Sample == "EXT" & Well == "D07" ~ 3,
+                                                                    T ~ Positives))
+
+n1_example_data <- w0600_ext_neg_control_check(n1_example_data, 3, 3, 3, 2)
+
+```
 
 #### w0650_cumulative_count_check()
 
+```{r}
+
+w0650_cumulative_count_check(n1_example_data[1][[1]], 3, "no")
+
+```
+
 #### w0700_pos_droplet_sum()
+
+```{r}
+
+con_rows = data.frame(Samples = c("POS", "NEG", "NTC", "EXT", "COV", "EC", "POS", "NEG", "NTC", "EXT", "COV", "EC"),
+                      Targets = c("N1", "N1", "N1", "N1", "N1", "N1", "Phi6", "Phi6", "Phi6", "Phi6", "Phi6", "Phi6"))
+
+
+n1_example_data[1][[1]] <- n1_example_data[1][[1]] %>% mutate(Positives = case_when(Sample == "26TM241222I" ~ 1.333333, 
+                                                                      T ~ Positives))
+  
+n1_example_data <- w0700_pos_droplet_sum(n1_example_data[1][[1]], sum_pos_drop = -1, controls_to_drop = con_rows)
+
+```
+
 
 #### w0750_neg_droplet_samples()
 
+```{r}
+
+n1_example_data <- n1_example_data %>% mutate(Negatives = case_when(Sample == "26AA241219I" ~ 100, 
+                                                                      T ~ Negatives))
+
+n1_example_data <- w0750_neg_droplet_samples(n1_example_data, sum_neg_drop = -100, controls_to_drop = con_rows)
+
+
+```
+
 #### w0800_recover_control_check()
+
+```{r}
+
+recover_unit <- "BCOV"
+
+n1_example_data <- w0800_recover_control_check(n1_example_data[1][[1]], recover_unit, control_strings, 0.3)
+
+```
 
 #### w0900_positives_comparison_rule()
 
+```{r}
+
+n1_example_data <- n1_example_data %>% mutate(Positives = case_when(Target == "N1" & Sample == "POS" ~ 50, 
+                                                    Target == "N1" & Sample == "26YC241221I" ~ 300,
+                                                    T ~ Positives))
+
+n1_example_data <- w0900_positives_comparison_rule(n1_example_data, pos_rows[, 1], pos_rows[, 2], control_strings, 3)
+
+```
+
 #### w1000_remove_rows_as_chosen()
 
+```{r}
 
+rules <- c(2, 3, 6)
+
+table(n1_example_data$accepted_droplet_limit2) # should remove 3
+table(n1_example_data$ntc_control_check3) # should remove 2
+table(n1_example_data$ext_neg_control_check6, useNA = "always") # should remove 1
+n1_example_data <- w1000_remove_rows_as_chosen(n1_example_data, rules)
+
+```
 
 
 
