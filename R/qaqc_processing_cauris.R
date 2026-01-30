@@ -38,7 +38,7 @@ qaqc_processing_cauris <- function(file_in,
     error_line <- c("w0115")
     error_val <- c(auris1[2][[1]])
 
-    if (file_in[2][[1]] == 0){
+    if (auris1[2][[1]] == 0){
 
         # e track
         auris1_c <- w0150_sample_naming_structure(auris1[1][[1]],
