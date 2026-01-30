@@ -18,8 +18,6 @@ knitr::opts_chunk$set(
 library(tidyverse)
 library(wastewateR)
 
-n1_example_data <- data(n1_example_20250102, package = "wastewateR") 
-
 ```
 
 
@@ -44,6 +42,8 @@ In that case, you will need to rename them to align with the expected naming con
 
 ```{r}
 
+n1_example_data <- read.csv("n1_example.csv") 
+
 # what columns are in my data set? 
 print(colnames(n1_example_data))
 
@@ -62,15 +62,94 @@ n1_example_data <- n1_example_data %>% select(Well, Sample, Target, Concentratio
 
 Then, let's take a look at our "plate" to understand how this data looks even further. 
 
+::: {.panel-tabset}
+
+### Concentration
+
 ```{r}
 
 ggplot() + 
-  geom_tile(n1_example_data, aes(x = substr(Well, 2, 3), y = substr(Well, 1, 1), fill = Concentration)) + 
-  geom_text(n1_example_data, aes(x = substr(Well, 2, 3), y = substr(Well, 1, 1), label = paste0("Sample:\n", Sample, "\nTarget:\n", Target)))
+  geom_tile(data = n1_example_data, aes(x = substr(Well, 2, 3), y = substr(Well, 1, 1), fill = Concentration)) + 
+  geom_text(data = n1_example_data, aes(x = substr(Well, 2, 3), y = substr(Well, 1, 1), label = paste0("Sample:\n", Sample, "\nTarget:\n", Target)), size = 3) + 
+  scale_y_discrete(limits=rev) + 
+  scale_x_discrete(position = "top") + 
+  labs(x = "", 
+       y = "", 
+       fill = "Concentration") + 
+  theme_bw() + 
+  scale_fill_gradient(low = "#C7E6DD", high = "#EA9AA2")
 
 ```
 
+### CopiesPer20uLWell
 
+```{r}
+
+ggplot() + 
+  geom_tile(data = n1_example_data, aes(x = substr(Well, 2, 3), y = substr(Well, 1, 1), fill = CopiesPer20uLWell)) + 
+  geom_text(data = n1_example_data, aes(x = substr(Well, 2, 3), y = substr(Well, 1, 1), label = paste0("Sample:\n", Sample, "\nTarget:\n", Target)), size = 3) + 
+  scale_y_discrete(limits=rev) + 
+  scale_x_discrete(position = "top") + 
+  labs(x = "", 
+       y = "", 
+       fill = "CopiesPer\n20uLWell") + 
+  theme_bw() + 
+  scale_fill_gradient(low = "#C7E6DD", high = "#EA9AA2")
+
+```
+
+### AcceptedDroplets
+
+```{r}
+
+ggplot() + 
+  geom_tile(data = n1_example_data, aes(x = substr(Well, 2, 3), y = substr(Well, 1, 1), fill = AcceptedDroplets)) + 
+  geom_text(data = n1_example_data, aes(x = substr(Well, 2, 3), y = substr(Well, 1, 1), label = paste0("Sample:\n", Sample, "\nTarget:\n", Target)), size = 3) + 
+  scale_y_discrete(limits=rev) + 
+  scale_x_discrete(position = "top") + 
+  labs(x = "", 
+       y = "", 
+       fill = "Accepted\nDroplets") + 
+  theme_bw() + 
+  scale_fill_gradient(low = "#C7E6DD", high = "#EA9AA2")
+
+```
+
+### Positives
+
+```{r}
+
+ggplot() + 
+  geom_tile(data = n1_example_data, aes(x = substr(Well, 2, 3), y = substr(Well, 1, 1), fill = Positives)) + 
+  geom_text(data = n1_example_data, aes(x = substr(Well, 2, 3), y = substr(Well, 1, 1), label = paste0("Sample:\n", Sample, "\nTarget:\n", Target)), size = 3) + 
+  scale_y_discrete(limits=rev) + 
+  scale_x_discrete(position = "top") + 
+  labs(x = "", 
+       y = "", 
+       fill = "Positives") + 
+  theme_bw() + 
+  scale_fill_gradient(low = "#C7E6DD", high = "#EA9AA2")
+
+```
+
+### Negatives
+
+```{r}
+
+ggplot() + 
+  geom_tile(data = n1_example_data, aes(x = substr(Well, 2, 3), y = substr(Well, 1, 1), fill = Negatives)) + 
+  geom_text(data = n1_example_data, aes(x = substr(Well, 2, 3), y = substr(Well, 1, 1), label = paste0("Sample:\n", Sample, "\nTarget:\n", Target)), size = 3) + 
+  scale_y_discrete(limits=rev) + 
+  scale_x_discrete(position = "top") + 
+  labs(x = "", 
+       y = "", 
+       fill = "Negatives") + 
+  theme_bw() + 
+  scale_fill_gradient(low = "#C7E6DD", high = "#EA9AA2")
+
+```
+
+:::
 
 
 
