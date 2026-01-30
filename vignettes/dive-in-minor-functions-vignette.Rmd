@@ -1,0 +1,28 @@
+---
+title: "dive-in-minor-functions-vignette"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{dive-in-minor-functions-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(tidyverse)
+library(wastewateR)
+
+n1_example_data <- system.file("extdata", "n1_example_20250102.csv", package = "wastewateR")
+
+```
+
+
+This vignette displays a step-by-step example of how the minor functions act and what messaging the user can expect from each individual piece.
+
+
