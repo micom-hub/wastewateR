@@ -88,15 +88,19 @@ qaqc_processing_norog1g2 <- function(file_in,
 
       message("End wrapper for Noro G1 & G2.")
 
+      return(list(file_in, error_df))
+
   } else {
 
     error_df <- data.frame(error_line, error_val)
 
     message("Noro G1 & G2 - Error with Targets listed & encountered - Stop Error #1.15")
 
+    return(list(file_in[1][[1]], error_df))
+
   }
 
-  return(list(file_in[1][[1]], error_df))
+
 
 }
 
