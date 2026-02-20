@@ -14,7 +14,8 @@ qaqc_processing_sc2_n1_slim(
   con_rows = data.frame(Samples = c("POS", "NEG", "NTC", "EXT"), Targets = c("N1", "N1",
     "N1", "N1")),
   recover_unit = "BCOV",
-  rules = c(2, 3, 6)
+  rules = c(2, 3, 6),
+  control_opts_two = c("EXT", "NEG")
 )
 }
 \arguments{
@@ -35,6 +36,8 @@ qaqc_processing_sc2_n1_slim(
 \item{recover_unit}{A character string indicating the recovery control being used; default is BCOV}
 
 \item{rules}{A vector of numbers indicating what rules to remove violators from (w1000)}
+
+\item{control_opts_two}{A vector of two control types that should be checked for negativity for w0600, default is c("EXT", "NEG")}
 }
 \value{
 A list where the first element is the dataframe containing unmerged Sample-Target data points, and the second element is an error stop notification dataframe that is generated if hard stop notifications are not used
