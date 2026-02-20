@@ -44,6 +44,7 @@
 #' @param new_file_in A dataframe of laboratory data
 #' @param two_control_options A vector of two control abbreviations that should be checked for NO positive signal; default value = c("EXT", "NEG")
 #' @param extraction_control_value A character string that is the extraction control Target that should be checked for NO positive signal; default value is "BCOV"
+#' @param pos_or_neg A character string of "positive" or "negative" depending on what the user is checking for (i.e. are the wells expected to be negative - no/few positive droplets - or expected to be positive - lots of Positive droplets)
 #' @param ext_well_count A numeric indicator for how many EXT control wells are expected (for example, if you'd expect there to be 3 EXT Sample wells, you would enter 3); default value is 3
 #' @param neg_well_count A numeric indicator for how many NEG control wells are expected (for example, if you'd expect there to be 3 NEG Sample wells, you would enter 3); default value is 3
 #' @param positive_droplet A numeric positives droplet limit. Default value set to 3
@@ -53,7 +54,7 @@
 #' @export
 
 
-w0600_ext_neg_control_check <- function(new_file_in, two_control_options = c("EXT", "NEG"), extraction_control_value = "BCOV", ext_well_count = 3, neg_well_count = 3, positive_droplet = 3, wells_over = 1, stop_choice = "no"){
+w0600_ext_neg_control_check <- function(new_file_in, two_control_options = c("EXT", "NEG"), extraction_control_value = "BCOV", pos_or_neg = "negative", ext_well_count = 3, neg_well_count = 3, positive_droplet = 3, wells_over = 1, stop_choice = "no"){
 
   # initial messaging
   message("CHECK #6: Control Well Check - Extraction Negatives")
@@ -133,11 +134,17 @@ w0600_ext_neg_control_check <- function(new_file_in, two_control_options = c("EX
     # again get the EXT or NEG samples only (agnostic of Target type)
     controls <- filter(new_file_in, grepl(each_control_type, Sample))
 
-    # for each row, mark with 1 if the Positives column is greater than or equal to the
-    # positive droplet limit set (default value is 3)
-    count_controls <- controls %>% mutate(count_over = case_when(Positives >= positive_droplet ~ 1,
-                                                                 T ~ 0))
-
+    if (pos_or_neg == "negative"){
+      # for each row, mark with 1 if the Positives column is greater than or equal to the
+      # positive droplet limit set (default value is 3)
+      count_controls <- controls %>% mutate(count_over = case_when(Positives >= positive_droplet ~ 1,
+                                                                   T ~ 0))
+      # expected to be negative, so alert if too much positive
+    } else if (pos_or_neg == "positive"){
+      count_controls <- controls %>% mutate(count_over = case_when(Positives <= positive_droplet ~ 1,
+                                                                   T ~ 0))
+      # expected to be positive, so alert if too much negative
+    }
     # then group by Sample/Target combinations, and sum them
     # so we should have a single row for each sample name and target type combination
     # with a third column that is the sum of the number of wells that are over the limit.
@@ -165,8 +172,12 @@ w0600_ext_neg_control_check <- function(new_file_in, two_control_options = c("EX
 
         }
         message("") #aesthetics
-        stop_message <- paste0("More than ", wells_over, " ", each_control_type, " control replicates have ", positive_droplet, " or more positive droplets.")
 
+        if (pos_or_neg == "negative"){
+            stop_message <- paste0("More than ", wells_over, " ", each_control_type, " control replicates have ", positive_droplet, " or more positive droplets.")
+        } else if (pos_or_neg == "positive"){
+          stop_message <- paste0("More than ", wells_over, " ", each_control_type, " control replicates have ", positive_droplet, " or fewer positive droplets.")
+        }
         message(stop_message)
 
         y <- y + 1
@@ -188,12 +199,22 @@ w0600_ext_neg_control_check <- function(new_file_in, two_control_options = c("EX
 
         }
         message("") #aesthetics
-        message(paste0(wells_over, " or fewer but more than 0 ", each_control_type, " control replicates have ", positive_droplet, " or more positive droplets."))
+
+        if (pos_or_neg == "negative"){
+            message(paste0(wells_over, " or fewer but more than 0 ", each_control_type, " control replicates have ", positive_droplet, " or more positive droplets."))
+        } else if (pos_or_neg == "positive"){
+          message(paste0(wells_over, " or fewer but more than 0 ", each_control_type, " control replicates have ", positive_droplet, " or fewer positive droplets."))
+        }
 
       }
     } else {
 
-      message(paste0("All ", each_control_type, " control replicates have fewer than ", positive_droplet, " positive droplets."))
+      if (pos_or_neg == "negative"){
+          message(paste0("All ", each_control_type, " control replicates have fewer than ", positive_droplet, " positive droplets."))
+      } else if (pos_or_neg == "positive"){
+        message(paste0("All ", each_control_type, " control replicates have more than ", positive_droplet, " positive droplets."))
+      }
+
 
     } ## ---
 
@@ -204,11 +225,21 @@ w0600_ext_neg_control_check <- function(new_file_in, two_control_options = c("EX
   }
 
 
-  new_file_in <- new_file_in %>% mutate(ext_neg_control_check6 = case_when(grepl(two_control_options[2], Sample) & Positives >= positive_droplet ~ 1,
+      if (pos_or_neg == "negative"){
+            new_file_in <- new_file_in %>% mutate(ext_neg_control_check6 = case_when(grepl(two_control_options[2], Sample) & Positives >= positive_droplet ~ 1,
                                                                            grepl(two_control_options[1], Sample) & Positives >= positive_droplet ~ 1,
                                                                            grepl(two_control_options[2], Sample) ~ 0,
                                                                            grepl(two_control_options[1], Sample) ~ 0,
                                                                            T ~ NA_real_))
+      } else if (pos_or_neg == "positive"){
+            new_file_in <- new_file_in %>% mutate(ext_neg_control_check6 = case_when(grepl(two_control_options[2], Sample) & Positives <= positive_droplet ~ 1,
+                                                                                 grepl(two_control_options[1], Sample) & Positives <= positive_droplet ~ 1,
+                                                                                 grepl(two_control_options[2], Sample) ~ 0,
+                                                                                 grepl(two_control_options[1], Sample) ~ 0,
+                                                                                 T ~ NA_real_))
+
+      }
+
   message("") # just for visual clarity
   message("Through Check #6")
 

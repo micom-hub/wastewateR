@@ -90,7 +90,11 @@ qaqc_processing_sc2_n1 <- function(file_in,
 
       file_in <- w0500_control_soft_check(file_in, con_rows)
 
-      file_in <- w0600_ext_neg_control_check(file_in, control_opts_two, recover_unit, 3, 3, 3, 1)
+      file_in <- w0600_ext_neg_control_check(file_in, control_opts_two, recover_unit,
+                                             ext_well_count = 3,
+                                             neg_well_count = 3,
+                                             positive_droplet = 3,
+                                             wells_over = 1)
 
       error_line <- c(error_line, "w0600")
       error_val <- c(error_val, file_in[2][[1]])
