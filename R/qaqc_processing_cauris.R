@@ -18,6 +18,8 @@
 #' @param pos_rows A Sample-Target dataframe of character strings for w0450_pos_control_breakdown_check
 #' @param con_rows A Sample-Target dataframe of character strings for w0500_control_soft_check
 #' @param e_w_c A numeric value indicating the number of EXT wells to expect, for use in w0600
+#' @param recover_unit A character string indicating the recovery control being used; default is BCOV
+#' @param control_opts_two A vector of two control types that should be checked for negativity for w0600, default is c("EXT", "NEG")
 #' @return A list where the first element is the dataframe containing unmerged Sample-Target data points, and the second element is an error stop notification dataframe that is generated if hard stop notifications are not used
 #' @export
 
@@ -30,7 +32,9 @@ qaqc_processing_cauris <- function(file_in,
                                    con_rows = data.frame(Samples = c("AUR", "EXT", "NEG", "NTC", "AUR", "EXT", "NEG", "NTC"),
                                                          Targets = c("CAUR", "CAUR", "CAUR", "CAUR", "CJEJ", "CJEJ", "CJEJ", "CJEJ")),
 
-                                   e_w_c = 3){
+                                   e_w_c = 3,
+                                   recover_unit = "BCOV",
+                                   control_opts_two = c("EXT", "NEG")){
 
     auris1 <- w0110_sample_name_edits(file_in)
 
@@ -63,7 +67,8 @@ qaqc_processing_cauris <- function(file_in,
         auris1_d <- w0450_pos_control_breakdown_check(auris1_c[1][[1]], pos_rows)
 
         # e track
-        auris1_e <- w0600_ext_neg_control_check(auris1_d, ext_well_count = e_w_c,
+        auris1_e <- w0600_ext_neg_control_check(auris1_d, control_opts_two, recover_unit,
+                                                ext_well_count = e_w_c,
                                                 neg_well_count = 3,
                                                 positive_droplet = 3,
                                                 wells_over = 1)

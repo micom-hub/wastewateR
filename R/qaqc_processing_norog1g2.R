@@ -16,6 +16,8 @@
 #' @param control_strings A vector of character strings for w0125_expected_controls_present (A vector of character strings that indicate control wells) and w0150_sample_naming_structure (A vector of character strings contained in control sample names)
 #' @param pos_rows A Sample-Target dataframe of character strings for w0400 and w0450
 #' @param con_rows A Sample-Target dataframe of character strings for w0700 and w0750
+#' @param recover_unit A character string indicating the recovery control being used; default is BCOV
+#' @param control_opts_two A vector of two control types that should be checked for negativity for w0600, default is c("EXT", "NEG")
 #' @param rules A vector of numbers indicating what rules to remove violators from (w1000)
 #' @return A list where the first element is the dataframe containing unmerged Sample-Target data points, and the second element is an error stop notification dataframe that is generated if hard stop notifications are not used
 #' @export
@@ -28,7 +30,8 @@ qaqc_processing_norog1g2 <- function(file_in,
                                                            Targets = c("NVG1", "NVG2")),
                                      con_rows = data.frame(Samples = c("NEG", "POS", "NTC", "NEG", "POS", "NTC"),
                                                            Targets = c("NVG1", "NVG1", "NVG1","NVG2", "NVG2", "NVG2")),
-
+                                     recover_unit = "BCOV",
+                                     control_opts_two = c("EXT", "NEG"),
                                      rules = c(2, 3, 6)){
 
   file_in <- w0110_sample_name_edits(file_in)
@@ -66,7 +69,11 @@ qaqc_processing_norog1g2 <- function(file_in,
 
       file_in <- w0450_pos_control_breakdown_check(file_in[1][[1]], pos_rows, 35)
 
-      file_in <- w0600_ext_neg_control_check(file_in, 9, 3, 3, 1)
+      file_in <- w0600_ext_neg_control_check(file_in, control_opts_two, recover_unit,
+                                             ext_well_count = 9,
+                                             neg_well_count = 3,
+                                             positive_droplet = 3,
+                                             wells_over = 1)
 
       error_line <- c(error_line, "w0600")
       error_val <- c(error_val, file_in[2][[1]])

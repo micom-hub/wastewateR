@@ -16,6 +16,8 @@
 #' @param control_strings A vector of character strings for w0125_expected_controls_present (A vector of character strings that indicate control wells) and w0150_sample_naming_structure (A vector of character strings contained in control sample names)
 #' @param pos_rows A Sample-Target dataframe of character strings for w0450 and w0500
 #' @param con_rows A Sample-Target dataframe of character strings for w0700 and w0750
+#' @param recover_unit A character string indicating the recovery control being used; default is BCOV
+#' @param control_opts_two A vector of two control types that should be checked for negativity for w0600, default is c("EXT", "NEG")
 #' @return A list where the first element is the dataframe containing unmerged Sample-Target data points, and the second element is an error stop notification dataframe that is generated if hard stop notifications are not used
 #' @export
 
@@ -26,7 +28,9 @@ qaqc_processing_fiveplex <- function(file_in,
                                    pos_rows = data.frame(Samples = c("POS", "POS", "POS", "POS", "POS"),
                                                          Targets = c("FluA", "FluB", "RSV", "SC2", "H5")),
                                    con_rows = data.frame(Samples = c("NEG", "POS", "NTC", "NEG", "POS", "NTC", "NEG", "POS", "NTC", "NEG", "POS", "NTC", "NEG", "POS", "NTC"),
-                                                         Targets = c("FluA", "FluA", "FluA","FluB", "FluB", "FluB","RSV","RSV","RSV", "SC2", "SC2","SC2","H5","H5","H5"))
+                                                         Targets = c("FluA", "FluA", "FluA","FluB", "FluB", "FluB","RSV","RSV","RSV", "SC2", "SC2","SC2","H5","H5","H5")),
+                                   recover_unit = "BCOV",
+                                   control_opts_two = c("EXT", "NEG")
                                    ){
 
   file_in <- w0110_sample_name_edits(file_in)
@@ -67,7 +71,11 @@ qaqc_processing_fiveplex <- function(file_in,
 
       file_in <- w0500_control_soft_check(file_in, pos_rows)
 
-      file_in <- w0600_ext_neg_control_check(file_in, 9, 3, 3, 1)
+      file_in <- w0600_ext_neg_control_check(file_in, control_opts_two, recover_unit,
+                                             ext_well_count = 9,
+                                             neg_well_count = 3,
+                                             positive_droplet = 3,
+                                             wells_over = 1)
 
       error_line <- c(error_line, "w0600")
       error_val <- c(error_val, file_in[2][[1]])

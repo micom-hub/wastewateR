@@ -14,7 +14,9 @@ qaqc_processing_fiveplex(
   con_rows = data.frame(Samples = c("NEG", "POS", "NTC", "NEG", "POS", "NTC", "NEG",
     "POS", "NTC", "NEG", "POS", "NTC", "NEG", "POS", "NTC"), Targets = c("FluA", "FluA",
     "FluA", "FluB", "FluB", "FluB", "RSV", "RSV", "RSV", "SC2", "SC2", "SC2", "H5", "H5",
-    "H5"))
+    "H5")),
+  recover_unit = "BCOV",
+  control_opts_two = c("EXT", "NEG")
 )
 }
 \arguments{
@@ -29,6 +31,10 @@ qaqc_processing_fiveplex(
 \item{pos_rows}{A Sample-Target dataframe of character strings for w0450 and w0500}
 
 \item{con_rows}{A Sample-Target dataframe of character strings for w0700 and w0750}
+
+\item{recover_unit}{A character string indicating the recovery control being used; default is BCOV}
+
+\item{control_opts_two}{A vector of two control types that should be checked for negativity for w0600, default is c("EXT", "NEG")}
 }
 \value{
 A list where the first element is the dataframe containing unmerged Sample-Target data points, and the second element is an error stop notification dataframe that is generated if hard stop notifications are not used

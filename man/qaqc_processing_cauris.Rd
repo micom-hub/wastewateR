@@ -12,7 +12,9 @@ qaqc_processing_cauris(
   pos_rows = data.frame(Samples = c("AUR", "AUR"), Targets = c("CAUR", "CJEJ")),
   con_rows = data.frame(Samples = c("AUR", "EXT", "NEG", "NTC", "AUR", "EXT", "NEG",
     "NTC"), Targets = c("CAUR", "CAUR", "CAUR", "CAUR", "CJEJ", "CJEJ", "CJEJ", "CJEJ")),
-  e_w_c = 3
+  e_w_c = 3,
+  recover_unit = "BCOV",
+  control_opts_two = c("EXT", "NEG")
 )
 }
 \arguments{
@@ -29,6 +31,10 @@ qaqc_processing_cauris(
 \item{con_rows}{A Sample-Target dataframe of character strings for w0500_control_soft_check}
 
 \item{e_w_c}{A numeric value indicating the number of EXT wells to expect, for use in w0600}
+
+\item{recover_unit}{A character string indicating the recovery control being used; default is BCOV}
+
+\item{control_opts_two}{A vector of two control types that should be checked for negativity for w0600, default is c("EXT", "NEG")}
 }
 \value{
 A list where the first element is the dataframe containing unmerged Sample-Target data points, and the second element is an error stop notification dataframe that is generated if hard stop notifications are not used
