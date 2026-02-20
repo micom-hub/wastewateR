@@ -6,6 +6,8 @@
 \usage{
 w0600_ext_neg_control_check(
   new_file_in,
+  two_control_options = c("EXT", "NEG"),
+  extraction_control_value = "BCOV",
   ext_well_count = 3,
   neg_well_count = 3,
   positive_droplet = 3,
@@ -15,6 +17,10 @@ w0600_ext_neg_control_check(
 }
 \arguments{
 \item{new_file_in}{A dataframe of laboratory data}
+
+\item{two_control_options}{A vector of two control abbreviations that should be checked for NO positive signal; default value = c("EXT", "NEG")}
+
+\item{extraction_control_value}{A character string that is the extraction control Target that should be checked for NO positive signal; default value is "BCOV"}
 
 \item{ext_well_count}{A numeric indicator for how many EXT control wells are expected (for example, if you'd expect there to be 3 EXT Sample wells, you would enter 3); default value is 3}
 

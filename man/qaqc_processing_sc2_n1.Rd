@@ -14,7 +14,8 @@ qaqc_processing_sc2_n1(
   con_rows = data.frame(Samples = c("BCOV", "BCOV", "POS", "EXT", "EXT", "EXT", "NEG",
     "NEG", "NEG", "NTC", "NTC", "NTC"), Targets = c("PMMOV", "BCOV", "N1", "PMMOV", "N1",
     "BCOV", "PMMOV", "N1", "BCOV", "PMMOV", "N1", "BCOV")),
-  recover_unit = "BCOV"
+  recover_unit = "BCOV",
+  control_opts_two = c("EXT", "NEG")
 )
 }
 \arguments{
@@ -33,6 +34,8 @@ qaqc_processing_sc2_n1(
 \item{con_rows}{A Sample-Target dataframe of character strings for w0500, w0700, w0750}
 
 \item{recover_unit}{A character string indicating the recovery control being used; default is BCOV}
+
+\item{control_opts_two}{A vector of two control types that should be checked for negativity for w0600, default is c("EXT", "NEG")}
 }
 \value{
 A list where the first element is the dataframe containing unmerged Sample-Target data points, and the second element is an error stop notification dataframe that is generated if hard stop notifications are not used

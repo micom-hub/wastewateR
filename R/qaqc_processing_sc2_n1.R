@@ -37,6 +37,7 @@
 #' @param pos_rows A Sample-Target dataframe of character strings for w0400 and w0450
 #' @param con_rows A Sample-Target dataframe of character strings for w0500, w0700, w0750
 #' @param recover_unit A character string indicating the recovery control being used; default is BCOV
+#' @param control_opts_two A vector of two control types that should be checked for negativity for w0600, default is c("EXT", "NEG")
 #' @return A list where the first element is the dataframe containing unmerged Sample-Target data points, and the second element is an error stop notification dataframe that is generated if hard stop notifications are not used
 #' @export
 
@@ -49,7 +50,8 @@ qaqc_processing_sc2_n1 <- function(file_in,
                                        Targets = c("N1", "BCOV")),
                 con_rows = data.frame(Samples = c("BCOV", "BCOV", "POS", "EXT", "EXT","EXT","NEG","NEG","NEG", "NTC", "NTC", "NTC"),
                                        Targets = c("PMMOV", "BCOV",  "N1", "PMMOV", "N1", "BCOV", "PMMOV", "N1", "BCOV", "PMMOV", "N1", "BCOV")),
-                recover_unit = "BCOV"
+                recover_unit = "BCOV",
+                control_opts_two = c("EXT", "NEG")
                 ){
 
   file_in <- w0110_sample_name_edits(file_in)
@@ -88,7 +90,7 @@ qaqc_processing_sc2_n1 <- function(file_in,
 
       file_in <- w0500_control_soft_check(file_in, con_rows)
 
-      file_in <- w0600_ext_neg_control_check(file_in, 3, 3, 3, 1)
+      file_in <- w0600_ext_neg_control_check(file_in, control_opts_two, recover_unit, 3, 3, 3, 1)
 
       error_line <- c(error_line, "w0600")
       error_val <- c(error_val, file_in[2][[1]])
