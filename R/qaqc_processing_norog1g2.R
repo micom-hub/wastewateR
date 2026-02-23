@@ -44,7 +44,7 @@ qaqc_processing_norog1g2 <- function(file_in,
 
       file_in <- w0125_expected_controls_present(file_in[1][[1]],
                                                  control_strings,
-                                                 c(12, 12, 12, 0))
+                                                 c(3, 3, 3, 0))
 
       error_line <- c("w0125")
       error_val <- c(file_in[2][[1]])
