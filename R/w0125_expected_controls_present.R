@@ -45,19 +45,27 @@ w0125_expected_controls_present <- function(df_in, exp_cntrl_v = c("NEG", "POS",
 
     control_samples_here <- data.frame()
 
-    message("Control | Well Count")
+    message("Control | Target | Well Count")
 
     for (each_control in exp_cntrl_v){
 
       fin <- filter(df_in, grepl(each_control, Sample))
-      message(paste0(each_control, " | ", nrow(fin)))
-      control_samples_here <- rbind(control_samples_here, fin)
+
+      for (each_target in unique(fin$Target)){
+
+          fin2 <- filter(fin, Target == each_target)
+
+          message(paste0(each_control, " | ", each_target, " | ", nrow(fin2)))
+          control_samples_here <- rbind(control_samples_here, fin2)
+
+      }
 
     }
 
     message("") # just for visual clarity
 
     alert_set <- data.frame(ControlValue = NA,
+                            TargetValue = NA,
                             ExpectedWellCount = NA,
                             ActualWellCount = NA)
     alert_set <- alert_set[-1, ]
@@ -66,16 +74,23 @@ w0125_expected_controls_present <- function(df_in, exp_cntrl_v = c("NEG", "POS",
     for (each_num in seq(1, length(exp_cntrl_v))){
 
       fin <- filter(df_in, grepl(exp_cntrl_v[each_num], Sample))
-      control_wells <- nrow(fin)
-      alert_num <- expected_count[each_num]
+      fin <- fin %>% group_by(Sample, Target) %>% summarize(count_wells = length(Well))
 
-      if (control_wells < alert_num){
-          # if there are fewer than expected
+      for (each_row in seq(1, nrow(fin))){
 
-          vect <- data.frame(ControlValue = exp_cntrl_v[each_num],
-                     ExpectedWellCount = alert_num,
-                     ActualWellCount = control_wells)
-          alert_set <- rbind(alert_set, vect)
+          control_wells <- fin[each_row, 3]
+          alert_num <- expected_count[each_num]
+
+          if (control_wells < alert_num){
+              # if there are fewer than expected
+
+              vect <- data.frame(ControlValue = exp_cntrl_v[each_num],
+                                 TargetValue = fin[each_row, 2],
+                         ExpectedWellCount = alert_num,
+                         ActualWellCount = control_wells)
+              alert_set <- rbind(alert_set, vect)
+
+          }
 
       }
 
