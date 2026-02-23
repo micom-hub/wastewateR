@@ -81,13 +81,13 @@ w0600_ext_neg_control_check <- function(new_file_in, two_control_options = c("EX
 
     # if there are discrepancies, we want to see them. so we grab all of them
     # (not JUST the sample/target combination that alerted.)
-    controls2 <- controls %>% select(Well, Sample, Target)
+    controls2 <- controls %>% select(Well, Sample, Target, Positives, Negatives)
 
-    message("Well | Sample | Target") # print out a header
+    message("Well | Sample | Target | Positives | Negatives ") # print out a header
 
     for (i in seq(1, nrow(controls2))){
 
-        message(paste0(controls2[i, 1], " | ", controls2[i, 2], " | ", controls2[i, 3]))
+        message(paste0(controls2[i, 1], " | ", controls2[i, 2], " | ", controls2[i, 3], " | ", controls2[i, 4], " | ", controls2[i, 5]))
 
     } # and message out a row for every well, sample, and target line that was pulled
   }
