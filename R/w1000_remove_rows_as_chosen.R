@@ -33,6 +33,8 @@ w1000_remove_rows_as_chosen <- function(data_file_in, rules_out_v = c(2, 3, 6)){
   message("CHECK #10: Removing QAQC Rule Breakers")
   message("")
 
+  counter <- 0
+
   if (2 %in% rules_out_v){
 
     nrows_1 <- nrow(data_file_in)
@@ -46,6 +48,8 @@ w1000_remove_rows_as_chosen <- function(data_file_in, rules_out_v = c(2, 3, 6)){
       message(paste0(nrows_1 - nrows_2, " rows removed from Rule #2 criteria."))
 
     }
+
+    counter <- counter + 1
 
   }
 
@@ -61,6 +65,8 @@ w1000_remove_rows_as_chosen <- function(data_file_in, rules_out_v = c(2, 3, 6)){
       message(paste0(nrows_1 - nrows_2, " rows removed from Rule #3 criteria."))
 
     }
+
+    counter <- counter + 1
 
   }
 
@@ -78,6 +84,8 @@ w1000_remove_rows_as_chosen <- function(data_file_in, rules_out_v = c(2, 3, 6)){
 
     }
 
+    counter <- counter + 1
+
   }
 
   if (6 %in% rules_out_v){
@@ -92,6 +100,8 @@ w1000_remove_rows_as_chosen <- function(data_file_in, rules_out_v = c(2, 3, 6)){
       message(paste0(nrows_1 - nrows_2, " rows removed from Rule #6 criteria."))
 
     }
+
+    counter <- counter + 1
 
   }
 
@@ -108,6 +118,8 @@ w1000_remove_rows_as_chosen <- function(data_file_in, rules_out_v = c(2, 3, 6)){
 
     }
 
+    counter <- counter + 1
+
   }
 
   if (7.5 %in% rules_out_v){
@@ -123,6 +135,8 @@ w1000_remove_rows_as_chosen <- function(data_file_in, rules_out_v = c(2, 3, 6)){
 
     }
 
+    counter <- counter + 1
+
   }
 
   if (8 %in% rules_out_v){
@@ -137,6 +151,8 @@ w1000_remove_rows_as_chosen <- function(data_file_in, rules_out_v = c(2, 3, 6)){
       message(paste0(nrows_1 - nrows_2, " rows removed from Rule #8 criteria."))
 
     }
+
+    counter <- counter + 1
 
   }
 
@@ -154,8 +170,20 @@ w1000_remove_rows_as_chosen <- function(data_file_in, rules_out_v = c(2, 3, 6)){
 
     }
 
+    counter <- counter + 1
+
   }
 
+
+  if (counter == 0){
+
+    message("No rows were removed based upon criteria.")
+    message("Rules checker:")
+    for (i in rules_out_v){
+      message(i)
+    }
+
+  }
 
   message("")
   message("Through Check #10.")
