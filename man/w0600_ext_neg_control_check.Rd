@@ -9,8 +9,6 @@ w0600_ext_neg_control_check(
   two_control_options = c("EXT", "NEG"),
   extraction_control_value = "BCOV",
   pos_or_neg = "negative",
-  well_count_1 = 3,
-  well_count_2 = 3,
   positive_droplet = 3,
   wells_over = 1,
   stop_choice = "no"
@@ -24,10 +22,6 @@ w0600_ext_neg_control_check(
 \item{extraction_control_value}{A character string that is the extraction control Target that should be checked for NO positive signal; default value is "BCOV"}
 
 \item{pos_or_neg}{A character string of "positive" or "negative" depending on what the user is checking for (i.e. are the wells expected to be negative - no/few positive droplets - or expected to be positive - lots of Positive droplets)}
-
-\item{well_count_1}{A numeric indicator for how many (EXT) control wells - first item in two_control_options - are expected (for example, if you'd expect there to be 3 EXT Sample wells, you would enter 3); default value is 3}
-
-\item{well_count_2}{A numeric indicator for how many (NEG) control wells - second item in two_control_options - are expected (for example, if you'd expect there to be 3 NEG Sample wells, you would enter 3); default value is 3}
 
 \item{positive_droplet}{A numeric positives droplet limit. Default value set to 3}
 

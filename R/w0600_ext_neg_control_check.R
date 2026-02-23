@@ -45,8 +45,6 @@
 #' @param two_control_options A vector of two control abbreviations that should be checked for NO positive signal; default value = c("EXT", "NEG")
 #' @param extraction_control_value A character string that is the extraction control Target that should be checked for NO positive signal; default value is "BCOV"
 #' @param pos_or_neg A character string of "positive" or "negative" depending on what the user is checking for (i.e. are the wells expected to be negative - no/few positive droplets - or expected to be positive - lots of Positive droplets)
-#' @param well_count_1 A numeric indicator for how many (EXT) control wells - first item in two_control_options - are expected (for example, if you'd expect there to be 3 EXT Sample wells, you would enter 3); default value is 3
-#' @param well_count_2 A numeric indicator for how many (NEG) control wells - second item in two_control_options - are expected (for example, if you'd expect there to be 3 NEG Sample wells, you would enter 3); default value is 3
 #' @param positive_droplet A numeric positives droplet limit. Default value set to 3
 #' @param wells_over A numeric indicator for the acceptable number of wells that you'd allow to be over the positive droplet limit (for example, if you had run a control in quaduplicate, you might still accept the plate data results if 2 of the 4 controls were over the positive droplet limit, so you'd enter 2); default value is 1
 #' @param stop_choice A character string of "yes" or "no" to indicate whether this should be a hard stop function or not
@@ -54,7 +52,7 @@
 #' @export
 
 
-w0600_ext_neg_control_check <- function(new_file_in, two_control_options = c("EXT", "NEG"), extraction_control_value = "BCOV", pos_or_neg = "negative", well_count_1 = 3, well_count_2 = 3, positive_droplet = 3, wells_over = 1, stop_choice = "no"){
+w0600_ext_neg_control_check <- function(new_file_in, two_control_options = c("EXT", "NEG"), extraction_control_value = "BCOV", pos_or_neg = "negative", positive_droplet = 3, wells_over = 1, stop_choice = "no"){
 
   # initial messaging
   message("CHECK #6: Control Well Check - Extraction Negatives")
@@ -73,14 +71,6 @@ w0600_ext_neg_control_check <- function(new_file_in, two_control_options = c("EX
   # sample name - so "NEG1" would still get picked up, or "EXT 2026"
   for (each_control_type in two_control_options){
 
-    # set our expectation for how many EXT or NEG wells we expect to have
-    # this is flexible - aka can have a different number of EXT and NEG wells
-    if (each_control_type == two_control_options[1]){
-      control_well_count <- well_count_1
-    } else if (each_control_type == two_control_options[2]){
-      control_well_count <- well_count_2
-    }
-
     # looking only at either our EXT or NEG sample names. Note this is looking at
     # all possible Target values for these wells
     controls <- filter(new_file_in, grepl(each_control_type, Sample) & Target == extraction_control_value)
@@ -89,40 +79,18 @@ w0600_ext_neg_control_check <- function(new_file_in, two_control_options = c("EX
     # many Wells are in each
     controls_g <- controls %>% group_by(Sample, Target) %>% summarize(count = length(Well))
 
-    # note - this check is a NOT EQUALS. so we're alerting if it's not what we expect it
-    # to be, either higher or lower. It's also target agnostic, we're looking for any
-    # instances of these control types and looking at how many wells are present on the plate/file
-    if (any(controls_g$count != control_well_count)){
+    # if there are discrepancies, we want to see them. so we grab all of them
+    # (not JUST the sample/target combination that alerted.)
+    controls2 <- controls %>% select(Well, Sample, Target)
 
-      # if there are discrepancies, we want to see them. so we grab all of them
-      # (not JUST the sample/target combination that alerted.)
-      controls2 <- controls %>% select(Well, Sample, Target)
+    message("Well | Sample | Target") # print out a header
 
-      message("Well | Sample | Target") # print out a header
-
-      for (i in seq(1, nrow(controls2))){
+    for (i in seq(1, nrow(controls2))){
 
         message(paste0(controls2[i, 1], " | ", controls2[i, 2], " | ", controls2[i, 3]))
 
-      } # and message out a row for every well, sample, and target line that was pulled
-
-      message("") #aesthetics
-      stop_message <- paste0("Not ", control_well_count, " rows/wells with ", each_control_type, " in Sample name.")
-      # message that there is not the entered expected number of rows (wells) with the indicated NEG or EXT in the sample name
-      message(stop_message)
-
-      x <- x + 1 # we log that in our holder
-    }
-
-  } ### ;
-
-  # and if we have logged a stop indication, we hold it in our stop indicator master tracker
-  # we don't want to stop here if the hard stop trait is "on" - we want to get to the end
-  # of this whole check before we would do that, so we won't have a stop() call in here.
-  if (x != 0){
-    stop_indicator <- 1
+    } # and message out a row for every well, sample, and target line that was pulled
   }
-
   #####
 
   # second half of this test/check

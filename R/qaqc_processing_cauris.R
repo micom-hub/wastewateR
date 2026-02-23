@@ -68,8 +68,6 @@ qaqc_processing_cauris <- function(file_in,
 
         # e track
         auris1_e <- w0600_ext_neg_control_check(auris1_d, control_opts_two, recover_unit,
-                                                well_count_1 = e_w_c,
-                                                well_count_2 = 3,
                                                 positive_droplet = 3,
                                                 wells_over = 1)
         error_line <- c(error_line, "w0600")

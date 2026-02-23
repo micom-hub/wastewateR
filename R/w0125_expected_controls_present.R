@@ -69,7 +69,8 @@ w0125_expected_controls_present <- function(df_in, exp_cntrl_v = c("NEG", "POS",
       control_wells <- nrow(fin)
       alert_num <- expected_count[each_num]
 
-      if (control_wells != alert_num){
+      if (control_wells < alert_num){
+          # if there are fewer than expected
 
           vect <- data.frame(ControlValue = exp_cntrl_v[each_num],
                      ExpectedWellCount = alert_num,
