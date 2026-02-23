@@ -99,11 +99,11 @@ w0125_expected_controls_present <- function(df_in, exp_cntrl_v = c("NEG", "POS",
     if (nrow(alert_set) > 0){
 
       message("There are discrepancies between the actual number of control wells and the expected number of control wells:")
-      message("Control | Expected | Actual")
+      message("Control | Target | Expected | Actual")
 
       for (i in seq(1, nrow(alert_set))){
 
-        message(paste0(alert_set[i, 1], " | ", alert_set[i, 2], " | ", alert_set[i, 3]))
+        message(paste0(alert_set[i, 1], " | ", alert_set[i, 2], " | ", alert_set[i, 3], " | ", alert_set[i, 4]))
 
       }
 
