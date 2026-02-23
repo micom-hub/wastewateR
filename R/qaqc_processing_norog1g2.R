@@ -70,8 +70,8 @@ qaqc_processing_norog1g2 <- function(file_in,
       file_in <- w0450_pos_control_breakdown_check(file_in[1][[1]], pos_rows, 35)
 
       file_in <- w0600_ext_neg_control_check(file_in, control_opts_two, recover_unit,
-                                             ext_well_count = 9,
-                                             neg_well_count = 3,
+                                             well_count_1 = 3,
+                                             well_count_2 = 3,
                                              positive_droplet = 3,
                                              wells_over = 1)
 

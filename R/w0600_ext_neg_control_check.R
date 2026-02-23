@@ -45,8 +45,8 @@
 #' @param two_control_options A vector of two control abbreviations that should be checked for NO positive signal; default value = c("EXT", "NEG")
 #' @param extraction_control_value A character string that is the extraction control Target that should be checked for NO positive signal; default value is "BCOV"
 #' @param pos_or_neg A character string of "positive" or "negative" depending on what the user is checking for (i.e. are the wells expected to be negative - no/few positive droplets - or expected to be positive - lots of Positive droplets)
-#' @param ext_well_count A numeric indicator for how many EXT control wells are expected (for example, if you'd expect there to be 3 EXT Sample wells, you would enter 3); default value is 3
-#' @param neg_well_count A numeric indicator for how many NEG control wells are expected (for example, if you'd expect there to be 3 NEG Sample wells, you would enter 3); default value is 3
+#' @param well_count_1 A numeric indicator for how many (EXT) control wells - first item in two_control_options - are expected (for example, if you'd expect there to be 3 EXT Sample wells, you would enter 3); default value is 3
+#' @param well_count_2 A numeric indicator for how many (NEG) control wells - second item in two_control_options - are expected (for example, if you'd expect there to be 3 NEG Sample wells, you would enter 3); default value is 3
 #' @param positive_droplet A numeric positives droplet limit. Default value set to 3
 #' @param wells_over A numeric indicator for the acceptable number of wells that you'd allow to be over the positive droplet limit (for example, if you had run a control in quaduplicate, you might still accept the plate data results if 2 of the 4 controls were over the positive droplet limit, so you'd enter 2); default value is 1
 #' @param stop_choice A character string of "yes" or "no" to indicate whether this should be a hard stop function or not
@@ -54,7 +54,7 @@
 #' @export
 
 
-w0600_ext_neg_control_check <- function(new_file_in, two_control_options = c("EXT", "NEG"), extraction_control_value = "BCOV", pos_or_neg = "negative", ext_well_count = 3, neg_well_count = 3, positive_droplet = 3, wells_over = 1, stop_choice = "no"){
+w0600_ext_neg_control_check <- function(new_file_in, two_control_options = c("EXT", "NEG"), extraction_control_value = "BCOV", pos_or_neg = "negative", well_count_1 = 3, well_count_2 = 3, positive_droplet = 3, wells_over = 1, stop_choice = "no"){
 
   # initial messaging
   message("CHECK #6: Control Well Check - Extraction Negatives")
@@ -76,9 +76,9 @@ w0600_ext_neg_control_check <- function(new_file_in, two_control_options = c("EX
     # set our expectation for how many EXT or NEG wells we expect to have
     # this is flexible - aka can have a different number of EXT and NEG wells
     if (each_control_type == two_control_options[1]){
-      control_well_count <- ext_well_count
+      control_well_count <- well_count_1
     } else if (each_control_type == two_control_options[2]){
-      control_well_count <- neg_well_count
+      control_well_count <- well_count_2
     }
 
     # looking only at either our EXT or NEG sample names. Note this is looking at
