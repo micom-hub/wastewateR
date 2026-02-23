@@ -75,9 +75,11 @@ w0115_target_check <- function(new_file_in, targets_allowed,
 
         message("Sample/Targets Continuing Through System: ")
 
-        build_message <- ""
+
 
         for (each_target in unique(new_file_in2$Target)){
+
+            build_message <- ""
 
             build_message <- paste0(build_message, each_target, ": ")
 
