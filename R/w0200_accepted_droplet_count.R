@@ -31,6 +31,7 @@ w0200_accepted_droplet_count <- function(df_in, droplet_count_limit = 10000){
     # Check #2: Accepted Droplet count
     message("") # just for visual clarity
     message("CHECK #2: Accepted Droplets")
+    message("")
 
     # mark all wells with too low droplet counts with 1, else 0
     df_in <- df_in %>%

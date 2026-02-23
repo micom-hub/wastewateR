@@ -191,6 +191,7 @@ w1000_remove_rows_as_chosen <- function(data_file_in, rules_out_v = c(2, 3, 6)){
 
   message("")
   message("Through Check #10.")
+  message("")
 
   return(data_file_in)
 

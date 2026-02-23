@@ -35,6 +35,7 @@ w0300_ntc_control_check <- function(df_in, positive_droplet_limit = 3, stop_choi
     # Check #3: NTC Well Check
     message("") # just for visual clarity
     message("CHECK #3: NTC Well Check")
+    message("")
 
     stop_indicator <- 0
 
