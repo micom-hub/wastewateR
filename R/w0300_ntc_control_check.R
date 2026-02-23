@@ -95,6 +95,7 @@ w0300_ntc_control_check <- function(df_in, positive_droplet_limit = 3, stop_choi
 
   message("") # just for visual clarity
   message("Through Check #3")
+  message("")
 
   if (stop_choice == "yes" & stop_indicator == 1){
     stop("Stop error encountered - #3")

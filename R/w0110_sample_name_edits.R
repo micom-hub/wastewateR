@@ -24,13 +24,15 @@ w0110_sample_name_edits <- function(df_in){
     # maintains the BCoV change, and turns all other sample letters to uppercase, if they aren't already
     df_in <- df_in %>% mutate(Sample = toupper(Sample))
 
-    message("Target Name Edits for Consistency")
+    #message("Target Name Edits for Consistency")
 
     df_in <- df_in %>% mutate(Target = gsub(" ", "", trimws(Target)))
 
     df_in <- df_in %>% mutate(Target = toupper(Target))
 
+    message("")
     message("Through Check #1.1")
+    message("")
 
     return(df_in)
 ################################################################################

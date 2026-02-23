@@ -128,6 +128,7 @@ w0750_neg_droplet_samples <- function(new_file_in, sum_neg_drop = 4, controls_to
 
     message("") # just for visual clarity
     message("Through CHECK #7.5")
+    message("")
 
     if (stop_indicator == 1 & stop_choice == "yes"){
       stop("Stop error encountered - #7.5")

@@ -210,6 +210,7 @@ w0600_ext_neg_control_check <- function(new_file_in, two_control_options = c("EX
 
   message("") # just for visual clarity
   message("Through Check #6")
+  message("")
 
   if (stop_choice == "yes" & stop_indicator == 1){
     stop("Stop error encountered - #6")

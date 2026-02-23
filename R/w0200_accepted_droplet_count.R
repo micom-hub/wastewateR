@@ -72,6 +72,7 @@ w0200_accepted_droplet_count <- function(df_in, droplet_count_limit = 10000){
 
     message("") # just for visual clarity
     message("Through Check #2")
+    message("")
 
     return(df_in)
 }

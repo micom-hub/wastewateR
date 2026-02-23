@@ -108,6 +108,7 @@ w0125_expected_controls_present <- function(df_in, exp_cntrl_v = c("NEG", "POS",
 
     message("") # just for visual clarity
     message("Through Check #1.25") # notify the check is over
+    message("")
 
     return(list(df_in, stopper_ind)) # return our input
 

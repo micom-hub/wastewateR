@@ -89,6 +89,7 @@ w0400_pos_control_hard_stop <- function(new_file_in, samples_targets, pos_drop_l
 
   message("") # just for visual clarity
   message("Through Check #4")
+  message("")
 
   if (stop_choice == "yes" & stop_indicator == 1){
     stop("Stop error encountered - #4")

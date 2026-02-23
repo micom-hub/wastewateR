@@ -116,6 +116,7 @@ w0900_positives_comparison_rule <- function(new_file_in, pos_samp_str, target_st
 
   message("")
   message("Through Check #9.")
+  message("")
 
   return(new_file_in)
 

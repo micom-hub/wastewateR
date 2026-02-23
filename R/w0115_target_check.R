@@ -123,7 +123,9 @@ w0115_target_check <- function(new_file_in, targets_allowed,
 
     }
 
+  message("")
   message("Through Check #1.15")
+  message("")
 
   return(list(new_file_in2, stop_indicator))
 

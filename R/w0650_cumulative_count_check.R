@@ -81,7 +81,9 @@ w0650_cumulative_count_check <- function(df_file_in, set_limit = 3, stop_choice 
 
   }
 
+  message("")
   message("Through Check #6.5")
+  message("")
 
   if (trimws(tolower(stop_choice)) == "yes" & stop_indicator == 1){
 

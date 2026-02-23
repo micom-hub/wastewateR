@@ -97,6 +97,7 @@ w0500_control_soft_check <- function(new_file_in, samples_targets, pos_drop_limi
 
   message("") # just for visual clarity
   message("Through Check #5")
+  message("")
 
   return(new_file_in)
 
