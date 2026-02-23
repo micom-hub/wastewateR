@@ -92,10 +92,13 @@ w0115_target_check <- function(new_file_in, targets_allowed,
             # need to remove last two characters because of the extra ", " addition for last one
             build_message <- substr(build_message, 1, nchar(build_message) - 2)
 
+            message(build_message)
+            message("")
+
         }
 
-        message(build_message)
-        message("")
+
+
 
     }
 
