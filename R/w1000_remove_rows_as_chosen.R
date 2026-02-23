@@ -30,6 +30,9 @@
 
 w1000_remove_rows_as_chosen <- function(data_file_in, rules_out_v = c(2, 3, 5, 6)){
 
+  message("CHECK #10: Removing QAQC Rule Breakers")
+  message("")
+
   if (2 %in% rules_out_v){
 
     nrows_1 <- nrow(data_file_in)
@@ -152,6 +155,10 @@ w1000_remove_rows_as_chosen <- function(data_file_in, rules_out_v = c(2, 3, 5, 6
     }
 
   }
+
+
+  message("")
+  message("Through Check #10.")
 
   return(data_file_in)
 
