@@ -32,51 +32,124 @@ w1000_remove_rows_as_chosen <- function(data_file_in, rules_out_v = c(2, 3, 5, 6
 
   if (2 %in% rules_out_v){
 
+    nrows_1 <- nrow(data_file_in)
+
     data_file_in <- filter(data_file_in, accepted_droplet_limit2 != 1)
     data_file_in <- filter(data_file_in, accepted_droplet_count2 < 2)
+
+    nrows_2 <- nrow(data_file_in)
+    if (nrows_2 < nrows_1){
+
+      message(paste0(nrows_1 - nrows_2, " rows removed from Rule #2 criteria."))
+
+    }
 
   }
 
   if (3 %in% rules_out_v){
 
+    nrows_1 <- nrow(data_file_in)
+
     data_file_in <- filter(data_file_in, ntc_control_check3 != 1)
+
+    nrows_2 <- nrow(data_file_in)
+    if (nrows_2 < nrows_1){
+
+      message(paste0(nrows_1 - nrows_2, " rows removed from Rule #3 criteria."))
+
+    }
 
   }
 
   if (5 %in% rules_out_v){
 
+    nrows_1 <- nrow(data_file_in)
+
     data_file_in <- filter(data_file_in, control_pos_drop_soft5 != 1 | is.na(control_pos_drop_soft5))
+
+
+    nrows_2 <- nrow(data_file_in)
+    if (nrows_2 < nrows_1){
+
+      message(paste0(nrows_1 - nrows_2, " rows removed from Rule #5 criteria."))
+
+    }
 
   }
 
   if (6 %in% rules_out_v){
 
+    nrows_1 <- nrow(data_file_in)
+
     data_file_in <- filter(data_file_in, ext_neg_control_check6 != 1 | is.na(ext_neg_control_check6 ))
+
+    nrows_2 <- nrow(data_file_in)
+    if (nrows_2 < nrows_1){
+
+      message(paste0(nrows_1 - nrows_2, " rows removed from Rule #6 criteria."))
+
+    }
 
   }
 
   if (7 %in% rules_out_v){
 
+    nrows_1 <- nrow(data_file_in)
+
     data_file_in <- filter(data_file_in, sample_wells_positives7 != 1 | is.na(sample_wells_positives7))
+
+    nrows_2 <- nrow(data_file_in)
+    if (nrows_2 < nrows_1){
+
+      message(paste0(nrows_1 - nrows_2, " rows removed from Rule #7 criteria."))
+
+    }
 
   }
 
   if (7.5 %in% rules_out_v){
 
+    nrows_1 <- nrow(data_file_in)
+
     data_file_in <- filter(data_file_in, sample_wells_negatives75 != 1 | is.na(sample_wells_negatives75))
+
+    nrows_2 <- nrow(data_file_in)
+    if (nrows_2 < nrows_1){
+
+      message(paste0(nrows_1 - nrows_2, " rows removed from Rule #7.5 criteria."))
+
+    }
 
   }
 
   if (8 %in% rules_out_v){
 
+    nrows_1 <- nrow(data_file_in)
+
     data_file_in <- filter(data_file_in, recovery_flag8 != 1)
+
+    nrows_2 <- nrow(data_file_in)
+    if (nrows_2 < nrows_1){
+
+      message(paste0(nrows_1 - nrows_2, " rows removed from Rule #8 criteria."))
+
+    }
 
   }
 
 
   if (9 %in% rules_out_v){
 
+    nrows_1 <- nrow(data_file_in)
+
     data_file_in <- filter(data_file_in, sample_pos_limit_flag9 != 1)
+
+    nrows_2 <- nrow(data_file_in)
+    if (nrows_2 < nrows_1){
+
+      message(paste0(nrows_1 - nrows_2, " rows removed from Rule #9 criteria."))
+
+    }
 
   }
 
