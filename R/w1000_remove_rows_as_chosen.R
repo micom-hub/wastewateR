@@ -24,11 +24,11 @@
 #' the entire sample set is removed.
 #'
 #' @param data_file_in A dataframe of laboratory data
-#' @param rules_out_v A vector of numbers that correspond to the rules that, if there were only "mild" rule breaks (aka that did not previously trigger a STOP), you'd like to remove those rule breaking rows. The default value for this vector is 'c(2, 3, 5, 6)'.
+#' @param rules_out_v A vector of numbers that correspond to the rules that, if there were only "mild" rule breaks (aka that did not previously trigger a STOP), you'd like to remove those rule breaking rows. The default value for this vector is 'c(2, 3, 6)'.
 #' @return A dataframe just like the input data frame, with any indicated rule breaker rows removed
 #' @export
 
-w1000_remove_rows_as_chosen <- function(data_file_in, rules_out_v = c(2, 3, 5, 6)){
+w1000_remove_rows_as_chosen <- function(data_file_in, rules_out_v = c(2, 3, 6)){
 
   message("CHECK #10: Removing QAQC Rule Breakers")
   message("")
