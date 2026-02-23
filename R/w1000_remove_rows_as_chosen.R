@@ -46,10 +46,10 @@ w1000_remove_rows_as_chosen <- function(data_file_in, rules_out_v = c(2, 3, 6)){
     if (nrows_2 < nrows_1){
 
       message(paste0(nrows_1 - nrows_2, " rows removed from Rule #2 criteria."))
-
+      counter <- counter + 1
     }
 
-    counter <- counter + 1
+
 
   }
 
@@ -63,10 +63,10 @@ w1000_remove_rows_as_chosen <- function(data_file_in, rules_out_v = c(2, 3, 6)){
     if (nrows_2 < nrows_1){
 
       message(paste0(nrows_1 - nrows_2, " rows removed from Rule #3 criteria."))
-
+      counter <- counter + 1
     }
 
-    counter <- counter + 1
+
 
   }
 
@@ -81,10 +81,11 @@ w1000_remove_rows_as_chosen <- function(data_file_in, rules_out_v = c(2, 3, 6)){
     if (nrows_2 < nrows_1){
 
       message(paste0(nrows_1 - nrows_2, " rows removed from Rule #5 criteria."))
+      counter <- counter + 1
 
     }
 
-    counter <- counter + 1
+
 
   }
 
@@ -98,10 +99,10 @@ w1000_remove_rows_as_chosen <- function(data_file_in, rules_out_v = c(2, 3, 6)){
     if (nrows_2 < nrows_1){
 
       message(paste0(nrows_1 - nrows_2, " rows removed from Rule #6 criteria."))
-
+      counter <- counter + 1
     }
 
-    counter <- counter + 1
+
 
   }
 
@@ -115,10 +116,10 @@ w1000_remove_rows_as_chosen <- function(data_file_in, rules_out_v = c(2, 3, 6)){
     if (nrows_2 < nrows_1){
 
       message(paste0(nrows_1 - nrows_2, " rows removed from Rule #7 criteria."))
-
+      counter <- counter + 1
     }
 
-    counter <- counter + 1
+
 
   }
 
@@ -132,10 +133,11 @@ w1000_remove_rows_as_chosen <- function(data_file_in, rules_out_v = c(2, 3, 6)){
     if (nrows_2 < nrows_1){
 
       message(paste0(nrows_1 - nrows_2, " rows removed from Rule #7.5 criteria."))
+      counter <- counter + 1
 
     }
 
-    counter <- counter + 1
+
 
   }
 
@@ -149,10 +151,11 @@ w1000_remove_rows_as_chosen <- function(data_file_in, rules_out_v = c(2, 3, 6)){
     if (nrows_2 < nrows_1){
 
       message(paste0(nrows_1 - nrows_2, " rows removed from Rule #8 criteria."))
+      counter <- counter + 1
 
     }
 
-    counter <- counter + 1
+
 
   }
 
@@ -167,10 +170,11 @@ w1000_remove_rows_as_chosen <- function(data_file_in, rules_out_v = c(2, 3, 6)){
     if (nrows_2 < nrows_1){
 
       message(paste0(nrows_1 - nrows_2, " rows removed from Rule #9 criteria."))
+      counter <- counter + 1
 
     }
 
-    counter <- counter + 1
+
 
   }
 
