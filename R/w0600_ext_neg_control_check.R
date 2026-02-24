@@ -4,8 +4,10 @@
 #' This function is looking for extraction control (EXT) and negative control (NEG)
 #' 'Sample' rows. It takes in:
 #' - a laboratory data frame
-#' - a numeric indicator for how many EXT control wells are expected
-#' - a numeric indicator for how many NEG control wells are expected
+#' - a vector of the two control types to check
+#' - a numeric indicator for how many of the first value control wells are expected
+#' - a numeric indicator for how many of the second value control wells are expected
+#' - whether to check for positivity or negativity (higher or lower than the limit)
 #' - a numeric positive droplet limit; default value is 3
 #' - an acceptable number of wells that you'd allow to be over the positive
 #' droplet limit (for example, if you had run a control in quaduplicate, you might
@@ -18,23 +20,20 @@
 #' "EXT" or "NEG" in the character string of the 'Sample' column.
 #'
 #' if stop_choice == "yes":
-#' STOP ALERT: If either the negative controls or the extraction controls do not
-#' have the number of rows indicated, the 'Well', 'Sample', and 'Target' column
-#' values will be printed to the console. The code will STOP RUNNING if this occurs.
 #'
-#' STOP ALERT: If either the negative controls or the extraction controls have
+#' STOP ALERT: If either of the two indicated controls have
 #' more than the indicated acceptable number of wells with a 'Positives' (positive
 #' droplet measurement) greater than or equal to the indicated positive droplet
 #' limit, the 'Sample', 'Target', and 'Positives' column values will be printed
 #' to the console. The code will STOP RUNNING if this occurs.
 #'
-#' If either the negative controls or the extraction controls have more than zero
+#' If either of the two indicated controls have more than zero
 #' wells with a 'Positives' (positive droplet measurement) greater than or equal
 #' to the indicated positive droplet limit, the 'Sample', 'Target', and 'Positives'
 #' column values will be printed to the console.
 #'
 #' A new column called ext_neg_control_check6 is added to the dataframe, where
-#' NEG or EXT control rows with a 'Positives' (positive droplet measurement)
+#' indicated control rows with a 'Positives' (positive droplet measurement)
 #' greater than or equal to the indicated positive droplet limit are marked with 1,
 #' otherwise they are marked with 0. Non-relevant rows are marked with 'NA'.
 #'

@@ -41,6 +41,11 @@ The default numeric vector of the expected number of wells is: 3, 3, 3, 3, 3
 Please note: This check will not alert if there is a control that is NOT
 mentioned.
 
+The system will print out a table of the Sample, Target, and well count of each for reference,
+for all rows identified as containing the Control strings.
+
+The system is only alerting for well counts that are LESS THAN the indicated value.
+
 if stop_choice is "yes" then:
 STOP ALERT: If there are any instances of inconsistencies between the actual
 number of control wells identified and the expected number as indicated by

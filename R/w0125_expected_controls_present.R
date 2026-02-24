@@ -16,6 +16,11 @@
 #' Please note: This check will not alert if there is a control that is NOT
 #' mentioned.
 #'
+#' The system will print out a table of the Sample, Target, and well count of each for reference,
+#' for all rows identified as containing the Control strings.
+#'
+#' The system is only alerting for well counts that are LESS THAN the indicated value.
+#'
 #' if stop_choice is "yes" then:
 #' STOP ALERT: If there are any instances of inconsistencies between the actual
 #' number of control wells identified and the expected number as indicated by
@@ -34,7 +39,10 @@
 #' @return A list with the first element being a dataframe identical to df_in, and the second element being either 0 (for no failure stop) or 1 (for failure stop)
 #' @export
 
-w0125_expected_controls_present <- function(df_in, exp_cntrl_v = c("NEG", "POS", "NTC", "BCOV", "EXT"), expected_count = c(3, 3, 3, 3, 3), stop_choice = "no"){
+w0125_expected_controls_present <- function(df_in,
+                                            exp_cntrl_v = c("NEG", "POS", "NTC", "BCOV", "EXT"),
+                                            expected_count = c(3, 3, 3, 3, 3),
+                                            stop_choice = "no"){
 
     message("CHECK #1.25: Control Samples Present")
     message("") # just for visual clarity
@@ -73,26 +81,40 @@ w0125_expected_controls_present <- function(df_in, exp_cntrl_v = c("NEG", "POS",
     # checking against given numbers
     for (each_num in seq(1, length(exp_cntrl_v))){
 
-      fin <- filter(df_in, grepl(exp_cntrl_v[each_num], Sample))
-      fin <- fin %>% group_by(Sample, Target) %>% summarize(count_wells = length(Well))
+        fin <- filter(df_in, grepl(exp_cntrl_v[each_num], Sample))
 
-      for (each_row in seq(1, nrow(fin))){
+        if (nrow(fin) == 0){
+          # no identified samples
 
-          control_wells <- fin[each_row, 3]
-          alert_num <- expected_count[each_num]
+          vect <- data.frame(ControlValue = exp_cntrl_v[each_num],
+                             TargetValue = NA_character_,
+                             ExpectedWellCount = expected_count[each_num],
+                             ActualWellCount = 0)
 
-          if (control_wells < alert_num){
-              # if there are fewer than expected
+          alert_set <- rbind(alert_set, vect)
 
-              vect <- data.frame(ControlValue = exp_cntrl_v[each_num],
-                                 TargetValue = fin[each_row, 2],
-                         ExpectedWellCount = alert_num,
-                         ActualWellCount = control_wells)
-              alert_set <- rbind(alert_set, vect)
+        } else {
 
-          }
+            fin <- fin %>% group_by(Sample, Target) %>% summarize(count_wells = length(Well))
 
-      }
+            for (each_row in seq(1, nrow(fin))){
+
+                control_wells <- fin[each_row, 3]
+                alert_num <- expected_count[each_num]
+
+                if (control_wells < alert_num){
+                    # if there are fewer than expected
+
+                    vect <- data.frame(ControlValue = exp_cntrl_v[each_num],
+                                       TargetValue = fin[each_row, 2],
+                               ExpectedWellCount = alert_num,
+                               ActualWellCount = control_wells)
+                    alert_set <- rbind(alert_set, vect)
+
+                }
+
+            }
+        }
 
     }
 
