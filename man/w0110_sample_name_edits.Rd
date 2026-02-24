@@ -10,7 +10,7 @@ w0110_sample_name_edits(df_in)
 \item{df_in}{Data frame of laboratory data, needs to have a column called "Sample" and a column called "Target"}
 }
 \value{
-A data frame with (possibly) edited sample names
+A data frame with (possibly) edited sample and target column contents
 }
 \description{
 This function takes in a data frame and cleans up sample and target names for consistency. The function does assume the sample names are in a column called \code{Sample}, and that the target names are in a column called \code{Target}. It does not create any new columns, it only edits the contents of existing columns. A single dataframe is returned.
