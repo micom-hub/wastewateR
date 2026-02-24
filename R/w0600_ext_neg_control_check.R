@@ -70,25 +70,32 @@ w0600_ext_neg_control_check <- function(new_file_in, two_control_options = c("EX
   # sample name - so "NEG1" would still get picked up, or "EXT 2026"
   for (each_control_type in two_control_options){
 
-    # looking only at either our EXT or NEG sample names. Note this is looking at
-    # all possible Target values for these wells
+    # looking only at either our EXT or NEG sample names.
     controls <- filter(new_file_in, grepl(each_control_type, Sample) & Target == extraction_control_value)
 
-    # group either our EXT or NEG samples by Sample name and Target, then count how
-    # many Wells are in each
-    controls_g <- controls %>% group_by(Sample, Target) %>% summarize(count = length(Well))
+        if (nrow(controls) > 0){
 
-    # if there are discrepancies, we want to see them. so we grab all of them
-    # (not JUST the sample/target combination that alerted.)
-    controls2 <- controls %>% select(Well, Sample, Target, Positives, Negatives)
+            # group either our EXT or NEG samples by Sample name and Target, then count how
+            # many Wells are in each
+            controls_g <- controls %>% group_by(Sample, Target) %>% summarize(count = length(Well))
 
-    message("Well | Sample | Target | Positives | Negatives ") # print out a header
+            # if there are discrepancies, we want to see them. so we grab all of them
+            # (not JUST the sample/target combination that alerted.)
+            controls2 <- controls %>% select(Well, Sample, Target, Positives, Negatives)
 
-    for (i in seq(1, nrow(controls2))){
+            message("Well | Sample | Target | Positives | Negatives ") # print out a header
 
-        message(paste0(controls2[i, 1], " | ", controls2[i, 2], " | ", controls2[i, 3], " | ", controls2[i, 4], " | ", controls2[i, 5]))
+            for (i in seq(1, nrow(controls2))){
 
-    } # and message out a row for every well, sample, and target line that was pulled
+                message(paste0(controls2[i, 1], " | ", controls2[i, 2], " | ", controls2[i, 3], " | ", controls2[i, 4], " | ", controls2[i, 5]))
+
+            } # and message out a row for every well, sample, and target line that was pulled
+
+        } else {
+
+            message(paste0("No ", each_control_type, " - ", extraction_control_value, " rows available for check."))
+
+        }
   }
   #####
 
@@ -101,89 +108,97 @@ w0600_ext_neg_control_check <- function(new_file_in, two_control_options = c("EX
     # again get the EXT or NEG samples only (agnostic of Target type)
     controls <- filter(new_file_in, grepl(each_control_type, Sample))
 
-    if (pos_or_neg == "negative"){
-      # for each row, mark with 1 if the Positives column is greater than or equal to the
-      # positive droplet limit set (default value is 3)
-      count_controls <- controls %>% mutate(count_over = case_when(Positives >= positive_droplet ~ 1,
-                                                                   T ~ 0))
-      # expected to be negative, so alert if too much positive
-    } else if (pos_or_neg == "positive"){
-      count_controls <- controls %>% mutate(count_over = case_when(Positives <= positive_droplet ~ 1,
-                                                                   T ~ 0))
-      # expected to be positive, so alert if too much negative
-    }
-    # then group by Sample/Target combinations, and sum them
-    # so we should have a single row for each sample name and target type combination
-    # with a third column that is the sum of the number of wells that are over the limit.
-    #
-    count_controls <- count_controls %>%
-      group_by(Sample, Target) %>%
-      summarize(count_over_2 = sum(count_over, na.rm = TRUE))
-
-    # if that sum is not zero then ...
-    if (any(count_controls$count_over_2 != 0)){ # end of this if/else is marked with '## ---'
-
-      if (any(count_controls$count_over_2 > wells_over)){ # wells over is the number of wells we're willing to allow
-        # to "fail"
-
-        bad_ones <- filter(count_controls, count_over_2 > wells_over) # get the rows that are over
-        example_set <- filter(controls, Sample %in% bad_ones$Sample) %>% select(Sample, Target, Positives)
-        example_set <- filter(example_set, Target %in% bad_ones$Target)
-
-
-        message("Sample | Target | Positives")
-
-        for (i in seq(1, nrow(example_set))){
-
-          message(paste0(example_set[i, 1], " | ", example_set[i, 2], " | ", example_set[i, 3]))
-
-        }
-        message("") #aesthetics
+    if (nrow(controls) > 0){
 
         if (pos_or_neg == "negative"){
-            stop_message <- paste0("More than ", wells_over, " ", each_control_type, " control replicates have ", positive_droplet, " or more positive droplets.")
+          # for each row, mark with 1 if the Positives column is greater than or equal to the
+          # positive droplet limit set (default value is 3)
+          count_controls <- controls %>% mutate(count_over = case_when(Positives >= positive_droplet ~ 1,
+                                                                       T ~ 0))
+          # expected to be negative, so alert if too much positive
         } else if (pos_or_neg == "positive"){
-          stop_message <- paste0("More than ", wells_over, " ", each_control_type, " control replicates have ", positive_droplet, " or fewer positive droplets.")
+          count_controls <- controls %>% mutate(count_over = case_when(Positives <= positive_droplet ~ 1,
+                                                                       T ~ 0))
+          # expected to be positive, so alert if too much negative
         }
-        message(stop_message)
+        # then group by Sample/Target combinations, and sum them
+        # so we should have a single row for each sample name and target type combination
+        # with a third column that is the sum of the number of wells that are over the limit.
+        #
+        count_controls <- count_controls %>%
+          group_by(Sample, Target) %>%
+          summarize(count_over_2 = sum(count_over, na.rm = TRUE))
 
-        y <- y + 1
+        # if that sum is not zero then ...
+        if (any(count_controls$count_over_2 != 0)){ # end of this if/else is marked with '## ---'
 
-      } else {
+          if (any(count_controls$count_over_2 > wells_over)){ # wells over is the number of wells we're willing to allow
+            # to "fail"
 
-        # just a warning printed out
-
-        bad_ones <- filter(count_controls, count_over_2 <= wells_over)
-        example_set <- filter(controls, Sample %in% bad_ones$Sample) %>% select(Sample, Target, Positives)
-        example_set <- filter(example_set, Target %in% bad_ones$Target)
+            bad_ones <- filter(count_controls, count_over_2 > wells_over) # get the rows that are over
+            example_set <- filter(controls, Sample %in% bad_ones$Sample) %>% select(Sample, Target, Positives)
+            example_set <- filter(example_set, Target %in% bad_ones$Target)
 
 
-        message("Sample | Target | Positives")
+            message("Sample | Target | Positives")
 
-        for (i in seq(1, nrow(example_set))){
+            for (i in seq(1, nrow(example_set))){
 
-          message(paste0(example_set[i, 1], " | ", example_set[i, 2], " | ", example_set[i, 3]))
+              message(paste0(example_set[i, 1], " | ", example_set[i, 2], " | ", example_set[i, 3]))
 
-        }
-        message("") #aesthetics
+            }
+            message("") #aesthetics
 
-        if (pos_or_neg == "negative"){
-            message(paste0(wells_over, " or fewer but more than 0 ", each_control_type, " control replicates have ", positive_droplet, " or more positive droplets."))
-        } else if (pos_or_neg == "positive"){
-          message(paste0(wells_over, " or fewer but more than 0 ", each_control_type, " control replicates have ", positive_droplet, " or fewer positive droplets."))
-        }
+            if (pos_or_neg == "negative"){
+                stop_message <- paste0("More than ", wells_over, " ", each_control_type, " control replicates have ", positive_droplet, " or more positive droplets.")
+            } else if (pos_or_neg == "positive"){
+              stop_message <- paste0("More than ", wells_over, " ", each_control_type, " control replicates have ", positive_droplet, " or fewer positive droplets.")
+            }
+            message(stop_message)
 
-      }
+            y <- y + 1
+
+          } else {
+
+            # just a warning printed out
+
+            bad_ones <- filter(count_controls, count_over_2 <= wells_over)
+            example_set <- filter(controls, Sample %in% bad_ones$Sample) %>% select(Sample, Target, Positives)
+            example_set <- filter(example_set, Target %in% bad_ones$Target)
+
+
+            message("Sample | Target | Positives")
+
+            for (i in seq(1, nrow(example_set))){
+
+              message(paste0(example_set[i, 1], " | ", example_set[i, 2], " | ", example_set[i, 3]))
+
+            }
+            message("") #aesthetics
+
+            if (pos_or_neg == "negative"){
+                message(paste0(wells_over, " or fewer but more than 0 ", each_control_type, " control replicates have ", positive_droplet, " or more positive droplets."))
+            } else if (pos_or_neg == "positive"){
+              message(paste0(wells_over, " or fewer but more than 0 ", each_control_type, " control replicates have ", positive_droplet, " or fewer positive droplets."))
+            }
+
+          }
+        } else {
+
+          if (pos_or_neg == "negative"){
+              message(paste0("All ", each_control_type, " control replicates have fewer than ", positive_droplet, " positive droplets."))
+          } else if (pos_or_neg == "positive"){
+            message(paste0("All ", each_control_type, " control replicates have more than ", positive_droplet, " positive droplets."))
+          }
+
+
+        } ## ---
+
     } else {
 
-      if (pos_or_neg == "negative"){
-          message(paste0("All ", each_control_type, " control replicates have fewer than ", positive_droplet, " positive droplets."))
-      } else if (pos_or_neg == "positive"){
-        message(paste0("All ", each_control_type, " control replicates have more than ", positive_droplet, " positive droplets."))
-      }
+      message(paste0("No ", each_control_type, " - ", extraction_control_value, " rows available for check."))
 
-
-    } ## ---
+    }
 
   } ### **
 
