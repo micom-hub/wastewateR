@@ -105,8 +105,8 @@ w0600_ext_neg_control_check <- function(new_file_in, two_control_options = c("EX
   # do the following for both EXT and NEG samples, closed with '### **'
   for (each_control_type in two_control_options){
 
-    # again get the EXT or NEG samples only (agnostic of Target type)
-    controls <- filter(new_file_in, grepl(each_control_type, Sample))
+    # again
+    controls <- filter(new_file_in, grepl(each_control_type, Sample) & Target == extraction_control_value)
 
     if (nrow(controls) > 0){
 
