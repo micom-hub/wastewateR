@@ -1,8 +1,9 @@
 
 #' Extraction & Negative Control Check
 #'
-#' This function is looking for extraction control (EXT) and negative control (NEG)
-#' 'Sample' rows. It takes in:
+#' This function was intended for extraction control (EXT) and negative control (NEG)
+#' 'Sample' rows, but it can check others. It is looking for the extraction control as a target.
+#'  It takes in:
 #' - a laboratory data frame
 #' - a vector of the two control types to check
 #' - a numeric indicator for how many of the first value control wells are expected
@@ -16,8 +17,7 @@
 #' - a character string of "yes" or "no" for whether the user would like to treat this
 #' function as a hard stop function
 #'
-#' Extraction controls and negative controls are identified as any rows that have
-#' "EXT" or "NEG" in the character string of the 'Sample' column.
+#' Rows that are considered have the indicated control strings in the "Sample" column, and have the extraction control indicated (such as BCOV or PHI6) as the Target.
 #'
 #' if stop_choice == "yes":
 #'

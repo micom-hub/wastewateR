@@ -33,8 +33,9 @@ w0600_ext_neg_control_check(
 A list with the first element being a dataframe just like the input data frame, with one new column (ext_neg_control_check6) added, and the second element being either 0 (for no failure stop) or 1 (for failure stop)
 }
 \description{
-This function is looking for extraction control (EXT) and negative control (NEG)
-'Sample' rows. It takes in:
+This function was intended for extraction control (EXT) and negative control (NEG)
+'Sample' rows, but it can check others. It is looking for the extraction control as a target.
+It takes in:
 \itemize{
 \item a laboratory data frame
 \item a vector of the two control types to check
@@ -51,8 +52,7 @@ function as a hard stop function
 }
 }
 \details{
-Extraction controls and negative controls are identified as any rows that have
-"EXT" or "NEG" in the character string of the 'Sample' column.
+Rows that are considered have the indicated control strings in the "Sample" column, and have the extraction control indicated (such as BCOV or PHI6) as the Target.
 
 if stop_choice == "yes":
 
