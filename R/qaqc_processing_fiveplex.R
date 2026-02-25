@@ -14,6 +14,7 @@
 #' @param lab_site_ids A character string vector for w0150_sample_naming_structure (A character string vector identifying the submitter sites)
 #' @param targets_to_keep A vector of character strings indicating the Target values the user would like to allow (w0115)
 #' @param control_strings A vector of character strings for w0125_expected_controls_present (A vector of character strings that indicate control wells) and w0150_sample_naming_structure (A vector of character strings contained in control sample names)
+#' @param expected_count A numeric vector of the expected number of wells for each control type. Default vector is 3, 3, 3, 0.
 #' @param pos_rows A Sample-Target dataframe of character strings for w0450 and w0500
 #' @param con_rows A Sample-Target dataframe of character strings for w0700 and w0750
 #' @param recover_unit A character string indicating the recovery control being used; default is BCOV
@@ -25,6 +26,7 @@ qaqc_processing_fiveplex <- function(file_in,
                                      lab_site_ids,
                                      targets_to_keep = c("FluA", "FluB", "RSV", "SC2", "H5"),
                                    control_strings = c("NEG", "POS", "NTC", "EXT"),
+                                   expected_count = c(3, 3, 3, 0),
                                    pos_rows = data.frame(Samples = c("POS", "POS", "POS", "POS", "POS"),
                                                          Targets = c("FluA", "FluB", "RSV", "SC2", "H5")),
                                    con_rows = data.frame(Samples = c("NEG", "POS", "NTC", "NEG", "POS", "NTC", "NEG", "POS", "NTC", "NEG", "POS", "NTC", "NEG", "POS", "NTC"),
@@ -44,7 +46,7 @@ qaqc_processing_fiveplex <- function(file_in,
 
       file_in <- w0125_expected_controls_present(file_in[1][[1]],
                                                  control_strings,
-                                                 c(3, 3, 3, 0))
+                                                 expected_count)
 
       error_line <- c("w0125")
       error_val <- c(file_in[2][[1]])

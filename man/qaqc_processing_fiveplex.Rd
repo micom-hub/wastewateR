@@ -9,6 +9,7 @@ qaqc_processing_fiveplex(
   lab_site_ids,
   targets_to_keep = c("FluA", "FluB", "RSV", "SC2", "H5"),
   control_strings = c("NEG", "POS", "NTC", "EXT"),
+  expected_count = c(3, 3, 3, 0),
   pos_rows = data.frame(Samples = c("POS", "POS", "POS", "POS", "POS"), Targets =
     c("FluA", "FluB", "RSV", "SC2", "H5")),
   con_rows = data.frame(Samples = c("NEG", "POS", "NTC", "NEG", "POS", "NTC", "NEG",
@@ -27,6 +28,8 @@ qaqc_processing_fiveplex(
 \item{targets_to_keep}{A vector of character strings indicating the Target values the user would like to allow (w0115)}
 
 \item{control_strings}{A vector of character strings for w0125_expected_controls_present (A vector of character strings that indicate control wells) and w0150_sample_naming_structure (A vector of character strings contained in control sample names)}
+
+\item{expected_count}{A numeric vector of the expected number of wells for each control type. Default vector is 3, 3, 3, 0.}
 
 \item{pos_rows}{A Sample-Target dataframe of character strings for w0450 and w0500}
 

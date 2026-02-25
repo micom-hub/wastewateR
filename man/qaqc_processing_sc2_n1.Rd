@@ -27,7 +27,7 @@ qaqc_processing_sc2_n1(
 
 \item{control_strings}{A vector of character strings for w0125_expected_controls_present (A vector of character strings that indicate control wells) and w0150_sample_naming_structure (A vector of character strings contained in control sample names)}
 
-\item{expected_count}{A numeric vector of the expected number of wells for each control type. Default vector is 9, 3, 9, 6, 9.}
+\item{expected_count}{A numeric vector of the expected number of wells for each control type. Default vector is 3, 3, 3, 3, 3.}
 
 \item{pos_rows}{A Sample-Target dataframe of character strings for w0400 and w0450}
 
