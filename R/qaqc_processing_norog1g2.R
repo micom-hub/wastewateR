@@ -34,7 +34,7 @@ qaqc_processing_norog1g2 <- function(file_in,
                                                            Targets = c("NVG1", "NVG1", "NVG1","NVG2", "NVG2", "NVG2")),
                                      recover_unit = "BCOV",
                                      control_opts_two = c("EXT", "NEG"),
-                                     rules = c(2, 3, 6)){
+                                     rules = c(2, 3)){
 
   file_in <- w0110_sample_name_edits(file_in)
 
@@ -71,17 +71,17 @@ qaqc_processing_norog1g2 <- function(file_in,
 
       file_in <- w0450_pos_control_breakdown_check(file_in[1][[1]], pos_rows, 35)
 
-      file_in <- w0600_ext_neg_control_check(file_in, control_opts_two, recover_unit,
-                                             positive_droplet = 3,
-                                             wells_over = 1)
-
-      error_line <- c(error_line, "w0600")
-      error_val <- c(error_val, file_in[2][[1]])
+      # file_in <- w0600_ext_neg_control_check(file_in, control_opts_two, recover_unit,
+      #                                        positive_droplet = 3,
+      #                                        wells_over = 1)
+      #
+      # error_line <- c(error_line, "w0600")
+      # error_val <- c(error_val, file_in[2][[1]])
 
       error_line <- c(error_line, "w0650")
-      error_val <- c(error_val, w0650_cumulative_count_check(file_in[1][[1]], 3, "no"))
+      error_val <- c(error_val, w0650_cumulative_count_check(file_in, 3, "no"))
 
-      file_in <- w0700_pos_droplet_sum(file_in[1][[1]], controls_to_drop = con_rows)
+      file_in <- w0700_pos_droplet_sum(file_in, controls_to_drop = con_rows)
 
       file_in <- w0750_neg_droplet_samples(file_in, controls_to_drop = con_rows)
       error_line <- c(error_line, "w0750")

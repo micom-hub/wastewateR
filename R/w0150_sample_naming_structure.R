@@ -255,19 +255,21 @@ w0150_sample_naming_structure <- function(df_in, site_identifiers, control_strs,
     message("") # just for visual clarity
 
     # check that the last character of non-control wells is either an I or an S or an A
-    if (any(filter(new_file_in, control_check == "NOT A CONTROL")$last_one != "S" & filter(new_file_in, control_check == "NOT A CONTROL")$last_one != "I"& filter(new_file_in, control_check == "NOT A CONTROL")$last_one != "A")){
+    if (nrow(filter(new_file_in, control_check == "NOT A CONTROL" &
+                    !last_one %in% c("I", "S", "A", "B", "C", "D", "E"))) > 0){
 
-      for (i in unique(filter(new_file_in, control_check == "NOT A CONTROL" & !last_one %in% c("I", "S", "A"))$Sample)){
+      for (i in unique(filter(new_file_in, control_check == "NOT A CONTROL" &
+                              !last_one %in% c("I", "S", "A", "B", "C", "D", "E"))$Sample)){
         message(i)
       }
 
-      stop_message <- "Last character of non-control sample name is not 'I', 'S', or 'A'."
+      stop_message <- "Last character of non-control sample name is not 'I', 'S', or 'A-E'."
       message(stop_message)
       stop_indicator <- 1
 
     } else {
 
-      message("Last characters of all non-control sample names is either 'I', 'S', or 'A'.")
+      message("Last characters of all non-control sample names is either 'I', 'S', or 'A-E'.")
 
     }
 
