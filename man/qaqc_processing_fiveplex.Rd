@@ -17,7 +17,8 @@ qaqc_processing_fiveplex(
     "FluA", "FluB", "FluB", "FluB", "RSV", "RSV", "RSV", "SC2", "SC2", "SC2", "H5", "H5",
     "H5")),
   recover_unit = "BCOV",
-  control_opts_two = c("EXT", "NEG")
+  control_opts_two = c("EXT", "NEG"),
+  rules = c(2, 3, 6)
 )
 }
 \arguments{
@@ -38,6 +39,8 @@ qaqc_processing_fiveplex(
 \item{recover_unit}{A character string indicating the recovery control being used; default is BCOV}
 
 \item{control_opts_two}{A vector of two control types that should be checked for negativity for w0600, default is c("EXT", "NEG")}
+
+\item{rules}{A vector of numbers indicating what rules to remove violators from (w1000)}
 }
 \value{
 A list where the first element is the dataframe containing unmerged Sample-Target data points, and the second element is an error stop notification dataframe that is generated if hard stop notifications are not used
