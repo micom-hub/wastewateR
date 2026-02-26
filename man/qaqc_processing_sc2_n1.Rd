@@ -15,6 +15,7 @@ qaqc_processing_sc2_n1(
     "NEG", "NEG", "NTC", "NTC", "NTC"), Targets = c("PMMOV", "BCOV", "N1", "PMMOV", "N1",
     "BCOV", "PMMOV", "N1", "BCOV", "PMMOV", "N1", "BCOV")),
   recover_unit = "BCOV",
+  rules = c(2, 3, 6),
   control_opts_two = c("EXT", "NEG")
 )
 }
@@ -34,6 +35,8 @@ qaqc_processing_sc2_n1(
 \item{con_rows}{A Sample-Target dataframe of character strings for w0500, w0700, w0750}
 
 \item{recover_unit}{A character string indicating the recovery control being used; default is BCOV}
+
+\item{rules}{A vector of numbers indicating what rules to remove violators from (w1000)}
 
 \item{control_opts_two}{A vector of two control types that should be checked for negativity for w0600, default is c("EXT", "NEG")}
 }

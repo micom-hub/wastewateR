@@ -37,6 +37,7 @@
 #' @param pos_rows A Sample-Target dataframe of character strings for w0400 and w0450
 #' @param con_rows A Sample-Target dataframe of character strings for w0500, w0700, w0750
 #' @param recover_unit A character string indicating the recovery control being used; default is BCOV
+#' @param rules A vector of numbers indicating what rules to remove violators from (w1000)
 #' @param control_opts_two A vector of two control types that should be checked for negativity for w0600, default is c("EXT", "NEG")
 #' @return A list where the first element is the dataframe containing unmerged Sample-Target data points, and the second element is an error stop notification dataframe that is generated if hard stop notifications are not used
 #' @export
@@ -51,6 +52,7 @@ qaqc_processing_sc2_n1 <- function(file_in,
                 con_rows = data.frame(Samples = c("BCOV", "BCOV", "POS", "EXT", "EXT","EXT","NEG","NEG","NEG", "NTC", "NTC", "NTC"),
                                        Targets = c("PMMOV", "BCOV",  "N1", "PMMOV", "N1", "BCOV", "PMMOV", "N1", "BCOV", "PMMOV", "N1", "BCOV")),
                 recover_unit = "BCOV",
+                rules = c(2, 3, 6),
                 control_opts_two = c("EXT", "NEG")
                 ){
 
@@ -110,7 +112,7 @@ qaqc_processing_sc2_n1 <- function(file_in,
 
       file_in <- w0900_positives_comparison_rule(file_in, pos_rows[, 1], pos_rows[, 2], control_strings, 3)
 
-      file_in <- w1000_remove_rows_as_chosen(file_in)
+      file_in <- w1000_remove_rows_as_chosen(file_in, rules)
 
       error_df <- data.frame(error_line, error_val)
 
