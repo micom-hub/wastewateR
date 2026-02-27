@@ -29,13 +29,16 @@
 #' @param new_file_in A dataframe of laboratory data
 #' @param samples_targets A dataframe of Sample-Target pairs to apply this check to
 #' @param pos_drop_limit A numeric positives droplet limit. Default value set to 3
+#' @param stop_choice A character string of "yes" or "no" to indicate whether this should be a hard stop function or not
 #' @return A dataframe just like the input data frame, with one new column (negvalue_control_check55) added
 #' @export
 
-w0550_negvalue_control_check <- function(new_file_in, samples_targets, pos_drop_limit = 3){
+w0550_negvalue_control_check <- function(new_file_in, samples_targets, pos_drop_limit = 3, stop_choice = "no"){
 
   message("CHECK #5.5: Control Check - Should be Negative")
   message("") # just for visual clarity
+
+  stop_indicator <- 0
 
   POS_wells <- data.frame()
   # get down to only options that are control wells
@@ -61,32 +64,47 @@ w0550_negvalue_control_check <- function(new_file_in, samples_targets, pos_drop_
       message(paste0(samples_targets[i, 1], " - ", samples_targets[i, 2]))
     }
 
-    new_file_in$control_pos_drop_soft5 <- NA_real_
+    new_file_in$negvalue_control_check55 <- NA_real_
 
   } else {
 
-    # count how many
-    POS_wells_count_over <- nrow(filter(POS_wells, Positives >= pos_drop_limit))
+    ### need to figure out how many wells in each set are off expectation
 
-    if (POS_wells_count_over > 1){
+    POS_wells_by_set <- POS_wells %>% mutate(overPOS = case_when(Positives >= pos_drop_limit ~ 1,
+                                                                 T ~ 0)) %>%
+                                               group_by(Sample, Target) %>%
+                                               summarize(count_wells = length(Well),
+                                                         count_over = sum(overPOS))
 
-      # if there is more than one, we stop.
-      POS_wells2 <- filter(POS_wells, Positives >= pos_drop_limit) %>% select(Sample, Target, Positives)
-      message('Sample | Target | Positives')
+    # if it's just one, print out the warning, but keep moving
+    # if it's more than one, print out the warning, but instigate a stop alert
 
-      for (i in seq(1, nrow(POS_wells2))){
-        message(paste0(POS_wells2[i, 1], " | ", POS_wells2[i, 2], " | ", POS_wells2[i, 3]))
+    for (each_row in seq(1, nrow(POS_wells_by_set))){
+
+      # look at the row of interest
+      row_oi <- POS_wells_by_set[each_row, ] # get the row, all columns
+
+      if (row_oi$count_over > 1){
+
+        # alert/stop
+
+      } else if (row_oi$count_over == 1){
+
+        # just a warning
+
+      } else {
+
+        # it's zero, so we're good
+
       }
 
-      message("") # just for visual clarity
-      message(paste0("At least one indicated row has ", pos_drop_limit, " or more positive droplets."))
-
-
-    } else {
-
-      message("All indicated rows have fewer than ", pos_drop_limit, " positive droplets.")
 
     }
+
+
+
+
+    ####
 
     new_file_in$control_pos_drop_soft5 <- NA_real_
 
