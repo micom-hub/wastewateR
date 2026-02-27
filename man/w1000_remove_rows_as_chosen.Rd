@@ -27,6 +27,7 @@ This function can currently accommodate this process for rules:
 \item 2.0 Accepted Droplet Count Check (2)
 \item 3.0 NTC Control Check (3)
 \item 5.0 Control Warning - Positives Droplets (5)
+\item 5.5 Control Check - Ensuring Negatives (5.5)
 \item 6.0 Extraction & Negative Control Check (6)
 \item 7.0 Sample Positive Droplet Sum Check (7)
 \item 7.5 Sample Negative Droplet Sum Check (7.5)

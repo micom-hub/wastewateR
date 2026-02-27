@@ -12,6 +12,7 @@
 #' - 2.0 Accepted Droplet Count Check (2)
 #' - 3.0 NTC Control Check (3)
 #' - 5.0 Control Warning - Positives Droplets (5)
+#' - 5.5 Control Check - Ensuring Negatives (5.5)
 #' - 6.0 Extraction & Negative Control Check (6)
 #' - 7.0 Sample Positive Droplet Sum Check (7)
 #' - 7.5 Sample Negative Droplet Sum Check (7.5)
@@ -81,6 +82,25 @@ w1000_remove_rows_as_chosen <- function(data_file_in, rules_out_v = c(2, 3, 6)){
     if (nrows_2 < nrows_1){
 
       message(paste0(nrows_1 - nrows_2, " rows removed from Rule #5 criteria."))
+      counter <- counter + 1
+
+    }
+
+
+
+  }
+
+  if (5.5 %in% rules_out_v){
+
+    nrows_1 <- nrow(data_file_in)
+
+    data_file_in <- filter(data_file_in, negvalue_control_check55 != 1 | is.na(negvalue_control_check55))
+
+
+    nrows_2 <- nrow(data_file_in)
+    if (nrows_2 < nrows_1){
+
+      message(paste0(nrows_1 - nrows_2, " rows removed from Rule #5.5 criteria."))
       counter <- counter + 1
 
     }
