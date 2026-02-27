@@ -30,7 +30,7 @@
 #' @param samples_targets A dataframe of Sample-Target pairs to apply this check to
 #' @param pos_drop_limit A numeric positives droplet limit. Default value set to 3
 #' @param stop_choice A character string of "yes" or "no" to indicate whether this should be a hard stop function or not
-#' @return A dataframe just like the input data frame, with one new column (negvalue_control_check55) added
+#' @return A list with the first element being a dataframe just like the input data frame, with one new column (negvalue_control_check55) added, and the second element being either 0 (for no failure stop) or 1 (for failure stop)
 #' @export
 
 w0550_negvalue_control_check <- function(new_file_in, samples_targets, pos_drop_limit = 3, stop_choice = "no"){
@@ -87,22 +87,22 @@ w0550_negvalue_control_check <- function(new_file_in, samples_targets, pos_drop_
       if (row_oi$count_over > 1){
 
         # alert/stop
+        stop_indicator <- 1
+
+        message("Stop error encountered - #5.5")
+        message(paste0("Sample = ", row_oi$Sample, " - Target = ", row_oi$Target, " has > 1 well over the Positive droplet limit of ", pos_drop_limit))
+        message("")
 
       } else if (row_oi$count_over == 1){
 
         # just a warning
-
-      } else {
-
-        # it's zero, so we're good
+        message(paste0("Sample = ", row_oi$Sample, " - Target = ", row_oi$Target, " has 1 well over the Positive droplet limit of ", pos_drop_limit))
+        message("")
 
       }
 
 
     }
-
-
-
 
     ####
 
@@ -115,11 +115,15 @@ w0550_negvalue_control_check <- function(new_file_in, samples_targets, pos_drop_
 
   }
 
+  if (stop_choice == "yes" & stop_indicator == 1){
+    stop("Stop error implemented - #5.5")
+  }
+
   message("") # just for visual clarity
   message("Through Check #5.5")
   message("")
 
-  return(new_file_in)
+  return(list(new_file_in, stop_indicator))
 
 }
 

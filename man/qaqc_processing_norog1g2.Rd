@@ -15,7 +15,7 @@ qaqc_processing_norog1g2(
     c("NVG1", "NVG1", "NVG1", "NVG2", "NVG2", "NVG2")),
   recover_unit = "BCOV",
   control_opts_two = c("EXT", "NEG"),
-  rules = c(2, 3, 6)
+  rules = c(2, 3)
 )
 }
 \arguments{
