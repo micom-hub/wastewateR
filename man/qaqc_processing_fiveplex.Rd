@@ -16,6 +16,9 @@ qaqc_processing_fiveplex(
     "POS", "NTC", "NEG", "POS", "NTC", "NEG", "POS", "NTC"), Targets = c("FluA", "FluA",
     "FluA", "FluB", "FluB", "FluB", "RSV", "RSV", "RSV", "SC2", "SC2", "SC2", "H5", "H5",
     "H5")),
+  should_be_neg = data.frame(Samples = c("NEG", "EXT", "NEG", "EXT", "NEG", "EXT", "NEG",
+    "EXT", "NEG", "EXT"), Targets = c("FLUA", "FLUA", "FLUB", "FLUB", "RSV", "RSV",
+    "SC2", "SC2", "H5", "H5")),
   recover_unit = "BCOV",
   control_opts_two = c("EXT", "NEG"),
   rules = c(2, 3, 6)
@@ -35,6 +38,8 @@ qaqc_processing_fiveplex(
 \item{pos_rows}{A Sample-Target dataframe of character strings for w0450 and w0500}
 
 \item{con_rows}{A Sample-Target dataframe of character strings for w0700 and w0750}
+
+\item{should_be_neg}{A Sample-Target dataframe of character strings for w0550}
 
 \item{recover_unit}{A character string indicating the recovery control being used; default is BCOV}
 

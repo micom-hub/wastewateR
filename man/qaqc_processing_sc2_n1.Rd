@@ -7,7 +7,7 @@
 qaqc_processing_sc2_n1(
   file_in,
   lab_site_ids,
-  targets_to_keep = c("N1", "BCOV"),
+  targets_to_keep = c("N1", "BCOV", "PMMOV"),
   control_strings = c("NEG", "POS", "NTC", "BCOV", "EXT"),
   expected_count = c(3, 3, 3, 3, 3),
   pos_rows = data.frame(Samples = c("POS", "BCOV"), Targets = c("N1", "BCOV")),
