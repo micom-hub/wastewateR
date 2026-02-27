@@ -13,6 +13,7 @@ qaqc_processing_sc2_n1_slim(
   pos_rows = data.frame(Samples = c("POS"), Targets = c("N1")),
   con_rows = data.frame(Samples = c("POS", "NEG", "NTC", "EXT"), Targets = c("N1", "N1",
     "N1", "N1")),
+  should_be_neg = data.frame(Samples = c("NEG", "EXT"), Targets = c("N1", "N1")),
   recover_unit = "BCOV",
   rules = c(2, 3, 6),
   control_opts_two = c("EXT", "NEG")
@@ -32,6 +33,8 @@ qaqc_processing_sc2_n1_slim(
 \item{pos_rows}{A Sample-Target dataframe of character strings for w0450_pos_control_breakdown_check}
 
 \item{con_rows}{A Sample-Target dataframe of character strings for w0500, w0700, w0750}
+
+\item{should_be_neg}{A Sample-Target dataframe of character strings for w0550}
 
 \item{recover_unit}{A character string indicating the recovery control being used; default is BCOV}
 
