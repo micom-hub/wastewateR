@@ -90,11 +90,12 @@ w0600_ext_neg_control_check <- function(new_file_in, two_control_options = c("EX
                 message(paste0(controls2[i, 1], " | ", controls2[i, 2], " | ", controls2[i, 3], " | ", controls2[i, 4], " | ", controls2[i, 5]))
 
             } # and message out a row for every well, sample, and target line that was pulled
+            message("")
 
         } else {
 
             message(paste0("No ", each_control_type, " - ", extraction_control_value, " rows available for printing output."))
-
+            message("")
         }
   }
   #####
@@ -155,6 +156,7 @@ w0600_ext_neg_control_check <- function(new_file_in, two_control_options = c("EX
               stop_message <- paste0("More than ", wells_over, " ", each_control_type, " control replicates have ", positive_droplet, " or fewer positive droplets.")
             }
             message(stop_message)
+            message("")
 
             y <- y + 1
 
@@ -181,6 +183,7 @@ w0600_ext_neg_control_check <- function(new_file_in, two_control_options = c("EX
             } else if (pos_or_neg == "positive"){
               message(paste0(wells_over, " or fewer but more than 0 ", each_control_type, " control replicates have ", positive_droplet, " or fewer positive droplets."))
             }
+            message("")
 
           }
         } else {
@@ -190,6 +193,7 @@ w0600_ext_neg_control_check <- function(new_file_in, two_control_options = c("EX
           } else if (pos_or_neg == "positive"){
             message(paste0("All ", each_control_type, " control replicates have more than ", positive_droplet, " positive droplets."))
           }
+          message("")
 
 
         } ## ---
@@ -197,6 +201,7 @@ w0600_ext_neg_control_check <- function(new_file_in, two_control_options = c("EX
     } else {
 
       message(paste0("No ", each_control_type, " - ", extraction_control_value, " rows available for check."))
+      message("")
 
     }
 
