@@ -13,9 +13,11 @@ qaqc_processing_norog1g2(
   pos_rows = data.frame(Samples = c("POS", "POS"), Targets = c("NVG1", "NVG2")),
   con_rows = data.frame(Samples = c("NEG", "POS", "NTC", "NEG", "POS", "NTC"), Targets =
     c("NVG1", "NVG1", "NVG1", "NVG2", "NVG2", "NVG2")),
+  should_be_neg = data.frame(Samples = c("NEG", "EXT", "NEG", "EXT"), Targets = c("NVG1",
+    "NVG1", "NVG2", "NVG2")),
   recover_unit = "BCOV",
   control_opts_two = c("EXT", "NEG"),
-  rules = c(2, 3)
+  rules = c(2, 3, 5.5)
 )
 }
 \arguments{
@@ -30,6 +32,8 @@ qaqc_processing_norog1g2(
 \item{pos_rows}{A Sample-Target dataframe of character strings for w0400 and w0450}
 
 \item{con_rows}{A Sample-Target dataframe of character strings for w0700 and w0750}
+
+\item{should_be_neg}{A Sample-Target dataframe of character strings for w0550}
 
 \item{recover_unit}{A character string indicating the recovery control being used; default is BCOV}
 

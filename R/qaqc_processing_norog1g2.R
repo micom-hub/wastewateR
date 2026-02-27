@@ -17,6 +17,7 @@
 #' @param expected_count A numeric vector of the expected number of wells for each control type. Default vector is 3, 3, 3, 3.
 #' @param pos_rows A Sample-Target dataframe of character strings for w0400 and w0450
 #' @param con_rows A Sample-Target dataframe of character strings for w0700 and w0750
+#' @param should_be_neg A Sample-Target dataframe of character strings for w0550
 #' @param recover_unit A character string indicating the recovery control being used; default is BCOV
 #' @param control_opts_two A vector of two control types that should be checked for negativity for w0600, default is c("EXT", "NEG")
 #' @param rules A vector of numbers indicating what rules to remove violators from (w1000)
@@ -32,9 +33,11 @@ qaqc_processing_norog1g2 <- function(file_in,
                                                            Targets = c("NVG1", "NVG2")),
                                      con_rows = data.frame(Samples = c("NEG", "POS", "NTC", "NEG", "POS", "NTC"),
                                                            Targets = c("NVG1", "NVG1", "NVG1","NVG2", "NVG2", "NVG2")),
+                                     should_be_neg = data.frame(Samples = c("NEG", "EXT", "NEG", "EXT"),
+                                                                Targets = c("NVG1", "NVG1", "NVG2", "NVG2")),
                                      recover_unit = "BCOV",
                                      control_opts_two = c("EXT", "NEG"),
-                                     rules = c(2, 3)){
+                                     rules = c(2, 3, 5.5)){
 
   file_in <- w0110_sample_name_edits(file_in)
 
@@ -71,6 +74,10 @@ qaqc_processing_norog1g2 <- function(file_in,
 
       file_in <- w0450_pos_control_breakdown_check(file_in[1][[1]], pos_rows, 35)
 
+      file_in <- w0550_negvalue_control_check(file_in, samples_targets = should_be_neg)
+      error_line <- c(error_line, "w0550")
+      error_val <- c(error_val, file_in[2][[1]])
+
       # file_in <- w0600_ext_neg_control_check(file_in, control_opts_two, recover_unit,
       #                                        positive_droplet = 3,
       #                                        wells_over = 1)
@@ -79,7 +86,7 @@ qaqc_processing_norog1g2 <- function(file_in,
       # error_val <- c(error_val, file_in[2][[1]])
 
       error_line <- c(error_line, "w0650")
-      error_val <- c(error_val, w0650_cumulative_count_check(file_in, 3, "no"))
+      error_val <- c(error_val, w0650_cumulative_count_check(file_in[1][[1]], 3, "no"))
 
       file_in <- w0700_pos_droplet_sum(file_in, controls_to_drop = con_rows)
 

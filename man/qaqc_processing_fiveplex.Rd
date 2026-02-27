@@ -21,7 +21,7 @@ qaqc_processing_fiveplex(
     "SC2", "SC2", "H5", "H5")),
   recover_unit = "BCOV",
   control_opts_two = c("EXT", "NEG"),
-  rules = c(2, 3, 6)
+  rules = c(2, 3, 5.5, 6)
 )
 }
 \arguments{
