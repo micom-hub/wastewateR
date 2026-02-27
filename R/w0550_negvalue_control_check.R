@@ -106,9 +106,9 @@ w0550_negvalue_control_check <- function(new_file_in, samples_targets, pos_drop_
 
     ####
 
-    new_file_in$control_pos_drop_soft5 <- NA_real_
+    new_file_in$negvalue_control_check55 <- NA_real_
 
-    POS_well <- POS_wells %>% mutate(control_pos_drop_soft5 = case_when(Positives >= pos_drop_limit ~ 1,
+    POS_well <- POS_wells %>% mutate(negvalue_control_check55 = case_when(Positives >= pos_drop_limit ~ 1,
                                                                         T ~ 0))
 
     new_file_in <- rbind(new_file_in, POS_well)
