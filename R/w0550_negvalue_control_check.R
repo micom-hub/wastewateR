@@ -122,6 +122,22 @@ w0550_negvalue_control_check <- function(new_file_in,
     stop("Stop error implemented - #5.5")
   }
 
+  if (stop_indicator == 0){
+
+    message("")
+    message("Sample | Target | Positives")
+
+    for (i in seq(1, nrow(POS_wells))){
+
+      message(paste0(POS_wells[i, 2], " | ", POS_wells[i, 3], " | ", POS_wells[i, 7]))
+
+    }
+
+    message("")
+    message(paste0("All indicated controls had fewer than ", pos_drop_limit, " positive droplets."))
+
+  }
+
   message("") # just for visual clarity
   message("Through Check #5.5")
   message("")
