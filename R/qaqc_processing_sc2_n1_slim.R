@@ -124,7 +124,7 @@ qaqc_processing_sc2_n1_slim <- function(file_in,
   }
 
 
-  return(list(file_in[1][[1]], error_df))
+  return(list(file_in, error_df))
 
 }
 
