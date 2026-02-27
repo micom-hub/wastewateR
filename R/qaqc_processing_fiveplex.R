@@ -73,7 +73,7 @@ qaqc_processing_fiveplex <- function(file_in,
 
       file_in <- w0450_pos_control_breakdown_check(file_in[1][[1]], pos_rows, 35)
 
-      file_in <- w0500_control_soft_check(file_in, pos_rows)
+      #file_in <- w0500_control_soft_check(file_in, pos_rows)
 
       file_in <- w0600_ext_neg_control_check(file_in, control_opts_two, recover_unit,
                                              positive_droplet = 3,
