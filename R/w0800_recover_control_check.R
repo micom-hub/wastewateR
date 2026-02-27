@@ -80,20 +80,19 @@ w0800_recover_control_check <- function(new_file_in, recovery_control, control_i
         message(paste0("SOME ",recovery_control,  " TARGETS BELOW ", limit_percent*100, "% LIMIT"))
         message(paste0(recovery_control, " ", limit_percent*100, "% Limit =", bcov_30_limit))
         bcov_out <- filter(bcov_targets, recovery_flag8 == 1)
-        ### print those out
-        message(bcov_out)
 
-        bcov_message <- paste0("SOME ", recovery_control, " TARGETS BELOW ", limit_percent*100, "% LIMIT AND MARKED: ")
-        for (i in unique(bcov_out$Sample)){
-          bcov_message <- paste0(bcov_message, i, " ")
+        ### print those out
+        message("Sample | Target | Positives | Avg. Positives")
+        for (every_row_in in seq(1, nrow(bcov_out))){
+
+          message(paste0(bcov_out[every_row_in, 1], " | ", bcov_out[every_row_in, 2], " | ", bcov_out[every_row_in, 3], " | ", bcov_out[every_row_in, 4]))
+
         }
 
-        bcov_out2 <- bcov_out %>% select(Sample, Target, Positives)
+        bcov_out2 <- bcov_out %>% select(Sample, Target)
         bcov_out2$recovery_flag8 <- 1
 
-        bcov_targets <- bcov_targets %>% select(Sample, Target, recovery_flag8)
-
-        new_file_in <- merge(new_file_in, bcov_targets, by = c("Sample, Target"), all.x = TRUE)
+        new_file_in <- merge(new_file_in, bcov_out2, by = c("Sample", "Target"), all.x = TRUE)
 
       } else {
         new_file_in$recovery_flag8 <- 0
