@@ -32,12 +32,14 @@
 #' and the stop_choice was "no", and a zero if the stop check was not triggered
 
 #' @param df_file_in A dataframe of laboratory data
+#' @param change_rules A vector of numbers to change the rules considered; default = c(2, 3, 5.5, 6)
 #' @param set_limit A numerical value corresponding to the number of acceptable failed well checks that the user is willing to accept across checks 2, 3, 5.5, and 6. The default set value for this is 3.
 #' @param stop_choice A character string of "yes" or "no" to indicate whether this should be a hard stop function or not
 #' @return A numeric 0 or 1 value
 #' @export
 
-w0650_cumulative_count_check <- function(df_file_in, set_limit = 3, stop_choice = "no"){
+w0650_cumulative_count_check <- function(df_file_in, change_rules = c(2, 3, 5.5, 6),
+                                         set_limit = 3, stop_choice = "no"){
 
   if (!trimws(tolower(stop_choice)) %in% c("yes", "no")){
     stop("Unaccepted value provided for stop_q; must be either 'yes' or 'no'")
@@ -50,31 +52,53 @@ w0650_cumulative_count_check <- function(df_file_in, set_limit = 3, stop_choice 
   # checks 2, 3, 6 make:
   # columns = accepted_droplet_limit2, ntc_control_check3, ext_neg_control_check6
 
-  ### need to make this more specific to the Well
-  two_check <- as.data.frame(df_file_in) %>% select(Well, Sample, accepted_droplet_limit2) %>% distinct()
-  two <- sum(two_check$accepted_droplet_limit2, na.rm = TRUE)/3
-
-  ### need to make this more specific to the sample/target combination
-  three_check <- as.data.frame(df_file_in) %>% select(Sample, Target, ntc_control_check3) %>% distinct()
-  three <- sum(three_check$ntc_control_check3, na.rm = TRUE)
-
-  fivefive_check <- as.data.frame(df_file_in) %>% group_by(Sample, Target) %>% summarize(count = sum(negvalue_control_check55, na.rm = TRUE))
-  fivefive <- sum(fivefive_check$count, na.rm = TRUE)
-
-  ### need to make this more specific to the sample/target combination
-  six_check <- as.data.frame(df_file_in) %>% select(Sample, Target, ext_neg_control_check6) %>% distinct()
-  six <- sum(six_check$ext_neg_control_check6, na.rm = TRUE)
-
   message("") # just for visual clarity
   # message regardless
 
+  counter <- 0
   message("Check | Number Failed")
-  message(paste0(" #2 | ", two))
-  message(paste0(" #3 | ", three))
-  message(paste0(" #3 | ", fivefive))
-  message(paste0(" #6 | ", six))
 
-  if (sum(two, three, fivefive, six, na.rm = TRUE) > set_limit){
+  if (2 %in% change_rules){
+      ### need to make this more specific to the Well
+      two_check <- as.data.frame(df_file_in) %>% select(Well, Sample, accepted_droplet_limit2) %>% distinct()
+      two <- sum(two_check$accepted_droplet_limit2, na.rm = TRUE)/3
+
+      message(paste0(" #2 | ", two))
+      counter <- counter + two
+  }
+
+  if (3 %in% change_rules){
+      ### need to make this more specific to the sample/target combination
+      three_check <- as.data.frame(df_file_in) %>% select(Sample, Target, ntc_control_check3) %>% distinct()
+      three <- sum(three_check$ntc_control_check3, na.rm = TRUE)
+
+      message(paste0(" #3 | ", three))
+      counter <- counter + three
+
+  }
+
+  if (5.5 %in% change_rules){
+      fivefive_check <- as.data.frame(df_file_in) %>% group_by(Sample, Target) %>% summarize(count = sum(negvalue_control_check55, na.rm = TRUE))
+      fivefive <- sum(fivefive_check$count, na.rm = TRUE)
+
+      message(paste0(" #5.5 | ", fivefive))
+      counter <- counter + fivefive
+
+  }
+
+  if (6 %in% change_rules){
+      ### need to make this more specific to the sample/target combination
+      six_check <- as.data.frame(df_file_in) %>% select(Sample, Target, ext_neg_control_check6) %>% distinct()
+      six <- sum(six_check$ext_neg_control_check6, na.rm = TRUE)
+
+      message(paste0(" #6 | ", six))
+      counter <- counter + six
+
+  }
+
+
+
+  if (counter > set_limit){
 
     message(paste0("The total number of failed wells/Samples across these rules was greater than the set limit of ", set_limit))
 
