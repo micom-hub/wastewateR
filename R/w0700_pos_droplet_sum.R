@@ -96,7 +96,7 @@ w0700_pos_droplet_sum <- function(new_file_in, sum_pos_drop = 4, controls_to_dro
     mutate(sample_wells_positives7 = case_when(sum(Positives, na.rm = TRUE) >= sum_pos_drop ~ 0,
                                               T ~ 1))
 
-  if (sum(SAM_wells2, na.rm = TRUE) == 0){
+  if (sum(SAM_wells2$sample_wells_positives7, na.rm = TRUE) == 0){
 
     message(paste0("No samples had a sum of positive droplets less than ", sum_pos_drop, "."))
 
