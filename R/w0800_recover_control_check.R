@@ -46,6 +46,7 @@
 w0800_recover_control_check <- function(new_file_in, recovery_control, control_ids, limit_percent = 0.3){
 
   message(paste0("CHECK #8: ", recovery_control, " ", limit_percent*100, "% Rule"))
+  message("")
 
   bcov_targets <- filter(new_file_in, Target == recovery_control & !grepl(recovery_control, Sample))
   bcov_targets <- filter(bcov_targets, control_check == "NOT A CONTROL")
@@ -78,7 +79,9 @@ w0800_recover_control_check <- function(new_file_in, recovery_control, control_i
       if (any(bcov_targets$recovery_flag8 == 1)){
 
         message(paste0("SOME ",recovery_control,  " TARGETS BELOW ", limit_percent*100, "% LIMIT"))
-        message(paste0(recovery_control, " ", limit_percent*100, "% Limit =", bcov_30_limit))
+        message(paste0(recovery_control, " ", limit_percent*100, "% Limit = ", bcov_30_limit))
+        message("")
+
         bcov_out <- filter(bcov_targets, recovery_flag8 == 1)
 
         ### print those out
@@ -88,6 +91,7 @@ w0800_recover_control_check <- function(new_file_in, recovery_control, control_i
           message(paste0(bcov_out[every_row_in, 1], " | ", bcov_out[every_row_in, 2], " | ", bcov_out[every_row_in, 3], " | ", bcov_out[every_row_in, 4]))
 
         }
+        message("")
 
         bcov_out2 <- bcov_out %>% select(Sample, Target)
         bcov_out2$recovery_flag8 <- 1
@@ -97,7 +101,7 @@ w0800_recover_control_check <- function(new_file_in, recovery_control, control_i
       } else {
         new_file_in$recovery_flag8 <- 0
         message(paste0("NO ", recovery_control, " TARGETS BELOW ", limit_percent*100, "% LIMIT"))
-
+        message("")
       }
 
     } else {
