@@ -9,7 +9,7 @@ w0650_cumulative_count_check(df_file_in, set_limit = 3, stop_choice = "no")
 \arguments{
 \item{df_file_in}{A dataframe of laboratory data}
 
-\item{set_limit}{A numerical value corresponding to the number of acceptable failed well checks that the user is willing to accept across checks 2, 3, and 6. The default set value for this is 3.}
+\item{set_limit}{A numerical value corresponding to the number of acceptable failed well checks that the user is willing to accept across checks 2, 3, 5.5, and 6. The default set value for this is 3.}
 
 \item{stop_choice}{A character string of "yes" or "no" to indicate whether this should be a hard stop function or not}
 }
@@ -18,9 +18,9 @@ A numeric 0 or 1 value
 }
 \description{
 This function is just a "check" function. This
-function takes in a dataframe that has at least been through checks 2, 3, and 6 prior.
+function takes in a dataframe that has at least been through checks 2, 3, 5.5, and 6 prior.
 It also takes in a numerical value corresponding to the number of acceptable
-failed well checks that the user is willing to accept across checks 2, 3, and 6.
+failed well checks that the user is willing to accept across checks 2, 3, 5.5, and 6.
 The default set value for this is 3. In addition, the function accepts either a
 "yes" or "no" character string, indicating whether the limit should be a hard
 stop limit, or just a warning.
@@ -30,16 +30,17 @@ This function is checking the sum of:
 \itemize{
 \item accepted_droplet_limit2 / 3
 \item ntc_control_check3
+\item negvalue_control_check55
 \item ext_neg_control_check6
 }
 
 if stop_choice == "yes":
 STOP ALERT: If "yes" is entered as the last input into this function, and
-the sum of wells that failed checks 2, 3, and 6 is greater than the set
+the sum of wells that failed checks 2, 3, 5.5, and 6 is greater than the set
 numeric limit, the code will STOP RUNNING.
 
 Regardless, this function will print a message to the console with the number
-of wells that failed each of checks 2, 3, and 6. It will then note whether
+of wells that failed each of checks 2, 3, 5.5, and 6. It will then note whether
 the sum of these was greater than the set numeric limit, or not.
 
 A zero or a one is returned from this function - A 1 if the stop check was triggered

@@ -33,7 +33,10 @@
 #' @return A list with the first element being a dataframe just like the input data frame, with one new column (negvalue_control_check55) added, and the second element being either 0 (for no failure stop) or 1 (for failure stop)
 #' @export
 
-w0550_negvalue_control_check <- function(new_file_in, samples_targets, pos_drop_limit = 3, stop_choice = "no"){
+w0550_negvalue_control_check <- function(new_file_in,
+                                         samples_targets,
+                                         pos_drop_limit = 3,
+                                         stop_choice = "no"){
 
   message("CHECK #5.5: Control Check - Should be Negative")
   message("") # just for visual clarity

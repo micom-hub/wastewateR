@@ -4,12 +4,12 @@
 \alias{w1000_remove_rows_as_chosen}
 \title{Removing QAQC Rule Breakers}
 \usage{
-w1000_remove_rows_as_chosen(data_file_in, rules_out_v = c(2, 3, 6))
+w1000_remove_rows_as_chosen(data_file_in, rules_out_v = c(2, 3, 5.5, 6))
 }
 \arguments{
 \item{data_file_in}{A dataframe of laboratory data}
 
-\item{rules_out_v}{A vector of numbers that correspond to the rules that, if there were only "mild" rule breaks (aka that did not previously trigger a STOP), you'd like to remove those rule breaking rows. The default value for this vector is 'c(2, 3, 6)'.}
+\item{rules_out_v}{A vector of numbers that correspond to the rules that, if there were only "mild" rule breaks (aka that did not previously trigger a STOP), you'd like to remove those rule breaking rows. The default value for this vector is 'c(2, 3, 5.5, 6)'.}
 }
 \value{
 A dataframe just like the input data frame, with any indicated rule breaker rows removed

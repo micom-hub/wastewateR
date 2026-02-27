@@ -36,6 +36,7 @@
 #' @param expected_count A numeric vector of the expected number of wells for each control type. Default vector is 3, 3, 3, 3, 3.
 #' @param pos_rows A Sample-Target dataframe of character strings for w0400 and w0450
 #' @param con_rows A Sample-Target dataframe of character strings for w0500, w0700, w0750
+#' @param should_be_neg A Sample-Target dataframe of character strings for w0550
 #' @param recover_unit A character string indicating the recovery control being used; default is BCOV
 #' @param rules A vector of numbers indicating what rules to remove violators from (w1000)
 #' @param control_opts_two A vector of two control types that should be checked for negativity for w0600, default is c("EXT", "NEG")
@@ -51,6 +52,8 @@ qaqc_processing_sc2_n1 <- function(file_in,
                                        Targets = c("N1", "BCOV")),
                 con_rows = data.frame(Samples = c("BCOV", "BCOV", "POS", "EXT", "EXT","EXT","NEG","NEG","NEG", "NTC", "NTC", "NTC"),
                                        Targets = c("PMMOV", "BCOV",  "N1", "PMMOV", "N1", "BCOV", "PMMOV", "N1", "BCOV", "PMMOV", "N1", "BCOV")),
+                should_be_neg = data.frame(Samples = c("NEG", "EXT", "NEG", "EXT"),
+                                           Targets = c("PMMOV", "PMMOV", "N1", "N1")),
                 recover_unit = "BCOV",
                 rules = c(2, 3, 6),
                 control_opts_two = c("EXT", "NEG")
@@ -90,9 +93,13 @@ qaqc_processing_sc2_n1 <- function(file_in,
 
       file_in <- w0450_pos_control_breakdown_check(file_in[1][[1]], pos_rows, 35)
 
-      file_in <- w0500_control_soft_check(file_in, con_rows)
+      file_in <- w0500_control_soft_check(file_in, data.frame(Samples = c("BCOV"), Targets = c("PMMOV")))
 
-      file_in <- w0600_ext_neg_control_check(file_in, control_opts_two, recover_unit,
+      file_in <- w0550_negvalue_control_check(file_in, samples_targets = should_be_neg)
+      error_line <- c(error_line, "w0550")
+      error_val <- c(error_val, file_in[2][[1]])
+
+      file_in <- w0600_ext_neg_control_check(file_in[1][[1]], control_opts_two, recover_unit,
                                              positive_droplet = 3,
                                              wells_over = 1)
 
