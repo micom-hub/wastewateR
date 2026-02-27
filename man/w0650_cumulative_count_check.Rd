@@ -4,10 +4,17 @@
 \alias{w0650_cumulative_count_check}
 \title{Cumulative Error Check}
 \usage{
-w0650_cumulative_count_check(df_file_in, set_limit = 3, stop_choice = "no")
+w0650_cumulative_count_check(
+  df_file_in,
+  change_rules = c(2, 3, 5.5, 6),
+  set_limit = 3,
+  stop_choice = "no"
+)
 }
 \arguments{
 \item{df_file_in}{A dataframe of laboratory data}
+
+\item{change_rules}{A vector of numbers to change the rules considered; default = c(2, 3, 5.5, 6)}
 
 \item{set_limit}{A numerical value corresponding to the number of acceptable failed well checks that the user is willing to accept across checks 2, 3, 5.5, and 6. The default set value for this is 3.}
 
