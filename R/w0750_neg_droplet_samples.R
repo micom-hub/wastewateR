@@ -124,6 +124,12 @@ w0750_neg_droplet_samples <- function(new_file_in, sum_neg_drop = 4, controls_to
       mutate(sample_wells_negatives75 = case_when(sum(Negatives, na.rm = TRUE) >= sum_neg_drop ~ 0,
                                                 T ~ 1))
 
+    if (sum(SAM_wells2, na.rm = TRUE) == 0){
+
+      message(paste0("No samples had a sum of negative droplets less than ", sum_neg_drop, "."))
+
+    }
+
     new_file_in <- rbind(new_file_in, SAM_wells2)
 
     message("") # just for visual clarity
