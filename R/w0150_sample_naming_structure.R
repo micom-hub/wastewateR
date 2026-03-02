@@ -299,7 +299,7 @@ w0150_sample_naming_structure <- function(df_in, site_identifiers, control_strs,
 
 
     just_new_file_samples <- just_new_file_samples %>% select(Well, Sample, Target, sample_name_check15)
-    nfi <- merge(nfi, just_new_file_samples, by = c("Well", "Sample", "Target"), all = TRUE)
+    nfi <- merge(new_file_in, just_new_file_samples, by = c("Well", "Sample", "Target"), all = TRUE)
 
     message("") # just for visual clarity
     message("Through Check #1.5")
