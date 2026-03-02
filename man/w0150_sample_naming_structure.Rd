@@ -21,7 +21,7 @@ w0150_sample_naming_structure(
 \item{stop_choice}{A character string of "yes" or "no" to indicate whether this should be a hard stop function or not}
 }
 \value{
-A list with the first element being a dataframe that is identical to the input dataframe, and the second element being either 0 (for no failure stop) or 1 (for failure stop)
+A list with the first element being a dataframe that is identical to the input dataframe plus a new column called sample_name_check15, and the second element being either 0 (for no failure stop) or 1 (for failure stop)
 }
 \description{
 This function was specifically crafted to accommodate the sample naming

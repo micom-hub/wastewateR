@@ -69,7 +69,7 @@
 #' @param site_identifiers A vector of four-character character strings identifying the submitter laboratory code(s) and site ids
 #' @param control_strs A vector of character strings contained in control sample names
 #' @param stop_choice A character string of "yes" or "no" to indicate whether this should be a hard stop function or not
-#' @return A list with the first element being a dataframe that is identical to the input dataframe, and the second element being either 0 (for no failure stop) or 1 (for failure stop)
+#' @return A list with the first element being a dataframe that is identical to the input dataframe plus a new column called sample_name_check15, and the second element being either 0 (for no failure stop) or 1 (for failure stop)
 #' @export
 
 w0150_sample_naming_structure <- function(df_in, site_identifiers, control_strs, stop_choice = "no"){
@@ -94,7 +94,10 @@ w0150_sample_naming_structure <- function(df_in, site_identifiers, control_strs,
 
     }
 
-    check_length_count <- filter(new_file_in, sample_characters != 11 & control_check != "Control")
+    just_new_file_samples <- filter(new_file_in, control_check != "Control")
+    just_new_file_samples$sample_name_check15 <- 0
+
+    check_length_count <- filter(just_new_file_samples, sample_characters != 11)
 
     # if the sample has "_2" or similar at the end of the name, we don't want it to
     # trigger this error.
@@ -116,20 +119,25 @@ w0150_sample_naming_structure <- function(df_in, site_identifiers, control_strs,
       message(stop_message)
       stop_indicator <- 1
 
+      just_new_file_samples <- just_new_file_samples %>% mutate(sample_name_check15 = case_when(Sample %in% unique(check_length_count$Sample) ~ 1,
+                                                                                                T ~ sample_name_check15))
+
     } else {
 
       message("Sample Names are all 11 characters (or have expected '_#' format).")
 
     }
 
-    new_file_in <- new_file_in %>% mutate(first_four = substr(Sample, 1, 4),
+
+
+    just_new_file_samples <- just_new_file_samples %>% mutate(first_four = substr(Sample, 1, 4),
                                           next_six = substr(Sample, 5, 10),
                                           next_six_date = as.POSIXct(next_six, format = "%y%m%d"),
                                           last_one = substr(Sample, 11, 11))
 
 
     # checking if any not-controls don't have all the pieces
-    piece_set <- filter(new_file_in, control_check == "NOT A CONTROL")
+    piece_set <- just_new_file_samples
     record_samples <- c()
 
     for (each_row_num in seq(1, nrow(piece_set))){
@@ -162,8 +170,8 @@ w0150_sample_naming_structure <- function(df_in, site_identifiers, control_strs,
 
     }
 
-    new_file_in <- new_file_in %>% mutate(odd_piece = case_when(Sample %in% record_samples ~ 1,
-                                                                T ~ 0))
+    just_new_file_samples <- just_new_file_samples %>% mutate(sample_name_check15 = case_when(Sample %in% record_samples ~ 1,
+                                                                T ~ sample_name_check15))
 
 
     message("") # just for visual clarity
@@ -178,9 +186,9 @@ w0150_sample_naming_structure <- function(df_in, site_identifiers, control_strs,
 
 
     # check that first four characters align with site
-    if (any(!filter(new_file_in, control_check == "NOT A CONTROL")$first_four %in% site_identifiers)){
+    if (any(!filter(just_new_file_samples, sample_name_check15 == 0)$first_four %in% site_identifiers)){
 
-      for (i in unique(filter(new_file_in, control_check == "NOT A CONTROL" & !first_four %in% site_identifiers)$Sample)){
+      for (i in unique(filter(just_new_file_samples, sample_name_check15 == 0 & !first_four %in% site_identifiers)$Sample)){
         message(i)
       }
 
@@ -190,6 +198,9 @@ w0150_sample_naming_structure <- function(df_in, site_identifiers, control_strs,
 
       stop_indicator <- 1
 
+      just_new_file_samples <- just_new_file_samples %>% mutate(sample_name_check15 = case_when(!first_four %in% site_identifiers ~ 1,
+                                                                                                T ~ sample_name_check15))
+
     } else {
       message("First four characters of non-control sample rows are all known site abbreviations.")
     }
@@ -197,9 +208,9 @@ w0150_sample_naming_structure <- function(df_in, site_identifiers, control_strs,
     message("") # just for visual clarity
 
     # check that next six characters of all non-control rows are numbers, and a date not in the future
-    if (any(is.na(filter(new_file_in, control_check == "NOT A CONTROL")$next_six_date))){
+    if (any(is.na(filter(just_new_file_samples, sample_name_check15 == 0)$next_six_date))){
 
-      for (i in unique(filter(new_file_in, control_check == "NOT A CONTROL" & is.na(next_six_date))$Sample)){
+      for (i in unique(filter(just_new_file_samples, sample_name_check15 == 0 & is.na(next_six_date))$Sample)){
         message(i)
       }
 
@@ -209,6 +220,10 @@ w0150_sample_naming_structure <- function(df_in, site_identifiers, control_strs,
 
       stop_indicator <- 1
 
+      just_new_file_samples <- just_new_file_samples %>% mutate(sample_name_check15 = case_when(is.na(next_six_date) ~ 1,
+                                                                                                T ~ sample_name_check15))
+
+
     } else {
 
       message("Next six characters of all non-control sample rows were able to be converted to Date types.")
@@ -217,9 +232,9 @@ w0150_sample_naming_structure <- function(df_in, site_identifiers, control_strs,
 
     message("") # just for visual clarity
 
-    if (any(filter(new_file_in, control_check == "NOT A CONTROL" & odd_piece == 0)$next_six_date > Sys.Date())){
+    if (any(filter(just_new_file_samples, sample_name_check15 == 0)$next_six_date > Sys.Date())){
 
-      for (i in unique(filter(new_file_in, next_six_date > Sys.Date)$Sample)){
+      for (i in unique(filter(just_new_file_samples, sample_name_check15 == 0 & next_six_date > Sys.Date)$Sample)){
         message(i)
       }
 
@@ -229,6 +244,10 @@ w0150_sample_naming_structure <- function(df_in, site_identifiers, control_strs,
 
       stop_indicator <- 1
 
+      just_new_file_samples <- just_new_file_samples %>% mutate(sample_name_check15 = case_when(next_six_date > Sys.Date ~ 1,
+                                                                                                T ~ sample_name_check15))
+
+
     } else {
 
       message("Sample dates of non-control sample rows are not future dated.")
@@ -237,9 +256,9 @@ w0150_sample_naming_structure <- function(df_in, site_identifiers, control_strs,
 
     message("") # just for visual clarity
 
-    if (any(filter(new_file_in, control_check == "NOT A CONTROL")$next_six_date < (Sys.Date() %m-% months(6)))){
+    if (any(filter(just_new_file_samples, sample_name_check15 == 0)$next_six_date < (Sys.Date() %m-% months(6)))){
 
-      for (i in unique(filter(new_file_in, next_six_date < (Sys.Date() %m-% months(6)))$Sample)){
+      for (i in unique(filter(just_new_file_samples, sample_name_check15 == 0 & next_six_date < (Sys.Date() %m-% months(6)))$Sample)){
         message(i)
       }
 
@@ -255,10 +274,10 @@ w0150_sample_naming_structure <- function(df_in, site_identifiers, control_strs,
     message("") # just for visual clarity
 
     # check that the last character of non-control wells is either an I or an S or an A
-    if (nrow(filter(new_file_in, control_check == "NOT A CONTROL" &
+    if (nrow(filter(just_new_file_samples, sample_name_check15 == 0 &
                     !last_one %in% c("I", "S", "A", "B", "C", "D", "E"))) > 0){
 
-      for (i in unique(filter(new_file_in, control_check == "NOT A CONTROL" &
+      for (i in unique(filter(just_new_file_samples, sample_name_check15 == 0 &
                               !last_one %in% c("I", "S", "A", "B", "C", "D", "E"))$Sample)){
         message(i)
       }
@@ -267,6 +286,11 @@ w0150_sample_naming_structure <- function(df_in, site_identifiers, control_strs,
       message(stop_message)
       stop_indicator <- 1
 
+      just_new_file_samples <- just_new_file_samples %>% mutate(sample_name_check15 = case_when(!last_one %in% c("I", "S", "A", "B", "C", "D", "E") ~ 1,
+                                                                                                T ~ sample_name_check15))
+
+
+
     } else {
 
       message("Last characters of all non-control sample names is either 'I', 'S', or 'A-E'.")
@@ -274,7 +298,8 @@ w0150_sample_naming_structure <- function(df_in, site_identifiers, control_strs,
     }
 
 
-    new_file_in <- new_file_in %>% select(-odd_piece)
+    just_new_file_samples <- just_new_file_samples %>% select(Well, Sample, Target, sample_name_check15)
+    nfi <- merge(nfi, just_new_file_samples, by = c("Well", "Sample", "Target"), all = TRUE)
 
     message("") # just for visual clarity
     message("Through Check #1.5")
@@ -292,7 +317,7 @@ w0150_sample_naming_structure <- function(df_in, site_identifiers, control_strs,
 
 
 
-    return(list(new_file_in, stop_indicator))
+    return(list(nfi, stop_indicator))
 
 
 
