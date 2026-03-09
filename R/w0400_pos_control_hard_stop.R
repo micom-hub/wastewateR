@@ -123,6 +123,6 @@ w0400_pos_control_hard_stop <- function(new_file_in, samples_targets, pos_drop_l
     stop("Stop error encountered - #4")
   }
 
-  return(list(df_in, stop_indicator))
+  return(list(new_file_in, stop_indicator))
 
 }
