@@ -108,6 +108,13 @@ w0400_pos_control_hard_stop <- function(new_file_in, samples_targets, pos_drop_l
 
   }
 
+  #### mark out new variable
+  POS_wells <- POS_wells %>% mutate(pos_control_check4 = case_when(Positives < pos_drop_lim ~ 1,
+                                                                   T ~ 0))
+
+  new_file_in <- merge(new_file_in, POS_wells, all.x = TRUE)
+
+
   message("") # just for visual clarity
   message("Through Check #4")
   message("")
@@ -116,6 +123,6 @@ w0400_pos_control_hard_stop <- function(new_file_in, samples_targets, pos_drop_l
     stop("Stop error encountered - #4")
   }
 
-  return(stop_indicator)
+  return(list(df_in, stop_indicator))
 
 }
