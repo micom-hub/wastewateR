@@ -65,21 +65,42 @@ w0400_pos_control_hard_stop <- function(new_file_in, samples_targets, pos_drop_l
     # figure out what the samples are
     POS_wells2 <- filter(POS_wells, Positives < pos_drop_lim) %>% select(Sample, Target, Positives, Well)
 
-    message("Sample | Target | Positives | Well ")
+    pos_wells2_group <- POS_wells2 %>% mutate(count = case_when(Positives < pos_drop_lim ~ 1, T ~ 0)) %>%
+      group_by(Sample, Target) %>% summarize(total_below = sum(count, na.rm = TRUE))
 
-    for (i in seq(1, nrow(POS_wells2))){
+    if (any(pos_wells2_group$total_below > 1)){
 
-      message(paste0(POS_wells2[i, 1], " | ", POS_wells2[i, 2], " | ", POS_wells2[i, 3], " | ", POS_wells2[i, 4]))
+        message("Sample | Target | Positives | Well ")
+
+        for (i in seq(1, nrow(POS_wells2))){
+
+          message(paste0(POS_wells2[i, 1], " | ", POS_wells2[i, 2], " | ", POS_wells2[i, 3], " | ", POS_wells2[i, 4]))
+
+        }
+
+        stop_message <- paste0("Two or more Positive Well rows have fewer than ", pos_drop_lim, " positive droplets.")
+
+        message(stop_message)
+
+        stop_indicator <- 1
+
+        message("Stop error encountered - #4")
+
+    } else {
+
+        message("Sample | Target | Positives | Well ")
+
+        for (i in seq(1, nrow(POS_wells2))){
+
+          message(paste0(POS_wells2[i, 1], " | ", POS_wells2[i, 2], " | ", POS_wells2[i, 3], " | ", POS_wells2[i, 4]))
+
+        }
+
+        stop_message <- paste0("At least one indicated Positive Well row has fewer than ", pos_drop_lim, " positive droplets.")
+
+        message(stop_message)
 
     }
-
-    stop_message <- paste0("At least one indicated Positive Well row has fewer than ", pos_drop_lim, " positive droplets.")
-
-    message(stop_message)
-
-    stop_indicator <- 1
-
-    message("Stop error encountered - #4")
 
   } else {
 
