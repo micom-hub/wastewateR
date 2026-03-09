@@ -29,7 +29,7 @@
 #' @return A dataframe just like the input data frame, with any indicated rule breaker rows removed
 #' @export
 
-w1000_remove_rows_as_chosen <- function(data_file_in, rules_out_v = c(2, 3, 5.5, 6)){
+w1000_remove_rows_as_chosen <- function(data_file_in, rules_out_v = c(2, 3, 4, 5.5, 6)){
 
   message("CHECK #10: Removing QAQC Rule Breakers")
   message("")
@@ -70,6 +70,25 @@ w1000_remove_rows_as_chosen <- function(data_file_in, rules_out_v = c(2, 3, 5.5,
 
 
   }
+
+
+  if (4 %in% rules_out_v){
+
+    nrows_1 <- nrow(data_file_in)
+
+    data_file_in <- filter(data_file_in, pos_control_check4 != 1  | is.na(pos_control_check4))
+
+    nrows_2 <- nrow(data_file_in)
+    if (nrows_2 < nrows_1){
+
+      message(paste0(nrows_1 - nrows_2, " rows removed from Rule #4 criteria."))
+      counter <- counter + 1
+    }
+
+
+
+  }
+
 
   if (5 %in% rules_out_v){
 
