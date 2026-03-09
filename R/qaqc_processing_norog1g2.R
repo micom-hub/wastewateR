@@ -68,9 +68,12 @@ qaqc_processing_norog1g2 <- function(file_in,
       error_line <- c(error_line, "w0300")
       error_val <- c(error_val, file_in[2][[1]])
 
+      file_in <- w0400_pos_control_hard_stop(file_in[1][[1]], pos_rows)
+
       error_line <- c(error_line, "w0400")
-      error_val <- c(error_val, w0400_pos_control_hard_stop(file_in[1][[1]], pos_rows))
-      # just a check, no return value
+      error_val <- c(error_val, file_in[2][[1]])
+
+
 
       file_in <- w0450_pos_control_breakdown_check(file_in[1][[1]], pos_rows, 35)
 

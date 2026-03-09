@@ -61,8 +61,11 @@ qaqc_processing_cauris <- function(file_in,
         error_val <- c(error_val, auris1_c[2][[1]])
 
         # e track
+        auris1_c <- w0400_pos_control_hard_stop(auris1_c[1][[1]], pos_rows)
+
         error_line <- c(error_line, "w0400")
-        error_val <- c(error_val, w0400_pos_control_hard_stop(auris1_c[1][[1]], pos_rows))
+        error_val <- c(error_val, auris1_c[2][[1]])
+
 
         auris1_d <- w0450_pos_control_breakdown_check(auris1_c[1][[1]], pos_rows)
 
