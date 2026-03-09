@@ -37,7 +37,7 @@ qaqc_processing_fiveplex <- function(file_in,
                                                               Targets = c("FLUA", "FLUA", "FLUB", "FLUB", "RSV", "RSV", "SC2", "SC2", "H5", "H5")),
                                    recover_unit = "BCOV",
                                    control_opts_two = c("EXT", "NEG"),
-                                   rules = c(2, 3, 5.5, 6)
+                                   rules = c(2, 3, 4, 5.5, 6)
                                    ){
 
   file_in <- w0110_sample_name_edits(file_in)

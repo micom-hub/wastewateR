@@ -82,7 +82,7 @@ qaqc_processing_cauris <- function(file_in,
 
         auris1_f <- w0700_pos_droplet_sum(auris1_e[1][[1]], 4, con_rows)
 
-        auris1_g <- w1000_remove_rows_as_chosen(auris1_f, c(2, 3, 6))
+        auris1_g <- w1000_remove_rows_as_chosen(auris1_f, c(2, 3, 4, 6))
 
         error_df <- data.frame(error_line, error_val)
 

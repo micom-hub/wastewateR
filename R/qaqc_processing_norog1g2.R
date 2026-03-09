@@ -37,7 +37,7 @@ qaqc_processing_norog1g2 <- function(file_in,
                                                                 Targets = c("NVG1", "NVG1", "NVG2", "NVG2")),
                                      recover_unit = "BCOV",
                                      control_opts_two = c("EXT", "NEG"),
-                                     rules = c(2, 3, 5.5)){
+                                     rules = c(2, 3, 4, 5.5)){
 
   file_in <- w0110_sample_name_edits(file_in)
 
@@ -89,7 +89,8 @@ qaqc_processing_norog1g2 <- function(file_in,
       # error_val <- c(error_val, file_in[2][[1]])
 
       error_line <- c(error_line, "w0650")
-      error_val <- c(error_val, w0650_cumulative_count_check(file_in[1][[1]], change_rules = c(2, 3, 5.5)))
+      error_val <- c(error_val, w0650_cumulative_count_check(file_in[1][[1]],
+                                                             change_rules = c(2, 3, 4, 5.5)))
 
       file_in <- w0700_pos_droplet_sum(file_in[1][[1]], controls_to_drop = con_rows)
 

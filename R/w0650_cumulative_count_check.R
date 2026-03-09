@@ -38,7 +38,7 @@
 #' @return A numeric 0 or 1 value
 #' @export
 
-w0650_cumulative_count_check <- function(df_file_in, change_rules = c(2, 3, 5.5, 6),
+w0650_cumulative_count_check <- function(df_file_in, change_rules = c(2, 3, 4, 5.5, 6),
                                          set_limit = 3, stop_choice = "no"){
 
   if (!trimws(tolower(stop_choice)) %in% c("yes", "no")){
@@ -74,6 +74,16 @@ w0650_cumulative_count_check <- function(df_file_in, change_rules = c(2, 3, 5.5,
 
       message(paste0(" #3 | ", three))
       counter <- counter + three
+
+  }
+
+  if (4 %in% change_rules){
+    ### need to make this more specific to the sample/target combination
+    four_check <- as.data.frame(df_file_in) %>% select(Sample, Target, pos_control_check4) %>% distinct()
+    four <- sum(three_check$pos_control_check4, na.rm = TRUE)
+
+    message(paste0(" #4 | ", four))
+    counter <- counter + four
 
   }
 
