@@ -101,7 +101,7 @@ calculate_gc_per_100ml <- function(lab_df_in, all_weigh_info,
 
 
     colnames(dilution_df) <- c("Sample", "Target", "DilutionFactor")
-    working_calc_set <- merge(working_calc_set, dilution_df, by = c("Sample", "Target"), all.x = TRUE)
+    working_calc_set <- merge(working_calc_set, dilution_df, by = c("Sample"), all.x = TRUE)
 
     working_calc_set <- working_calc_set %>% mutate(CP_100_mL_of_sample = CP_100_mL_of_sample * DilutionFactor,
                                                     detection_limit_CP_100mL = detection_limit_CP_100mL * DilutionFactor)
