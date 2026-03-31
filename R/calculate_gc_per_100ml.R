@@ -81,8 +81,7 @@ calculate_gc_per_100ml <- function(lab_df_in, all_weigh_info,
                                                   final_concentrate_volume_mL = as.numeric(final_concentrate_volume_mL))
 
   working_calc_set <- working_calc_set %>% mutate(detection_limit_CP_100mL = (((adjust_frevu*(final_extraction_volume_uL/div_frevu)*further_adjust*((final_concentrate_volume_mL/volume_used_for_extraction_mL)))/initial_volume_analyzed_mL)*100),
-                                                  CP_100_mL_of_sample = case_when(Positives >= positives_limit ~ (((CP_uL*(final_extraction_volume_uL/div_frevu)*further_adjust*((final_concentrate_volume_mL/volume_used_for_extraction_mL)))/initial_volume_analyzed_mL)*100),
-                                                                                  T ~ detection_limit_CP_100mL))
+                                                  CP_100_mL_of_sample = (((CP_uL*(final_extraction_volume_uL/div_frevu)*further_adjust*((final_concentrate_volume_mL/volume_used_for_extraction_mL)))/initial_volume_analyzed_mL)*100))
 
   if (length(dilution_df) == 1){
 
