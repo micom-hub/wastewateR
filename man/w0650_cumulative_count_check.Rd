@@ -6,7 +6,7 @@
 \usage{
 w0650_cumulative_count_check(
   df_file_in,
-  change_rules = c(2, 3, 5.5, 6),
+  change_rules = c(2, 3, 4, 5.5, 6),
   set_limit = 3,
   stop_choice = "no"
 )

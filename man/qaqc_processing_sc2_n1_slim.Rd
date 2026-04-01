@@ -15,7 +15,7 @@ qaqc_processing_sc2_n1_slim(
     "N1", "N1")),
   should_be_neg = data.frame(Samples = c("NEG", "EXT"), Targets = c("N1", "N1")),
   recover_unit = "BCOV",
-  rules = c(2, 3, 5.5, 6),
+  rules = c(2, 3, 4, 5.5, 6),
   control_opts_two = c("EXT", "NEG")
 )
 }

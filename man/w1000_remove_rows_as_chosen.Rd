@@ -4,7 +4,7 @@
 \alias{w1000_remove_rows_as_chosen}
 \title{Removing QAQC Rule Breakers}
 \usage{
-w1000_remove_rows_as_chosen(data_file_in, rules_out_v = c(2, 3, 5.5, 6))
+w1000_remove_rows_as_chosen(data_file_in, rules_out_v = c(2, 3, 4, 5.5, 6))
 }
 \arguments{
 \item{data_file_in}{A dataframe of laboratory data}
