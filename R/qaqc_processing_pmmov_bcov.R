@@ -107,13 +107,13 @@ qaqc_processing_pmmov_bcov <- function(file_in,
 
     error_df <- data.frame(error_line, error_val)
 
-    message("End wrapper for SARS-CoV-2 N1")
+    message("End wrapper for PMMoV/BCoV")
 
   } else {
 
     error_df <- data.frame(error_line, error_val)
 
-    message("SARS-CoV-2 N1  - Error with Targets listed & encountered - Stop Error #1.15")
+    message("PMMoV/BCoV  - Error with Targets listed & encountered - Stop Error #1.15")
 
   }
 
