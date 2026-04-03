@@ -57,14 +57,14 @@ w0125_expected_controls_present <- function(df_in,
 
     for (each_control in exp_cntrl_v){
 
-      fin <- filter(df_in, grepl(each_control, Sample))
+      fin <- filter(df_in, grepl(each_control, Sample)) #identify matches for each sample with each control type
 
-      for (each_target in unique(fin$Target)){
+      for (each_target in unique(fin$Target)){ 
 
-          fin2 <- filter(fin, Target == each_target)
+          fin2 <- filter(fin, Target == each_target) 
 
           message(paste0(each_control, " | ", each_target, " | ", nrow(fin2)))
-          control_samples_here <- rbind(control_samples_here, fin2)
+          control_samples_here <- rbind(control_samples_here, fin2) #output message for the control samples present in the dataset for each target
 
       }
 
