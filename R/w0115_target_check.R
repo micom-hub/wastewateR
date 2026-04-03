@@ -20,7 +20,7 @@
 #' will print out the number of rows that were removed. If all rows were removed, that is a
 #' stop indicator option.
 #'
-#' If message_smaples is "yes", then the samples that are still in the data frame will be
+#' If message_samples is "yes", then the samples that are still in the data frame will be
 #' printed to the console, by Target (if multiple targets remain in the data file).
 #'
 #' If the stop_choice is "yes" and all rows were removed due to the Target filtering, then
@@ -56,9 +56,9 @@ w0115_target_check <- function(new_file_in, targets_allowed,
   }
   message("")
 
-  original_length <- nrow(new_file_in)
-  new_file_in2 <- filter(new_file_in, Target %in% targets_allowed)
-  new_length <- nrow(new_file_in2)
+  original_length <- nrow(new_file_in) #number of rows in lab results dataframe
+  new_file_in2 <- filter(new_file_in, Target %in% targets_allowed) #keep rows with targets matching targets allowed 
+  new_length <- nrow(new_file_in2) #number of rows with matched targets
 
   message(paste0("There were ", (original_length - new_length), " rows removed with Targets that were not in the provided list."))
   message("")
