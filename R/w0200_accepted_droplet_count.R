@@ -18,7 +18,7 @@
 #' Sample, Target, and the AcceptedDroplet values will be printed to the
 #' console as well.
 #'
-#' @param df_in A dataframe of laboratory data
+#' @param df_in A dataframe of laboratory data, must contain AcceptedDroplets column
 #' @param droplet_count_limit A numeric droplet count limit, inclusive, and default set at 10,000
 #' @return A dataframe identical to df_in with two additional columns
 #' @export
@@ -36,8 +36,8 @@ w0200_accepted_droplet_count <- function(df_in, droplet_count_limit = 10000){
     # mark all wells with too low droplet counts with 1, else 0
     df_in <- df_in %>%
       mutate(accepted_droplet_limit2 = case_when(AcceptedDroplets < droplet_count_limit ~ 1,
-                                                 T ~ 0))
-
+                                                 T ~ 0)) 
+    
     # sum those by sample and target, to see how many break the limit
     df_in <- df_in %>% group_by(Sample, Target) %>%
       mutate(accepted_droplet_count2 = sum(accepted_droplet_limit2, na.rm = TRUE))
@@ -55,7 +55,8 @@ w0200_accepted_droplet_count <- function(df_in, droplet_count_limit = 10000){
 
         message("") # just for visual clarity
         message("Sample | Target | AcceptedDroplets")
-
+        
+        #samples with AcceptedDroplets less than the droplet_count_limit
         value1 <- messaging1[each_row, 1][[1]]
         set <- filter(df_in, accepted_droplet_count2 == value1)
         set <- set %>% select(Sample, Target, AcceptedDroplets) %>% distinct()
@@ -77,4 +78,3 @@ w0200_accepted_droplet_count <- function(df_in, droplet_count_limit = 10000){
 
     return(df_in)
 }
-
