@@ -83,7 +83,7 @@ w0750_neg_droplet_samples <- function(new_file_in, sum_neg_drop = 4, controls_to
 
     SAM_wells2 <- suppressMessages(anti_join(new_file_in, SAM_wells))
     new_file_in <- SAM_wells
-
+    #sum of negatives by Sample and Target
     negatives_check <- SAM_wells2 %>% group_by(Sample, Target) %>% summarize(sum_negatives = sum(Negatives, na.rm = TRUE))
 
     if (any(negatives_check$sum_negatives < sum_neg_drop)){
@@ -143,4 +143,3 @@ w0750_neg_droplet_samples <- function(new_file_in, sum_neg_drop = 4, controls_to
     return(list(new_file_in, stop_indicator))
 
 }
-
