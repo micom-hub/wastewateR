@@ -1,4 +1,3 @@
-
 #' Control Warning - Positives Droplets
 #'
 #' Checks if Positives Droplet counts are greater than indicated
@@ -15,7 +14,7 @@
 #' | --- | --- |
 #' | BCOV | PMMOV |
 #'
-#' This check looks at the indicated control rows and marks them if the number
+#' This check looks at the indicated negative control rows and marks them if the number
 #' of positive droplets is greater than or equal to the numeric droplet limit.
 #' The mark occurs in a column called 'control_pos_drop_soft5', which will contain a
 #' value of 1 if the 'Positives' column of the indicated Sample-Target pairs is
@@ -102,4 +101,3 @@ w0500_control_soft_check <- function(new_file_in, samples_targets, pos_drop_limi
   return(new_file_in)
 
 }
-
