@@ -63,10 +63,10 @@ w0700_pos_droplet_sum <- function(new_file_in, sum_pos_drop = 4, controls_to_dro
     SAM_wells <- rbind(SAM_wells, sam_rows)
 
   }
-
+  
   SAM_wells2 <- suppressMessages(anti_join(new_file_in, SAM_wells))
   new_file_in <- SAM_wells
-
+  #sum of positives by Sample and Target
   positives_check <- SAM_wells2 %>% group_by(Sample, Target) %>% summarize(sum_positives = sum(Positives, na.rm = TRUE))
 
   if (any(positives_check$sum_positives < sum_pos_drop)){
