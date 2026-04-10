@@ -14,7 +14,7 @@
 #' | --- | --- |
 #' | BCOV | PMMOV |
 #'
-#' This check looks at the indicated negative control rows and marks them if the number
+#' This check looks at the indicated control rows and marks them if the number
 #' of positive droplets is greater than or equal to the numeric droplet limit.
 #' The mark occurs in a column called 'control_pos_drop_soft5', which will contain a
 #' value of 1 if the 'Positives' column of the indicated Sample-Target pairs is
