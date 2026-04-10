@@ -1,4 +1,3 @@
-
 #' Control Hard Stop
 #'
 #' Checking if Positive Droplet counts are too low
@@ -62,7 +61,7 @@ w0400_pos_control_hard_stop <- function(new_file_in, samples_targets, pos_drop_l
 
   # if anything in this set has a well with a Positive droplet count less than 3
   if (any(POS_wells$Positives < pos_drop_lim)){
-    # figure out what the samples are
+
     POS_wells2 <- filter(POS_wells, Positives < pos_drop_lim) %>% select(Sample, Target, Positives, Well)
 
     pos_wells2_group <- POS_wells2 %>% mutate(count = case_when(Positives < pos_drop_lim ~ 1, T ~ 0)) %>%
