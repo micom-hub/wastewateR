@@ -1,4 +1,3 @@
-
 #' NTC Control Check
 #'
 #' This function takes in a data frame of laboratory data, as well as a numeric
@@ -40,18 +39,19 @@ w0300_ntc_control_check <- function(df_in, positive_droplet_limit = 3, stop_choi
     stop_indicator <- 0
 
     if (any(grepl("NTC", df_in$Sample))){
-
+      
+          #check if samples containing NTC with a positive droplet value are greater than the positive_droplet_limit with a 1 in ntc_control_check3 column
           df_in <- df_in %>% mutate(ntc_control_check3 = case_when(grepl("NTC", Sample) & Positives >= positive_droplet_limit ~ 1,
-                                                                               T ~ 0))
-          ### Looking only at the NTC Control wells, inspect the Positives column
+                                                                               T ~ 0)) 
+          ### Looking only at the NTC Control wells, inspect the Positives column to see if any samples have a 1 in ntc_control_check3 column
           only_NTC <- filter(df_in, grepl("NTC", Sample))
 
           if (sum(only_NTC$ntc_control_check3, na.rm = TRUE) > 1){
 
                 message("Sample | Target | Positives | AcceptedDroplets")
-
+            
                 on2 <- only_NTC %>% select(Sample, Target, Positives, AcceptedDroplets)
-
+              
                 for (i in seq(1, nrow(on2))){
 
                   message(paste0(on2[i, 1], " | ", on2[i, 2], " | ", on2[i, 3], " | ", on2[i, 4]))
