@@ -20,7 +20,7 @@
 #' will print out the number of rows that were removed. If all rows were removed, that is a
 #' stop indicator option.
 #'
-#' If message_smaples is "yes", then the samples that are still in the data frame will be
+#' If message_samples is "yes", then the samples that are still in the data frame will be
 #' printed to the console, by Target (if multiple targets remain in the data file).
 #'
 #' If the stop_choice is "yes" and all rows were removed due to the Target filtering, then
@@ -48,17 +48,17 @@ w0115_target_check <- function(new_file_in, targets_allowed,
   for (each_target in targets_allowed){
       message(each_target)
   }
-  message("")
+  message("") #message stating which targets from laboratory results are allowed for analysis
 
   message("Targets In Provided Data File:")
   for (each_target in unique(new_file_in$Target)){
     message(each_target)
   }
-  message("")
+  message("") #message stating which targets were provided in the laboratory dataset
 
-  original_length <- nrow(new_file_in)
-  new_file_in2 <- filter(new_file_in, Target %in% targets_allowed)
-  new_length <- nrow(new_file_in2)
+  original_length <- nrow(new_file_in) #number of samples in laboratory dataset
+  new_file_in2 <- filter(new_file_in, Target %in% targets_allowed) #keep samples with targets matching the targets allowed
+  new_length <- nrow(new_file_in2) #number of samples with targets matching the targets allowed
 
   message(paste0("There were ", (original_length - new_length), " rows removed with Targets that were not in the provided list."))
   message("")
@@ -79,13 +79,13 @@ w0115_target_check <- function(new_file_in, targets_allowed,
 
             build_message <- ""
 
-            build_message <- paste0(build_message, each_target, ": ")
+            build_message <- paste0(build_message, each_target, ": ") #List each target allowed in function
 
             sample_in_target_set <- filter(new_file_in2, Target == each_target)
 
             for (each_sample in unique(sample_in_target_set$Sample)){
 
-              build_message <- paste0(build_message, each_sample, ", ")
+              build_message <- paste0(build_message, each_sample, ", ") #list the samples with each target in laboratory data file
 
             }
 
