@@ -1,4 +1,3 @@
-
 #' Extraction & Negative Control Check
 #'
 #' This function was intended for extraction control (EXT) and negative control (NEG)
@@ -6,8 +5,7 @@
 #'  It takes in:
 #' - a laboratory data frame
 #' - a vector of the two control types to check
-#' - a numeric indicator for how many of the first value control wells are expected
-#' - a numeric indicator for how many of the second value control wells are expected
+#' - a character string that is the extraction control Target that should be checked for NO positive signal
 #' - whether to check for positivity or negativity (higher or lower than the limit)
 #' - a numeric positive droplet limit; default value is 3
 #' - an acceptable number of wells that you'd allow to be over the positive
