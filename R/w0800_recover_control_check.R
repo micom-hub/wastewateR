@@ -2,7 +2,7 @@
 #' Recovery Control Check
 #'
 #' This function is used as a recovery control check, indicating if there are any
-#' wells where any  wells that contain a tested sample with a 'Target' of the
+#' wells that contain a tested sample with a 'Target' of the
 #' recovery control (such as BCOV) are particularly low. The function takes in a
 #' laboratory dataframe, a character string indicating your recovery control abbreviation
 #' (ex. "BCOV"), a vector of character strings that indicate the control samples to exclude,
@@ -47,12 +47,12 @@ w0800_recover_control_check <- function(new_file_in, recovery_control, control_i
 
   message(paste0("CHECK #8: ", recovery_control, " ", limit_percent*100, "% Rule"))
   message("")
-
+  #identify recovery control samples
   bcov_targets <- filter(new_file_in, Target == recovery_control & !grepl(recovery_control, Sample))
   bcov_targets <- filter(bcov_targets, control_check == "NOT A CONTROL")
 
   bcov_targets2 <- data.frame()
-
+  #exclude controls from laboratory data
   for (i in control_ids){
 
     set <- filter(bcov_targets, grepl(i, Sample))
@@ -67,6 +67,7 @@ w0800_recover_control_check <- function(new_file_in, recovery_control, control_i
 
     bcov_sample_bcov_target <- filter(new_file_in, Target == recovery_control & grepl(recovery_control, Sample))
 
+    #calculate threshold
     if (nrow(bcov_sample_bcov_target) > 0){
 
       bcov_30_limit <- mean(bcov_sample_bcov_target$Positives) * limit_percent

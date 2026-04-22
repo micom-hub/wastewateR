@@ -1,4 +1,3 @@
-
 #' Control Warning - Positives Droplets
 #'
 #' Checks if Positives Droplet counts are greater than indicated
@@ -102,4 +101,3 @@ w0500_control_soft_check <- function(new_file_in, samples_targets, pos_drop_limi
   return(new_file_in)
 
 }
-
