@@ -62,7 +62,7 @@
 #' @return A dataframe with all original input columns plus new columns included for the limit of detection calculations
 #' @export
 
-calculate_lod_invgaus <- function(negative_controls, threshold = 0.95, vdroplet = 0.00085){
+calculate_lod_invgamm <- function(negative_controls, threshold = 0.95, vdroplet = 0.00085){
 
     negative_controls2 <- negative_controls %>%
       group_by(Target, plate, plate_date) %>%
