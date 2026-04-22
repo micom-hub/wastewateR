@@ -1,4 +1,3 @@
-
 #' Control Potential Breakdown Check
 #'
 #' This is just a check/warning function.
@@ -40,7 +39,7 @@
 #' being filled with zeros. Any rows that were not considered in this check will
 #' have 'NA' filled in this column.
 #'
-#' @param new_file_in A dataframe of laboratory data
+#' @param new_file_in A dataframe of laboratory data, must contain columns Sample, Target, Concentration, CopiesPer20uLWell, Positives, and Well
 #' @param samples_targets A dataframe of Sample-Target pairs to apply this check to
 #' @param limit_number A numeric positives droplet limit. Default value set to 20
 #' @return A dataframe just like the input data frame, with one new column (pos_control_breakdown) added
