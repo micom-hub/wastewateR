@@ -35,7 +35,9 @@ w1000_remove_rows_as_chosen <- function(data_file_in, rules_out_v = c(2, 3, 4, 5
   message("")
 
   counter <- 0
-
+  
+#remove any row with a value of 1 for each rule 
+  
   if (2 %in% rules_out_v){
 
     nrows_1 <- nrow(data_file_in)
