@@ -64,7 +64,7 @@ w0125_expected_controls_present <- function(df_in,
           fin2 <- filter(fin, Target == each_target)
 
           message(paste0(each_control, " | ", each_target, " | ", nrow(fin2)))
-          control_samples_here <- rbind(control_samples_here, fin2)
+          control_samples_here <- rbind(control_samples_here, fin2) #list the control well type, as well as the number of wells for each control type, for each target
 
       }
 
@@ -150,3 +150,4 @@ w0125_expected_controls_present <- function(df_in,
     return(list(df_in, stopper_ind)) # return our input
 
 }
+w0125_expected_controls_present(ww_data)
