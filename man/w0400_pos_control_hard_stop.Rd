@@ -21,7 +21,7 @@ w0400_pos_control_hard_stop(
 \item{stop_choice}{A character string of "yes" or "no" to indicate whether this should be a hard stop function or not}
 }
 \value{
-A numeric 0 or 1 value
+A list with the first element being a dataframe identical to df_in with one additional column (pos_control_check4), and the second element being a numeric 0 or 1 value
 }
 \description{
 Checking if Positive Droplet counts are too low

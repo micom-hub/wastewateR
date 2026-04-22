@@ -39,8 +39,7 @@ It takes in:
 \itemize{
 \item a laboratory data frame
 \item a vector of the two control types to check
-\item a numeric indicator for how many of the first value control wells are expected
-\item a numeric indicator for how many of the second value control wells are expected
+\item a character string that is the extraction control Target that should be checked for NO positive signal
 \item whether to check for positivity or negativity (higher or lower than the limit)
 \item a numeric positive droplet limit; default value is 3
 \item an acceptable number of wells that you'd allow to be over the positive

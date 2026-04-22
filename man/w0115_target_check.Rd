@@ -46,7 +46,7 @@ where the Target values are in the list of targets the user provided as being al
 will print out the number of rows that were removed. If all rows were removed, that is a
 stop indicator option.
 
-If message_smaples is "yes", then the samples that are still in the data frame will be
+If message_samples is "yes", then the samples that are still in the data frame will be
 printed to the console, by Target (if multiple targets remain in the data file).
 
 If the stop_choice is "yes" and all rows were removed due to the Target filtering, then

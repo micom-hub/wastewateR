@@ -25,7 +25,7 @@ A dataframe just like the input data frame, with one new column (recovery_flag8)
 }
 \description{
 This function is used as a recovery control check, indicating if there are any
-wells where any  wells that contain a tested sample with a 'Target' of the
+wells that contain a tested sample with a 'Target' of the
 recovery control (such as BCOV) are particularly low. The function takes in a
 laboratory dataframe, a character string indicating your recovery control abbreviation
 (ex. "BCOV"), a vector of character strings that indicate the control samples to exclude,

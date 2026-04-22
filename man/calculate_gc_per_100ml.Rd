@@ -10,7 +10,6 @@ calculate_gc_per_100ml(
   dilution_df = 1,
   volume_used_for_extraction_mL = 0.2,
   final_extraction_volume_uL = 80,
-  positives_limit = 3,
   adjust_frevu = 0.6,
   div_frevu = 1,
   further_adjust = 1
@@ -27,8 +26,6 @@ calculate_gc_per_100ml(
 
 \item{final_extraction_volume_uL}{Numeric value of the final extraction volume in uL}
 
-\item{positives_limit}{Positives limit for when to apply the gene copies per 100mL value calculation to the sample. If the Positives value is less than this value, the final gene copies per 100mL column will be filled with the Detection limit value instead}
-
 \item{adjust_frevu}{Numeric adjustment factor (multiplier) for (final_extraction_volume_uL/div_frevu)}
 
 \item{div_frevu}{Numeric adjustment factor (divider) for final_extraction_volume_uL}
@@ -36,26 +33,30 @@ calculate_gc_per_100ml(
 \item{further_adjust}{Numeric adjustment factor (multiplier) for entire function}
 }
 \value{
-A dataframe containing additional columns: "initial_volume_analyzed_mL", "final_concentrate_volume_mL", "detection_limit_CP_100mL", "CP_100_mL_of_sample"
+A dataframe containing additional columns.
 }
 \description{
-This function takes in a dataframe of laboratory data, either merged or unmerged, as well as a dataframe of the weight/volume data taken in previous laboratory steps.
+This function takes in a dataframe of laboratory data as well as a dataframe
+of the weight/volume data taken in previous laboratory steps.
 }
 \details{
-The dataframe of laboratory data is assumed to have columns of 'Sample', 'Positives', 'CP_uL'
+The dataframe of laboratory data is assumed to have columns of
+'Sample', 'Positives', 'CP_uL' and be rows of data for only one Target value.
 
-The dataframe of the weight/volume data is assumed to consist of three columns in the following order: "Sample", "initial_volume_analyzed_mL", "final_concentrate_volume_mL"
+The dataframe of the weight/volume data is assumed to consist of three columns
+in the following order: "Sample", "initial_volume_analyzed_mL",
+"final_concentrate_volume_mL"
 
-The dataframe of diliutions is assumed to consist of three columns in the following order: "Sample", "Target", "DilutionFactor"
+An optional third dataframe is: the dataframe of dilutions. This is assumed to consist of three columns in the following order: "Sample", "Target", "DilutionFactor"
 Dilution factor should be what you want to MULTIPLY the value by to get the final measurement,
 so, for example, if you diluted the sample 1:100, you'd multiply the measurement by
-100 to get the final corrected gene copies per 100mL value. This dataframe is not necessary to
-provide to the function. The system will assume no dilutions were done in this instance.
+100 to get the final corrected gene copies per 100mL value.
+This dataframe is not necessary to provide to the function. The system will
+assume no dilutions were done in this instance.
 
 Default settings:
 volume_used_for_extraction_mL = 0.8,
 final_extraction_volume_uL = 50,
-positives_limit = 3,
 adjust_frevu = 0.6,
 div_frevu = 1,
 further_adjust = 1

@@ -7,7 +7,7 @@
 w0200_accepted_droplet_count(df_in, droplet_count_limit = 10000)
 }
 \arguments{
-\item{df_in}{A dataframe of laboratory data}
+\item{df_in}{A dataframe of laboratory data, must contain AcceptedDroplets column}
 
 \item{droplet_count_limit}{A numeric droplet count limit, inclusive, and default set at 10,000}
 }

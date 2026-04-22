@@ -11,7 +11,7 @@ w0450_pos_control_breakdown_check(
 )
 }
 \arguments{
-\item{new_file_in}{A dataframe of laboratory data}
+\item{new_file_in}{A dataframe of laboratory data, must contain columns Sample, Target, Concentration, CopiesPer20uLWell, Positives, and Well}
 
 \item{samples_targets}{A dataframe of Sample-Target pairs to apply this check to}
 

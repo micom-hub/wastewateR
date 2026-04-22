@@ -69,8 +69,8 @@ length are pulled and if there are one or more instances of this,
 the offending sample names will be printed to the console with "Sample
 Names are Not 11 Characters". The code will STOP RUNNING if this occurs.
 
-Each sample name is then broken down into five new columns, corresponding
-to the first two characters, the next two characters, the six characters after that,
+Each sample name is then broken down into four new columns, corresponding
+to the first four characters, the six characters after that,
 those six characters transformed into an R date data type, and the last character.
 
 Individual checks are then run on each of these columns:
