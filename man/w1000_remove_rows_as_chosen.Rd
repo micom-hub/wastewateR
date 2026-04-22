@@ -19,7 +19,7 @@ This function takes in a data frame of laboratory data that has been through
 most if not all of the prior QAQC checks. It also takes as input, a vector
 of numbers that correspond to the rules that, if there were only "mild" rule breaks
 (aka that did not previously trigger a STOP), you'd like to remove those rule breaking rows.
-The default value for this vector is 'c(2, 3, 5, 6)'.
+The default value for this vector is 'c(2, 3, 4, 5.5, 6)'.
 }
 \details{
 This function can currently accommodate this process for rules:

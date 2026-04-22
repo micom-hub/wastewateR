@@ -5,7 +5,7 @@
 #' most if not all of the prior QAQC checks. It also takes as input, a vector
 #' of numbers that correspond to the rules that, if there were only "mild" rule breaks
 #' (aka that did not previously trigger a STOP), you'd like to remove those rule breaking rows.
-#' The default value for this vector is 'c(2, 3, 5, 6)'.
+#' The default value for this vector is 'c(2, 3, 4, 5.5, 6)'.
 #'
 #' This function can currently accommodate this process for rules:
 #'
@@ -35,9 +35,9 @@ w1000_remove_rows_as_chosen <- function(data_file_in, rules_out_v = c(2, 3, 4, 5
   message("")
 
   counter <- 0
-  
-#remove any row with a value of 1 for each rule 
-  
+
+#remove any row with a value of 1 for each rule
+
   if (2 %in% rules_out_v){
 
     nrows_1 <- nrow(data_file_in)
