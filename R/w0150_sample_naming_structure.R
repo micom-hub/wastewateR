@@ -1,4 +1,3 @@
-
 #' Check Sample Naming Structure - SEWER
 #'
 #' This function was specifically crafted to accommodate the sample naming
@@ -41,8 +40,8 @@
 #' the offending sample names will be printed to the console with "Sample
 #' Names are Not 11 Characters". The code will STOP RUNNING if this occurs.
 #'
-#' Each sample name is then broken down into five new columns, corresponding
-#' to the first two characters, the next two characters, the six characters after that,
+#' Each sample name is then broken down into four new columns, corresponding
+#' to the first four characters, the six characters after that,
 #' those six characters transformed into an R date data type, and the last character.
 #'
 #' Individual checks are then run on each of these columns:
@@ -85,19 +84,19 @@ w0150_sample_naming_structure <- function(df_in, site_identifiers, control_strs,
 
     new_file_in <- df_in %>% mutate(Sample = trimws(Sample),
                                     sample_characters = nchar(Sample),
-                                    control_check = "NOT A CONTROL")
+                                    control_check = "NOT A CONTROL") #remove leading and lagging spaces, create columns for number of sample characters and whether sample is a control or not
 
     for (each_cont in control_strs){
 
       new_file_in <- new_file_in %>% mutate(control_check = case_when(grepl(each_cont, Sample) ~ "Control",
-                                                                      T ~ control_check))
+                                                                      T ~ control_check)) #label samples in control_check as Control or NOT A CONTROL 
 
     }
 
-    just_new_file_samples <- filter(new_file_in, control_check != "Control")
+    just_new_file_samples <- filter(new_file_in, control_check != "Control") 
     just_new_file_samples$sample_name_check15 <- 0
 
-    check_length_count <- filter(just_new_file_samples, sample_characters != 11)
+    check_length_count <- filter(just_new_file_samples, sample_characters != 11) #check if all controls have 11 characters in Sample name
 
     # if the sample has "_2" or similar at the end of the name, we don't want it to
     # trigger this error.
@@ -105,9 +104,9 @@ w0150_sample_naming_structure <- function(df_in, site_identifiers, control_strs,
     check_length_count <- check_length_count %>% mutate(second_check = case_when(grepl("_2", Sample) ~ nchar(gsub("_2", "", Sample)),
                                                                                  grepl("_3", Sample) ~ nchar(gsub("_3", "", Sample)),
                                                                                  grepl("_4", Sample) ~ nchar(gsub("_4", "", Sample)),
-                                                                                 T ~ 999))
+                                                                                 T ~ 999)) #identify number of characters in samples with "_2" or similar at the end of the name
 
-    check_length_count <- filter(check_length_count, second_check != 11)
+    check_length_count <- filter(check_length_count, second_check != 11) #filtered dataset with samples with number of characters not equal to 11
 
     if (nrow(check_length_count) >= 1){
 
@@ -120,7 +119,7 @@ w0150_sample_naming_structure <- function(df_in, site_identifiers, control_strs,
       stop_indicator <- 1
 
       just_new_file_samples <- just_new_file_samples %>% mutate(sample_name_check15 = case_when(Sample %in% unique(check_length_count$Sample) ~ 1,
-                                                                                                T ~ sample_name_check15))
+                                                                                                T ~ sample_name_check15)) #indicate which sample names are not 11 characters
 
     } else {
 
@@ -129,12 +128,11 @@ w0150_sample_naming_structure <- function(df_in, site_identifiers, control_strs,
     }
 
 
-
+    #create columns for first_four (site identifier), next_six (date info), next_six_date (date value from next_six), and last_one (sample indicator)
     just_new_file_samples <- just_new_file_samples %>% mutate(first_four = substr(Sample, 1, 4),
                                           next_six = substr(Sample, 5, 10),
                                           next_six_date = as.POSIXct(next_six, format = "%y%m%d"),
-                                          last_one = substr(Sample, 11, 11))
-
+                                          last_one = substr(Sample, 11, 11)) 
 
     # checking if any not-controls don't have all the pieces
     piece_set <- just_new_file_samples
@@ -199,7 +197,7 @@ w0150_sample_naming_structure <- function(df_in, site_identifiers, control_strs,
       stop_indicator <- 1
 
       just_new_file_samples <- just_new_file_samples %>% mutate(sample_name_check15 = case_when(!first_four %in% site_identifiers ~ 1,
-                                                                                                T ~ sample_name_check15))
+                                                                                                T ~ sample_name_check15)) 
 
     } else {
       message("First four characters of non-control sample rows are all known site abbreviations.")
