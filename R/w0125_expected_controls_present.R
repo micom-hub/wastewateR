@@ -91,7 +91,18 @@ w0125_expected_controls_present <- function(df_in,
                              ExpectedWellCount = expected_count[each_num],
                              ActualWellCount = 0)
 
-          alert_set <- rbind(alert_set, vect)
+          if (vect$ExpectedWellCount[1] == vect$ActualWellCount[1]){
+
+            message("Expected None and Were None Present: ")
+            message(exp_cntrl_v[each_num])
+
+          } else {
+
+            alert_set <- rbind(alert_set, vect)
+
+          }
+
+
 
         } else {
 
