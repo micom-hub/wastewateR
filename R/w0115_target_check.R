@@ -46,18 +46,18 @@ w0115_target_check <- function(new_file_in, targets_allowed,
 
   message("Targets Allowed:")
   for (each_target in targets_allowed){
-      message(each_target)
+      message(trimws(toupper(each_target)))
   }
   message("") #message stating which targets from laboratory results are allowed for analysis
 
   message("Targets In Provided Data File:")
   for (each_target in unique(new_file_in$Target)){
-    message(each_target)
+    message(trimws(toupper(each_target)))
   }
   message("") #message stating which targets were provided in the laboratory dataset
 
   original_length <- nrow(new_file_in) #number of samples in laboratory dataset
-  new_file_in2 <- filter(new_file_in, Target %in% targets_allowed) #keep samples with targets matching the targets allowed
+  new_file_in2 <- filter(new_file_in, trimws(toupper(Target)) %in% trimws(toupper(targets_allowed))) #keep samples with targets matching the targets allowed
   new_length <- nrow(new_file_in2) #number of samples with targets matching the targets allowed
 
   message(paste0("There were ", (original_length - new_length), " rows removed with Targets that were not in the provided list."))
@@ -79,9 +79,9 @@ w0115_target_check <- function(new_file_in, targets_allowed,
 
             build_message <- ""
 
-            build_message <- paste0(build_message, each_target, ": ") #List each target allowed in function
+            build_message <- paste0(build_message, trimws(toupper(each_target)), ": ") #List each target allowed in function
 
-            sample_in_target_set <- filter(new_file_in2, Target == each_target)
+            sample_in_target_set <- filter(new_file_in2, trimws(toupper(Target)) == trimws(toupper(each_target)))
 
             for (each_sample in unique(sample_in_target_set$Sample)){
 
