@@ -23,15 +23,15 @@
 #'
 qaqc_processing_measles_duplex <- function(file_in,
                                    lab_site_ids,
-                                   targets_to_keep = c("MEVN3DEGEN", "MEVAMR"),
+                                   targets_to_keep = c("MEVN3DEGEN", "MEVMR"),
                                    control_strings = c("NEG", "POS", "NTC"),
                                    expected_count = c(16, 8, 8),
                                    pos_rows = data.frame(Samples = c("POS", "POS"),
-                                                         Targets = c("MEVN3DEGEN", "MEVAMR")),
+                                                         Targets = c("MEVN3DEGEN", "MEVMR")),
                                    neg_rows = data.frame(Samples = c("NEG", "NEG", "NTC", "NTC"),
-                                                         Targets = c("MEVN3DEGEN", "MEVAMR", "MEVN3DEGEN", "MEVAMR")),
+                                                         Targets = c("MEVN3DEGEN", "MEVMR", "MEVN3DEGEN", "MEVMR")),
                                    con_rows = data.frame(Samples = rep(c("NEG", "POS", "NTC"), 2),
-                                                         Targets = c(rep("MEVN3DEGEN", 3), rep("MEVAMR", 3)))
+                                                         Targets = c(rep("MEVN3DEGEN", 3), rep("MEVMR", 3)))
                                    ){
 
   meas1 <- w0110_sample_name_edits(file_in)
@@ -75,7 +75,7 @@ qaqc_processing_measles_duplex <- function(file_in,
     meas1 <- w0450_pos_control_breakdown_check(meas1[1][[1]], pos_rows, limit_number = 100)
 
     meas1 <- w0550_negvalue_control_check(meas1,
-                                          con_rows,
+                                          neg_rows,
                                           pos_drop_limit = 2)
 
     error_line <- c(error_line, "w0550")
