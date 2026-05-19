@@ -83,7 +83,7 @@ qaqc_processing_measles_duplex <- function(file_in,
 
     # e track
     error_line <- c(error_line, "w0650")
-    error_val <- c(error_val, w0650_cumulative_count_check(meas1[1][[1]]))
+    error_val <- c(error_val, w0650_cumulative_count_check(meas1[1][[1]], change_rules = c(2, 3, 4, 5.5)))
 
     meas1 <- w0700_pos_droplet_sum(meas1[1][[1]], 4, con_rows)
 
