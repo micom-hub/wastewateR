@@ -1,14 +1,12 @@
-#' Control Check - Ensuring Controls that Should be Negative, Are Negative
+#' Control Check, Ensuring Controls that Should be Negative, Are Negative; Optional **stop**.
 #'
-#' Checks if Positives Droplet counts are greater than indicated
+#' Checks if Positives Droplet counts are greater than or equal to indicated value.
 #'
-#' This function takes in a laboratory data frame, as well as a dataframe of
-#' Sample-Target pairs to apply this check to. It also takes in a numeric positives
-#' droplet limit. The default positives droplet limit is 3.
+#' This function takes in a laboratory data frame, as well as a dataframe of Sample-Target pairs to apply this check to. It takes in a numeric positives droplet limit. The default positives droplet limit is 3. It also takes in a character "yes" or "no" stop choice to indicate whether to treat the rule as a hard stop (yes) or a soft stop (no).
 #'
 #' Sample-Target pairs example:
 #'
-#' If the dataframe looks like:
+#' Sample-Target pairs example, for pairs that are expected to be negative:
 #'
 #' | Sample | Target |
 #' | --- | --- |
@@ -17,14 +15,13 @@
 #' | NEG | N1 |
 #' | EXT | N1 |
 #'
-#' This check looks at the indicated control rows and marks them if the number
-#' of positive droplets is greater than or equal to the numeric droplet limit.
-#' The mark occurs in a column called 'negvalue_control_check55', which will contain a
-#' value of 1 if the 'Positives' column of the indicated Sample-Target pairs is
-#' greater than or equal to the droplet limit, and otherwise will contain zeros. Any rows that were not
-#' considered in this check will have 'NA' filled in this column.
+#' The input to the samples_target parameter would be: as.dataframe(Sample = c("NEG", "EXT", "NEG", "EXT"), Target = c("PMMOV", "PMMOV", "N1", "N1"))
 #'
-#' This function returns a dataframe with a new column.
+#' This check looks at the indicated control rows and marks them if the number of positive droplets is greater than or equal to the numeric droplet limit (pos_drop_limit parameter). The mark occurs in a column called 'negvalue_control_check55', which will contain a value of 1 if the 'Positives' column of the indicated Sample-Target pairs is greater than or equal to the droplet limit, and otherwise will contain zeros. Any rows that were not considered in this check will have 'NA' filled in this column.
+#'
+#' If the stop_choice parameter is set to "yes", the function will stop running (i.e. the code will stop running) if there are instances where negvalue_control_check55 is equal to 1. If the stop_choice parameter is set to "no", the function will not stop running if there are instances where negvalue_control_check55 is equal to 1, but instead will record the "fail" in the second element of the returned list.
+#'
+#' This function returns a list with the first element being a dataframe just like the input data frame, with one new column (negvalue_control_check55) added, and the second element being either 0 (for no failure stop) or 1 (for failure stop).
 #'
 #' @param new_file_in A dataframe of laboratory data
 #' @param samples_targets A dataframe of Sample-Target pairs to apply this check to
