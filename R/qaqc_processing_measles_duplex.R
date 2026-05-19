@@ -75,7 +75,7 @@ qaqc_processing_measles_duplex <- function(file_in,
     meas1 <- w0450_pos_control_breakdown_check(meas1[1][[1]], pos_rows, limit_number = 100)
 
     meas1 <- w0550_negvalue_control_check(meas1,
-                                          samples_targets,
+                                          con_rows,
                                           pos_drop_limit = 2)
 
     error_line <- c(error_line, "w0550")
