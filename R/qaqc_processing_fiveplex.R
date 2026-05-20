@@ -10,6 +10,7 @@
 #' error stop notification dataframe that is generated if hard stop notifications
 #' are not used.
 #'
+#'
 #' @param file_in A dataframe of laboratory data.
 #' @param lab_site_ids A character string vector for w0150_sample_naming_structure (A character string vector identifying the submitter sites)
 #' @param targets_to_keep A vector of character strings indicating the Target values the user would like to allow (w0115)
