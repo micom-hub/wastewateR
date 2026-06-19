@@ -94,7 +94,7 @@ w0800_recover_control_check <- function(new_file_in, recovery_control, control_i
         }
         message("")
 
-        bcov_out2 <- bcov_out %>% select(Sample, Target)
+        bcov_out2 <- bcov_out %>% select(Sample, Target) %>% distinct()
         bcov_out2$recovery_flag8 <- 1
 
         new_file_in <- merge(new_file_in, bcov_out2, by = c("Sample", "Target"), all.x = TRUE)
