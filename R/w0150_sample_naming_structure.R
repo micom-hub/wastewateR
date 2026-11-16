@@ -232,7 +232,12 @@ w0150_sample_naming_structure <- function(df_in, site_identifiers, control_strs,
 
     if (any(filter(just_new_file_samples, sample_name_check15 == 0)$next_six_date > Sys.Date())){
 
-      for (i in unique(filter(just_new_file_samples, sample_name_check15 == 0 & next_six_date > Sys.Date)$Sample)){
+      for (i in unique(
+        filter(
+          just_new_file_samples,
+          sample_name_check15 == 0 & next_six_date > Sys.Date()
+        )$Sample
+      )) {
         message(i)
       }
 
@@ -242,8 +247,13 @@ w0150_sample_naming_structure <- function(df_in, site_identifiers, control_strs,
 
       stop_indicator <- 1
 
-      just_new_file_samples <- just_new_file_samples %>% mutate(sample_name_check15 = case_when(next_six_date > Sys.Date ~ 1,
-                                                                                                T ~ sample_name_check15))
+      just_new_file_samples <- just_new_file_samples %>%
+        mutate(
+          sample_name_check15 = case_when(
+            next_six_date > Sys.Date() ~ 1,
+            T ~ sample_name_check15
+          )
+        )
 
 
     } else {
